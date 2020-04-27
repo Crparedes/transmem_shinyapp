@@ -1,2 +1,2 @@
 # transmem_shinyapp
-Graphical interface
+Graphical interface for transmem package
