@@ -36,9 +36,14 @@ calibrationModuleUI <- function(id, inputCM, label.1 = "Main species") {
                          h4('Enter data directly on '))
     ),
     conditionalPanel(condition = "input.calModel == 'calUnES'", ns = ns,
-                     box(status = "primary", width = 5,
-                         plotOutput(ns('ExCalCurvPlot'))),
-                     infoBox("Calibration function", 10 * 2, icon = icon("kiwi-bird")))
+                     tabBox(
+                       title = "Plots", width = 5,
+                       # The id lets us use input$tabset1 on the server to find the current tab
+                       id = "tabset1", 
+                       tabPanel("Calibration", plotOutput(ns('ExCalCurvPlot'))),
+                       tabPanel("Residuals", "Tab content 2")
+                     ),
+                     infoBox("Calibration function", htmlOutput(ns('niceCurvEq')), color = 'light-blue', icon = icon("vials")))
   )
 }
 
@@ -60,7 +65,22 @@ calibrationModule <- function(input, output, session) {
     ) #hot.to.df function will convert your updated table into the dataframe
   })
   output$ExCalCurv <- renderHotable({ExCalCurvMyChanges()}, readOnly = F)
-  cCurveESU <- reactive({calibCurve(curve = ExCalCurvMyChanges(), order = as.numeric(input$order))})
+  cCurveESU <- reactive({calibCurve(curve = ExCalCurvMyChanges(), order = as.numeric(input$order), plot = FALSE)})
+  output$niceCurvEq <- renderText({ifelse(as.numeric(input$order) == 1,
+                                          paste0("Signal = (", 
+                                            signif(summary(cCurveESU())$coefficients[1, 1], 4), "\u00b1",
+                                            signif(summary(cCurveESU())$coefficients[1, 2], 2), ") + (", 
+                                            signif(summary(cCurveESU())$coefficients[2, 1], 4), "\u00b1",
+                                            signif(summary(cCurveESU())$coefficients[2, 2], 2), ") * Conc"),
+                                          paste0("Signal = (", 
+                                                 signif(summary(cCurveESU())$coefficients[1, 1], 4), "\u00b1",
+                                                 signif(summary(cCurveESU())$coefficients[1, 2], 2), ") + (", 
+                                                 signif(summary(cCurveESU())$coefficients[2, 1], 4), "\u00b1",
+                                                 signif(summary(cCurveESU())$coefficients[2, 2], 2), ") * Conc + (", 
+                                                 signif(summary(cCurveESU())$coefficients[3, 1], 4), "\u00b1",
+                                                 signif(summary(cCurveESU())$coefficients[3, 2], 2), ") * Conc<sup>2</sup>"))
+  })
+  
   output$ExCalCurvPlot <- renderPlot({
     ggplot(data = ExCalCurvMyChanges(), aes(x = Conc, y = Signal)) +
       theme_bw() + geom_point(size = 3, shape = 16)  +
