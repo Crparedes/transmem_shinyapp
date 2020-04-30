@@ -1,6 +1,9 @@
+rm(list = ls())
 library(shiny)
 library(transmem)
 library(shinydashboard)
+library(rhandsontable)
+
 
 source('Modules/profileModule.R')
 source('Modules/testModule.R')
@@ -21,7 +24,8 @@ ui <- dashboardPage(
                 tabPanel("Single profile",
                          multiProfilesUI("Multiprof"),
                          profileModuleUI("profileModule"))
-    )  
+    ),
+    hotable("hotable1")
   )
 )
 
@@ -29,9 +33,20 @@ ui <- dashboardPage(
 server <- function(input, output, session) {
   callModule(testModule, "counter1")
   #callModule(testModule, "counter2")
+  callModule(calibrationModule, "MainSpeciesCal")
   callModule(multiProfiles, "Multipfor")
   callModule(profileModule, "profileModule")
-  callModule(calibrationModule, "calibModule")
+  
+  # Initiate your table
+  previous <- reactive({data.frame(Conc = rep(0, 6), Signal = rep(0, 6))})
+  MyChanges <- reactive({
+    if(is.null(input$hotable1)){return(previous())}
+    else if(!identical(previous(), input$hotable1)){
+      # hot.to.df function will convert your updated table into the dataframe
+      as.data.frame(hot.to.df(input$hotable1))
+    }
+  })
+  output$hotable1 <- renderHotable({MyChanges()}, readOnly = F)
 }
 
 

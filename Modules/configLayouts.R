@@ -6,7 +6,7 @@ convertMenuItem <- function(mi, tabName) {
 
 sidebarMenuUI <- sidebarMenu(id = "tabs",
   menuItem("Help", tabName = "help", icon = icon("question-circle")),
-  convertMenuItem(menuItem("Main settings", tabName = "config", icon = icon("cogma"),
+  convertMenuItem(menuItem("Main settings", tabName = "config", icon = icon("cog"),
                            sliderInput("nSpecies", label = "Species considered", min = 1, max = 3, value = 2),
                            sliderInput("nDataSts", label = "Transport datasets", min = 1, max = 12, value = 1)), 
                   tabName = "config"),
