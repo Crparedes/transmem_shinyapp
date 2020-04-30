@@ -23,8 +23,9 @@ sidebarMenuUI <- sidebarMenu(id = "tabs",
            menuSubItem("Reuse cycles", tabName = "rCycl"),
            menuSubItem("Species concentration", tabName = "spCnc")),
   menuItem("Citation", tabName = "citation", icon = icon("creative-commons")),
-  menuItem("Bibliography", tabName = "bibliography", icon = icon("book")),
-  menuItem("R Project", icon = icon("r-project"), href = "https://www.r-project.org")
+  menuItem("Github repository", icon = icon("github"), href = "https://github.com/Crparedes/transmem_shinyapp"),
+  menuItem("R Project", icon = icon("r-project"), href = "https://www.r-project.org"),
+  menuItem("Bibliography", tabName = "bibliography", icon = icon("book"))
 )
 
 
