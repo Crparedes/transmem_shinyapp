@@ -48,17 +48,19 @@ calibrationModule <- function(input, output, session) {
            ) #hot.to.df function will convert your updated table into the dataframe
   })
   output$ExCalCurv <- renderHotable({ExCalCurvMyChanges()}, readOnly = F)
-  cCurveESU <- reactive({calibCurve(curve = as.data.frame(hot.to.df(input$ExCalCurv)), order = input$order)})
-  output$ExCalCurvPlot <- renderPlot({ggplot(data = as.data.frame(hot.to.df(input$ExCalCurv)), aes(x = Conc, y = Signal)) +
+  cCurveESU <- reactive({calibCurve(curve = ExCalCurvMyChanges(), order = input$order)})
+  output$ExCalCurvPlot <- renderPlot({
+    ggplot(data = ExCalCurvMyChanges(), aes(x = Conc, y = Signal)) +
       theme_bw() + geom_point(size = 3, shape = 16)  +
-      labs(y = 'Absorbancia (UA)', x = expression(paste('Concentración (mg k', g^{-1}, ')'))) +
+      labs(y = 'Signal', x = expression(paste('Concentration (mg k', g^{-1}, ')'))) +
       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
             axis.text.x = element_text(color = "black"),
             axis.text.y = element_text(color = "black")) +
       #scale_y_continuous(labels = function(x) sprintf("%.2f", x), breaks = seq(0, .37, .07)) +
       #scale_x_continuous(limits = c(-1, 3), labels = function(x) sprintf("%.2f", x), breaks = seq(0, 2, .4)) +
       #coord_cartesian(xlim = c(0, 2), ylim = c(0, 0.37)) +
-      geom_smooth(method = 'lm', formula = y ~ poly(x, input$order), fullrange = TRUE, color = 'black', size = 0.4, level = 0.99)})
+      geom_smooth(method = 'lm', formula = y ~ poly(x, as.numeric(input$order)), 
+                  fullrange = TRUE, color = 'black', size = 0.4, level = 0.99)})
   
   # External calibration bivariate
   ExCalPlnePrevious <- reactive({data.frame(Conc = rep(0, as.numeric(input$calStdN)), 
