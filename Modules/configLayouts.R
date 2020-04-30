@@ -34,7 +34,7 @@ sidebarMenuUI <- sidebarMenu(id = "tabs",
 tabItemsUI <- tabItems(
   tabItem(tabName = "help", h2("Help content")),
   # Calibration methods
-      tabItem(tabName = "calib", h2("Calibration models"),
+      tabItem(tabName = "calib", h1("Calibration models"),
               calibrationModuleUI('MainSpeciesCal'),
               conditionalPanel(condition = "input.nSpecies >= 2", 
                                calibrationModuleUI('SeconSpeciesCal', label.1 = "Secondary species")),
