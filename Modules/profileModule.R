@@ -20,6 +20,12 @@ profileModule <- function(input, output, session) {
 
 multiProfilesUI <- function(id) {
   ns <- NS(id)
+  tabBox(
+    title = "intro",
+    id = "ttabs", width = 8, height = "420px",
+    tabPanel("Files",value=1, dataTableOutput("Filesa")),
+    tabPanel("Files1",value=2, dataTableOutput("Files1a"))
+  )
   sliderInput("nProfiles", label = "How many systems?", min = 1, max = 12, value = 1)
 }
 
