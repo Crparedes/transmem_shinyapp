@@ -17,15 +17,9 @@ ui <- dashboardPage(
   
   dashboardBody(
     tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")),
-      tabItemsUI#,
-      #box(title = "Histogram", status = "primary"),
-      #tabsetPanel(type = "tabs",
-      #            tabPanel("Single profile",
-      #                     multiProfilesUI("Multiprof"),
-      #                     profileModuleUI("profileModule"))
-      #)
-    )
+    tabItemsUI
   )
+)
 
 server <- function(input, output, session) {
   

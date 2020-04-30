@@ -42,10 +42,10 @@ calibrationModule <- function(input, output, session) {
   ExCalCurvPrevious <- reactive({data.frame(Conc = rep(0, as.numeric(input$calStdN)), 
                                             Signal = rep(0, as.numeric(input$calStdN)))})
   ExCalCurvMyChanges <- reactive({
-    if(all(as.data.frame(hot.to.df(input$ExCalCurv)) == 0)){return(ExCalCurvPrevious())}
-    else if(!identical(ExCalCurvPrevious(), input$ExCalCurv)){
-      as.data.frame(hot.to.df(input$ExCalCurv)) # hot.to.df function will convert your updated table into the dataframe
-    }
+    ifelse(all(as.data.frame(hot.to.df(input$ExCalCurv)) == 0), 
+           return(ExCalCurvPrevious()),
+           return(data.frame(apply(as.data.frame(hot.to.df(input$ExCalCurv)), 2, function(x) as.numeric(as.character(x)))))
+           ) #hot.to.df function will convert your updated table into the dataframe
   })
   output$ExCalCurv <- renderHotable({ExCalCurvMyChanges()}, readOnly = F)
   cCurveESU <- reactive({calibCurve(curve = as.data.frame(hot.to.df(input$ExCalCurv)), order = input$order)})
