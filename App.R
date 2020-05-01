@@ -3,11 +3,13 @@ library(shiny)
 library(transmem)
 library(shinydashboard)
 library(rhandsontable)
+library(shinysky)
 library(ggplot2)
 
+source('Modules/calibrationModule.R')
+source('Modules/inputDataModule.R')
 source('Modules/profileModule.R')
 source('Modules/testModule.R')
-source('Modules/calibrationModule.R')
 source('Modules/configLayouts.R')
 
 ui <- dashboardPage(
@@ -26,6 +28,8 @@ server <- function(input, output, session) {
   callModule(calibrationModule, "MainSpeciesCal")
   callModule(calibrationModule, "SeconSpeciesCal")
   callModule(calibrationModule, "TertiSpeciesCal")
+  
+  callModule(inputDataModule, "MainDset1")
   
   callModule(multiProfiles, "Multipfor")
   callModule(profileModule, "profileModule")

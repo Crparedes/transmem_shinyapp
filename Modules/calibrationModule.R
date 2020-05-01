@@ -1,14 +1,3 @@
-#selectCalModelUI <- function(id, label = "Main species") {
-#  ns <- NS(id)
-#  selectInput(ns("calModel"), label = label, 
-#              choices = list("Canonical (data already in desired units)" = "calCnncl", 
-#                             "Univariate external standard" = "calUnES",
-#                             "Bivariate external standard" = "calBiES",
-#                             "Standard addition with dilution" = "calSAWiD",
-#                             "Standard addition without dilution (single point)" = "calSAWoD"), 
-#              selected = "calCnncl")
-#}
-
 calibrationModuleUI <- function(id, inputCM, label.1 = "Main species") {
   ns <- NS(id)
   fluidRow(
@@ -67,7 +56,7 @@ calibrationModule <- function(input, output, session) {
            return(c(0, 1, 0, 1)),
            return(c(min(ExCalCurvMyChanges()[, 1]), max(ExCalCurvMyChanges()[, 1]),
                     min(ExCalCurvMyChanges()[, 2]), max(ExCalCurvMyChanges()[, 2])))
-    ) #hot.to.df function will convert your updated table into the dataframe
+    )
   })
   output$ExCalCurv <- renderHotable({ExCalCurvMyChanges()}, readOnly = F)
   cCurveESU <- reactive({calibCurve(curve = ExCalCurvMyChanges(), order = as.numeric(input$order), plot = FALSE)})
@@ -142,6 +131,4 @@ calibrationModule <- function(input, output, session) {
     }
   })
   output$ExCalPlne <- renderHotable({ExCalPlneMyChanges()}, readOnly = F)
-  
-  
 }
