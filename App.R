@@ -25,11 +25,11 @@ ui <- dashboardPage(
 
 server <- function(input, output, session) {
   
-  callModule(calibrationModule, "MainSpeciesCal")
+  MainSpCal <- callModule(calibrationModule, "MainSpeciesCal")
   callModule(calibrationModule, "SeconSpeciesCal")
   callModule(calibrationModule, "TertiSpeciesCal")
   
-  callModule(inputDataModule, "MainDset1")
+  callModule(inputDataModule, "MainDset1", Model = MainSpCal)
   
   callModule(multiProfiles, "Multipfor")
   callModule(profileModule, "profileModule")

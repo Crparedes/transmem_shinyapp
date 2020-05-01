@@ -24,13 +24,10 @@ sidebarMenuUI <- sidebarMenu(id = "tabs",
            menuSubItem("Species concentration", tabName = "spCnc")),
   menuItem("Example datasets", icon = icon("folder-open"), tabName = "expDat"),
   menuItem("Citation", tabName = "citation", icon = icon("creative-commons")),
-  menuItem("CRAN page: transmem ", icon = icon("r-project"), href = "https://CRAN.R-project.org/package=transmem"),
+  menuItem("transmem CRAN webpage", icon = icon("r-project"), href = "https://CRAN.R-project.org/package=transmem"),
   menuItem("Github repository", icon = icon("github"), href = "https://github.com/Crparedes/transmem_shinyapp"),
   menuItem("Bibliography", tabName = "bibliography", icon = icon("book"))
 )
-
-
-
 
 tabItemsUI <- tabItems(
   tabItem(tabName = "help", h2("Help content")),
