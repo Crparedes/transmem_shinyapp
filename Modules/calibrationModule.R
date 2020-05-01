@@ -42,8 +42,13 @@ calibrationModuleUI <- function(id, inputCM, label.1 = "Main species") {
                        id = "tabset1", 
                        tabPanel("Calibration", plotOutput(ns('ExCalCurvPlot'))),
                        tabPanel("Residuals", "Tab content 2")
-                     ),
-                     infoBox("Calibration function", htmlOutput(ns('niceCurvEq')), color = 'light-blue', icon = icon("vials")))
+                     )),
+    conditionalPanel(condition = "input.calModel == 'calUnES'", ns = ns,
+                     fluidRow(column(4,
+                                     fluidRow(column(12, infoBox(width = 12, "Calibration function", htmlOutput(ns('niceCurvEq')), 
+                                                                color = 'light-blue', icon = icon("vials")))),
+                                    fluidRow(column(12, infoBox(width = 12, "Statistical significance", htmlOutput(ns('niceStatSg')), 
+                                                               color = 'light-blue', icon = icon("chart-line")))))))
   )
 }
 
@@ -69,18 +74,50 @@ calibrationModule <- function(input, output, session) {
   output$niceCurvEq <- renderText({ifelse(as.numeric(input$order) == 1,
                                           paste0("Signal = (", 
                                             signif(summary(cCurveESU())$coefficients[1, 1], 4), "\u00b1",
-                                            signif(summary(cCurveESU())$coefficients[1, 2], 2), ") + (", 
+                                            signif(summary(cCurveESU())$coefficients[1, 2], 2), ") +<br />
+                                            &emsp;&emsp;&emsp;&ensp;&ensp;&ensp;(", 
                                             signif(summary(cCurveESU())$coefficients[2, 1], 4), "\u00b1",
                                             signif(summary(cCurveESU())$coefficients[2, 2], 2), ") * Conc"),
                                           paste0("Signal = (", 
                                                  signif(summary(cCurveESU())$coefficients[1, 1], 4), "\u00b1",
-                                                 signif(summary(cCurveESU())$coefficients[1, 2], 2), ") + (", 
+                                                 signif(summary(cCurveESU())$coefficients[1, 2], 2), ") +<br />
+                                                 &emsp;&emsp;&emsp;&ensp;&ensp;&ensp;(", 
                                                  signif(summary(cCurveESU())$coefficients[2, 1], 4), "\u00b1",
-                                                 signif(summary(cCurveESU())$coefficients[2, 2], 2), ") * Conc + (", 
+                                                 signif(summary(cCurveESU())$coefficients[2, 2], 2), ") * Conc +<br />
+                                                 &emsp;&emsp;&emsp;&ensp;&ensp;&ensp;(", 
                                                  signif(summary(cCurveESU())$coefficients[3, 1], 4), "\u00b1",
                                                  signif(summary(cCurveESU())$coefficients[3, 2], 2), ") * Conc<sup>2</sup>"))
+    
   })
-  
+  output$niceStatSg <- renderText({ifelse(as.numeric(input$order) == 1,
+                                          paste0("<small>p-values for regression coefficients:</small> <br />&emsp;(Intercept): ", 
+                                                 round(summary(cCurveESU())$coefficients[1, 4], 5), 
+                                                 "<br />&emsp;Conc:&emsp;&emsp;&ensp;&nbsp;&nbsp;",
+                                                 round(summary(cCurveESU())$coefficients[2, 4], 5),
+                                                 "<hr><small>Residual standard error: ", signif(summary(cCurveESU())$sigma, 4), 
+                                                 " on ", summary(cCurveESU())$df[2], " DF",
+                                                 "<br />F-statistic: ", signif(summary(cCurveESU())$fstatistic[1], 4), 
+                                                 " on ", summary(cCurveESU())$fstatistic[2], " and ", 
+                                                 summary(cCurveESU())$fstatistic[3], " DF,  p-value: ", 
+                                                 round(1 - pf(summary(cCurveESU())$fstatistic[1], 
+                                                               summary(cCurveESU())$fstatistic[2],
+                                                               summary(cCurveESU())$fstatistic[3]), 5), "</small>"),
+                                          paste0("<small>p-values for regression coefficients:</small> <br />&emsp;(Intercept): ", 
+                                                 round(summary(cCurveESU())$coefficients[1, 4], 5), 
+                                                 "<br />&emsp;Conc:&emsp;&emsp;&ensp;&nbsp;&nbsp;",
+                                                 round(summary(cCurveESU())$coefficients[2, 4], 5), 
+                                                 "<br />&emsp;Conc<sup>2</sup>:&emsp;&emsp;&nbsp;&nbsp;",
+                                                 round(summary(cCurveESU())$coefficients[3, 4], 5),
+                                                 "<hr><small>Residual standard error: ", signif(summary(cCurveESU())$sigma, 4), 
+                                                 " on ", summary(cCurveESU())$df[2], " DF",
+                                                 "<br />F-statistic: ", signif(summary(cCurveESU())$fstatistic[1], 4), 
+                                                 " on ", summary(cCurveESU())$fstatistic[2], " and ", 
+                                                 summary(cCurveESU())$fstatistic[3], " DF,  p-value: ", 
+                                                 round(1 - pf(summary(cCurveESU())$fstatistic[1], 
+                                                              summary(cCurveESU())$fstatistic[2],
+                                                              summary(cCurveESU())$fstatistic[3]), 5), "</small>"))
+    
+  })
   output$ExCalCurvPlot <- renderPlot({
     ggplot(data = ExCalCurvMyChanges(), aes(x = Conc, y = Signal)) +
       theme_bw() + geom_point(size = 3, shape = 16)  +
