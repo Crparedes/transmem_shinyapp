@@ -10,7 +10,7 @@ calibrationModuleUI <- function(id, inputCM, label.1 = "Main species") {
                                    "Standard addition without dilution (single point)" = "calSAWoD"), 
                     selected = "calCnncl"),
         conditionalPanel(condition = "input.calModel == 'calUnES' || input.calModel == 'calBiES'", ns = ns,
-                         sliderInput(ns("calStdN"), label = "Number of standards (set before entering any data)", 
+                         sliderInput(ns("calStdN"), label = "Number of standards (restart all data values to zero to modify)", 
                                      min = 3, max = 12, value = 6)),
         
         conditionalPanel(condition = "input.calModel == 'calUnES'", ns = ns,
@@ -18,10 +18,7 @@ calibrationModuleUI <- function(id, inputCM, label.1 = "Main species") {
                                   column(6, selectInput(ns("order"), label = 'Model order', 
                                                         choices = list("Linear" = 1, "Quadratic" = 2), selected = 1),
                                          actionButton(ns("calculateRSC"), label = "Calculate model", 
-                                                      styleclass = 'primary'),
-                                         checkboxInput(ns("restart"), value = FALSE,
-                                                       label = "Restart (This allows changing the number of entries, 
-                                                       unset this box before input data.)"))) 
+                                                      styleclass = 'primary')))
                          ),
         
         conditionalPanel(condition = "input.calModel == 'calBiES'", ns = ns,
@@ -50,10 +47,10 @@ calibrationModule <- function(input, output, session) {
   # External calibration univariate
   ExCalCurvPrevious <- reactive({data.frame(Conc = rep(0, as.numeric(input$calStdN)), 
                                                  Signal = rep(0, as.numeric(input$calStdN)))})
-  
+  orderRSC <- eventReactive(input$calculateRSC, return(as.numeric(input$order)))
   ExCalCurvMyChanges <- reactive({
     input$calculateRSC
-    ifelse(all(as.data.frame(hot.to.df(input$ExCalCurv)) == 0) || input$restart, 
+    ifelse(all(as.data.frame(hot.to.df(input$ExCalCurv)) == 0),
            return(ExCalCurvPrevious()),
            return(data.frame(apply(as.data.frame(hot.to.df(input$ExCalCurv)), 2, function(x) as.numeric(as.character(x)))))
            ) #hot.to.df function will convert your updated table into the dataframe
@@ -122,7 +119,7 @@ calibrationModule <- function(input, output, session) {
            scale_y_continuous(limits = ExCalCurvXlimYlim()[3:4] + diff(ExCalCurvXlimYlim()[3:4]) * c(-2, 2)) +
            scale_x_continuous(limits = ExCalCurvXlimYlim()[1:2] + diff(ExCalCurvXlimYlim()[1:2]) * c(-2, 2)) +
            coord_cartesian(xlim = ExCalCurvXlimYlim()[1:2], ylim = ExCalCurvXlimYlim()[3:4]) +
-           geom_smooth(method = 'lm', formula = y ~ poly(x, as.numeric(input$order)), 
+           geom_smooth(method = 'lm', formula = y ~ poly(x, orderRSC()), 
                        fullrange = TRUE, color = 'black', size = 0.4, level = 0.99))
   })
   output$niceCurvEq <- renderText(reactive_RSC()$Eq)
@@ -141,5 +138,7 @@ calibrationModule <- function(input, output, session) {
     }
   })
   output$ExCalPlne <- renderHotable({ExCalPlneMyChanges()}, readOnly = F)
+  return(list(natModel = reactive(input$calModel),
+              Model = reactive(cCurveESU)))
 }
 
