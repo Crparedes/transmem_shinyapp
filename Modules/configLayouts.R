@@ -25,6 +25,7 @@ sidebarMenuUI <- sidebarMenu(id = "tabs",
   menuItem("Example datasets", icon = icon("folder-open"), tabName = "expDat"),
   menuItem("Citation", tabName = "citation", icon = icon("creative-commons")),
   menuItem("transmem CRAN webpage", icon = icon("r-project"), href = "https://CRAN.R-project.org/package=transmem"),
+  menuItem("Bug reports", icon = icon("bug"), href = "https://github.com/Crparedes/transmem_shinyapp/issues"),
   menuItem("Github repository", icon = icon("github"), href = "https://github.com/Crparedes/transmem_shinyapp"),
   menuItem("Bibliography", tabName = "bibliography", icon = icon("book"))
 )
@@ -40,7 +41,7 @@ tabItemsUI <- tabItems(
                                calibrationModuleUI('TertiSpeciesCal', label.1 = "Tertiary species"))),
   # Input and transform data
   tabItem(tabName = "datInput", h1("Data input and transformation"),
-          inputDataModuleUI('MainDset1')),
+          inputDataModuleUI('MainDset1', Model = MainSpCal)),
   # Transport experiments,
       tabItem(tabName = "sTrns", h2("Single transport")),
       tabItem(tabName = "sepFctr", h2("Separation factors")),
