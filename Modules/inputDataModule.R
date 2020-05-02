@@ -1,4 +1,4 @@
-inputDataModuleUI <- function(id, IntID = 1, Spc = "Main species", Model) {
+inputDataModuleUI <- function(id, IntID = 1, Spc = "Main species") {
   ns <- NS(id)
   box(title = paste0("System ", IntID, " - ", Spc), width = 4, 
       sliderInput(ns("nData"), label = "Number of aliquots (set table values to zero to modify)", 
@@ -10,14 +10,15 @@ inputDataModuleUI <- function(id, IntID = 1, Spc = "Main species", Model) {
       column(5, hotable(ns("TrnsDt"))),
       column(7, textOutput(ns('ModelMsg')),
              #uiOutput(ns("chckbx")),
-             uiOutput(ns("button")),
+             uiOutput(ns("button")), tags$hr(),
              tableOutput(ns("TrnsfrmdDt"))))
 }
 
 inputDataModule <- function(input, output, session, Model, ...) {
-    chcMdl <- reactive((1:4)[c(c('calCnncl', 'calUnES', 'calBiES', 'calSAWoD') == Model$natModel())])
-  messag <- c('No transformation will be applied', rep('Be sure the calibration data has been provided', 2),
-              'Transformation using bivariated external calibration', 'Transformation using single point standard addition method')
+  chcMdl <- reactive((1:4)[c(c('calCnncl', 'calUnES', 'calBiES', 'calSAWoD') == Model$natModel())])
+  messag <- c('No transformation (other than normalization if selected) will be applied', 
+              rep('Be sure the calibration data has been provided', 2), 
+              'Be sure sample and spiked measurements were in linear range of the method')
   output$ModelMsg <- renderText({messag[chcMdl()]})
   output$chckbx <- renderUI(if(as.numeric(chcMdl()) != 1) {
     checkboxGroupInput(session$ns("chckbx"), label = 'Aliquots diluted before measurement?', 
@@ -64,20 +65,20 @@ inputDataModule <- function(input, output, session, Model, ...) {
   output$TrnsDt <- renderHotable({TrnsDtMyChanges()}, readOnly = F)
   
   #transDat <- reactive(TrnsDtMyChanges()
+  #ModelReactive <- reactive(Model$Model())
   datTabReactive <- eventReactive(input$button, {
     TempDatFram2 <- data.frame(apply(as.data.frame(hot.to.df(input$TrnsDt)), 2, function(x) as.numeric(as.character(x))))
-    #ifelse(chcMdl() == 1, return(TempDatFram2),
-    #       ifelse(chcMdl() == 2, return(data.frame(Time = as.data.frame(TrnsDtMyChanges())$Time,
-    #                                               Feed = signal2conc(signal = as.data.frame(TrnsDtMyChanges())$Feed, 
-    #                                                                  model = Model$Model()),
-    #                                               Strip = signal2conc(signal = as.data.frame(TrnsDtMyChanges())$Strip, 
-    #                                                                   model = Model$Model())))))
+     if (chcMdl() == 2) {
+       TempDatFram2 <- data.frame(Time = TempDatFram2$Feed,
+                                  Feed = signal2conc(signal = TempDatFram2$Feed, model = Model$calModel()),
+                                  Strip = signal2conc(signal = TempDatFram2$Strip, model = ModelReactive()))}
     mxfd <- max(TempDatFram2$Feed)
     ifelse(input$nrmliz, return(data.frame(Time = TempDatFram2$Time, 
                                            Feed = TempDatFram2$Feed/mxfd,
                                            Strip = TempDatFram2$Strip/mxfd)),
            return(TempDatFram2))
   }
+  #output$model(renderText(Model$catModel))
     
   )
   output$TrnsfrmdDt <- renderTable(datTabReactive())

@@ -139,6 +139,6 @@ calibrationModule <- function(input, output, session) {
   })
   output$ExCalPlne <- renderHotable({ExCalPlneMyChanges()}, readOnly = F)
   return(list(natModel = reactive(input$calModel),
-              Model = reactive(cCurveESU)))
+              calModel = cCurveESU))
 }
 

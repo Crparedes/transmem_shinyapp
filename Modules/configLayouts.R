@@ -41,7 +41,7 @@ tabItemsUI <- tabItems(
                                calibrationModuleUI('TertiSpeciesCal', label.1 = "Tertiary species"))),
   # Input and transform data
   tabItem(tabName = "datInput", h1("Data input and transformation"),
-          inputDataModuleUI('MainDset1', Model = MainSpCal)),
+          inputDataModuleUI('MainDset1')),
   # Transport experiments,
       tabItem(tabName = "sTrns", h2("Single transport")),
       tabItem(tabName = "sepFctr", h2("Separation factors")),
