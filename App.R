@@ -9,7 +9,8 @@ library(ggplot2)
 source('Modules/calibrationModule.R')
 source('Modules/inputDataModule.R')
 source('Modules/profileModule.R')
-source('Modules/testModule.R')
+
+
 source('Modules/configLayouts.R')
 
 ui <- dashboardPage(
@@ -26,12 +27,13 @@ ui <- dashboardPage(
 server <- function(input, output, session) {
   
   MainSpCal <- callModule(calibrationModule, "MainSpeciesCal")
-  callModule(calibrationModule, "SeconSpeciesCal")
-  callModule(calibrationModule, "TertiSpeciesCal")
+  SecSpCal <- callModule(calibrationModule, "SeconSpeciesCal")
+  TerSpCal <- callModule(calibrationModule, "TertiSpeciesCal")
   
-  callModule(inputDataModule, "MainDset1", Model = MainSpCal)
+  MainSpTrans1 <- callModule(inputDataModule, "MainDset1", Model = MainSpCal)
+  SecSpTrans1 <- callModule(inputDataModule, "SecDset1", Model = SecSpCal)
+  TerSpTrans1 <- callModule(inputDataModule, "TerDset1", Model = TerSpCal)
   
-  callModule(multiProfiles, "Multipfor")
   callModule(profileModule, "profileModule")
   
 }

@@ -41,11 +41,16 @@ tabItemsUI <- tabItems(
                                calibrationModuleUI('TertiSpeciesCal', label.1 = "Tertiary species"))),
   # Input and transform data
   tabItem(tabName = "datInput", h1("Data input and transformation"),
-          inputDataModuleUI('MainDset1')),
+          fluidRow(inputDataModuleUI('MainDset1'),
+                   conditionalPanel(condition = "input.nSpecies >= 2", 
+                                    inputDataModuleUI('SecDset1', Spc = "Secondary species")),
+                   conditionalPanel(condition = "input.nSpecies == 3", 
+                                    inputDataModuleUI('TerDset1', Spc = "Tertiary species")))),
   # Transport experiments,
-      tabItem(tabName = "sTrns", h2("Single transport")),
-      tabItem(tabName = "sepFctr", h2("Separation factors")),
-      tabItem(tabName = "rCycl", h2("Reuse cycles")),
-      tabItem(tabName = "spCnc", h2("Species concentration")),
+  tabItem(tabName = "sTrns", h1("Single transport profiles")),
+      
+  tabItem(tabName = "sepFctr", h2("Separation factors")),
+  tabItem(tabName = "rCycl", h2("Reuse cycles")),
+  tabItem(tabName = "spCnc", h2("Species concentration")),
   tabItem(tabName = "citation", h2("Citation"))
 )

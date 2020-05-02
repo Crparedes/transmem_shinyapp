@@ -71,7 +71,7 @@ inputDataModule <- function(input, output, session, Model, ...) {
      if (chcMdl() == 2) {
        TempDatFram2 <- data.frame(Time = TempDatFram2$Feed,
                                   Feed = signal2conc(signal = TempDatFram2$Feed, model = Model$calModel()),
-                                  Strip = signal2conc(signal = TempDatFram2$Strip, model = ModelReactive()))}
+                                  Strip = signal2conc(signal = TempDatFram2$Strip, model = Model$calModel()))}
     mxfd <- max(TempDatFram2$Feed)
     ifelse(input$nrmliz, return(data.frame(Time = TempDatFram2$Time, 
                                            Feed = TempDatFram2$Feed/mxfd,
@@ -82,4 +82,7 @@ inputDataModule <- function(input, output, session, Model, ...) {
     
   )
   output$TrnsfrmdDt <- renderTable(datTabReactive())
+  return(reactive(conc2frac(feed = datTabReactive()$Feed, 
+                            strip = datTabReactive()$Strip, 
+                            time = datTabReactive()$Time, normalize = FALSE)))
 }
