@@ -47,7 +47,8 @@ tabItemsUI <- tabItems(
                    conditionalPanel(condition = "input.nSpecies == 3", 
                                     inputDataModuleUI('TerDset1', Spc = "Tertiary species")))),
   # Transport experiments,
-  tabItem(tabName = "sTrns", h1("Single transport profiles")),
+  tabItem(tabName = "sTrns", h1("Single transport profiles"),
+          profileModuleUI('Transport.1')),
       
   tabItem(tabName = "sepFctr", h2("Separation factors")),
   tabItem(tabName = "rCycl", h2("Reuse cycles")),
