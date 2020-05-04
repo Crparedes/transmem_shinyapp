@@ -1,0 +1,12 @@
+name: transmem_shinyapp
+title: transmem_shinyapp
+username:
+account: crparedes
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2232213
+bundleId: 3095971
+url: https://crparedes.shinyapps.io/transmem_shinyapp/
+when: 1588487870.28058
+asMultiple: FALSE
+asStatic: FALSE

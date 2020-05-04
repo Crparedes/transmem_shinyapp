@@ -6,9 +6,9 @@ library(rhandsontable)
 library(shinysky)
 library(ggplot2)
 
-source('calibrationModule.R')
-source('inputDataModule.R')
-source('profileModule.R')
+source('moduleCalibration.R')
+source('moduleInputData.R')
+source('moduleProfile.R')
 
 
 source('configLayouts.R')
@@ -40,7 +40,7 @@ server <- function(input, output, session) {
   SecSpTrans1 <- callModule(inputDataModule, "SecDset1", Model = SecSpCal)
   TerSpTrans1 <- callModule(inputDataModule, "TerDset1", Model = TerSpCal)
   
-  callModule(profileModule, "profileModule", nSpecies = input$nSpecies)
+  callModule(profileModule, "transProf1", nSpecies = input$nSpecies, MaiTrDt = MainSpTrans1)
   
 }
 
