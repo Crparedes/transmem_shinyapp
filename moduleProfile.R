@@ -1,6 +1,6 @@
 profileModuleUI <- function(id, IntID = 1) {
   ns <- NS(id)
-  box(title = paste0("System ", IntID), width = 4, 
+  box(title = paste0("System ", IntID), width = 4,
       actionButton('plotTrPr', label = 'Plot transport profile', styleclass = 'primary'),
       uiOutput(ns('Spc2Incld')), tags$hr(),
       #hotable(ns("TrnsDt")),
@@ -12,10 +12,10 @@ profileModuleUI <- function(id, IntID = 1) {
              #uiOutput(ns("chckbx")),
              uiOutput(ns("button")), tags$hr(),
              tableOutput(ns("TrnsfrmdDt"))))
-  
+
 }
 
 profileModule <- function(input, output, session, nSpecies, MaiTrDt, SecTrDt = NULL, TerTrDt = NULL) {
-  output$profile <- renderPlot(transPlot(trans = MaiTrDt(), bw = TRUE))
-  
+  output$profile <- renderPlot(transPlot(trans = MaiTrDt(), bw = TRUE, srs = 0.5))
+
 }
