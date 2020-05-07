@@ -17,7 +17,7 @@ inputDataModuleUI <- function(id, IntID = 1, Spc = "Main species") {
 inputDataModule <- function(input, output, session, Model, ...) {
   chcMdl <- reactive((1:4)[c(c('calCnncl', 'calUnES', 'calBiES', 'calSAWoD') == Model$natModel())])
   messag <- c('No transformation (other than normalization if selected) will be applied',
-              rep('Be sure the calibration data has been provided', 2),
+              rep('Be sure the calibration model has been calculated', 2),
               'Be sure sample and spiked measurements were in linear range of the method')
   output$ModelMsg <- renderText({messag[chcMdl()]})
   output$chckbx <- renderUI(if(as.numeric(chcMdl()) != 1) {

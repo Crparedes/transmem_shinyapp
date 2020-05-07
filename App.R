@@ -31,18 +31,19 @@ ui <- dashboardPage(
   )
 )
 
-server <- function(input, output, session)
-  callModule(instructionsModule, "instructions")
-  MainSpCal <- callModule(calibrationModule, "MainSpeciesCal")
-  SecSpCal <- callModule(calibrationModule, "SeconSpeciesCal")
-  TerSpCal <- callModule(calibrationModule, "TertiSpeciesCal")
+server <- function(input, output, session) {
+  formatP <- reactive(input$Format)
+
+  MainSpCal <- callModule(calibrationModule, "MainSpeciesCal", species = 'Main', formatP = formatP())
+  SecSpCal <- callModule(calibrationModule, "SeconSpeciesCal", species = 'Secondary', formatP = formatP())
+  TerSpCal <- callModule(calibrationModule, "TertiSpeciesCal", species = 'Tertiary', formatP = formatP())
 
   MainSpTrans1 <- callModule(inputDataModule, "MainDset1", Model = MainSpCal)
   SecSpTrans1 <- callModule(inputDataModule, "SecDset1", Model = SecSpCal)
   TerSpTrans1 <- callModule(inputDataModule, "TerDset1", Model = TerSpCal)
 
   callModule(profileModule, "transProf1")
-
+}
 
 
 shinyApp(ui, server)
