@@ -34,7 +34,8 @@ calibrationModuleUI <- function(id, inputCM, label.1 = "Main species") {
                        id = "tabset1",
                        tabPanel("Calibration", plotOutput(ns('ExCalCurvPlot')),
                                 downloadButton(ns('DwnECCP'), label = 'Download plot')),
-                       tabPanel("Residuals", "Tab content 2")
+                       tabPanel("Residuals", plotOutput(ns('ExCalResiPlot')),
+                                downloadButton(ns('DwnECRP'), label = 'Download plot'))
                      )),
     conditionalPanel(condition = "input.calModel == 'calUnES'", ns = ns,
                      column(4, infoBox(width = 12, "Calibration function", htmlOutput(ns('niceCurvEq')),
@@ -44,7 +45,7 @@ calibrationModuleUI <- function(id, inputCM, label.1 = "Main species") {
   )
 }
 
-calibrationModule <- function(input, output, session, species = 'Main', formatP) {
+calibrationModule <- function(input, output, session, species = 'Main', formatP, dimensP) {
   # External calibration univariate
   ExCalCurvPrevious <- reactive({data.frame(Conc = rep(0, as.numeric(input$calStdN)),
                                                  Signal = rep(0, as.numeric(input$calStdN)))})
@@ -113,7 +114,7 @@ calibrationModule <- function(input, output, session, species = 'Main', formatP)
                                          summary(cCurveESU())$fstatistic[3]), 5), "</small>")),
          plt = ggplot(data = ExCalCurvMyChanges(), aes(x = Conc, y = Signal)) +
            theme_bw() + geom_point(size = 3, shape = 16)  +
-           labs(y = 'Signal', x = expression(paste('Concentration (mg k', g^{-1}, ')'))) +
+           labs(y = 'Signal', x = expression(paste('Concentration'))) +# (mg k', g^{-1}, ')'))) +
            theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
                  axis.text.x = element_text(color = "black"),
                  axis.text.y = element_text(color = "black")) +
@@ -121,12 +122,43 @@ calibrationModule <- function(input, output, session, species = 'Main', formatP)
            scale_x_continuous(limits = ExCalCurvXlimYlim()[1:2] + diff(ExCalCurvXlimYlim()[1:2]) * c(-2, 2)) +
            coord_cartesian(xlim = ExCalCurvXlimYlim()[1:2], ylim = ExCalCurvXlimYlim()[3:4]) +
            geom_smooth(method = 'lm', formula = y ~ poly(x, orderRSC()),
-                       fullrange = TRUE, color = 'black', size = 0.4, level = 0.99))
+                       fullrange = TRUE, color = 'black', size = 0.4, level = 0.99),
+         rsd = ggplot(data = data.frame(Residuals = cCurveESU()$residuals, Concentration = ExCalCurvMyChanges()$Conc),
+                      aes(x = Concentration, y = Residuals)) + theme_bw() + geom_point() +
+           theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+                 axis.text.x = element_text(color = "black"),
+                 axis.text.y = element_text(color = "black")) +
+           scale_x_continuous(limits = ExCalCurvXlimYlim()[1:2] + diff(ExCalCurvXlimYlim()[1:2]) * c(-2, 2)) +
+           coord_cartesian(xlim = ExCalCurvXlimYlim()[1:2]) +
+           geom_smooth(method = 'lm', color = 'black', fullrange = TRUE))
   })
   output$niceCurvEq <- renderText(reactive_RSC()$Eq)
   output$niceStatSg <- renderText(reactive_RSC()$St)
 
   output$ExCalCurvPlot <- renderPlot(reactive_RSC()$plt)
+  output$DwnECCP <- downloadHandler(filename = function(){paste0(species, '_cal_curve', as.character(formatP))},
+                                    content = function(file){
+                                      if (as.character(formatP) == '.pdf') {
+                                        pdf(file, width = dimensP[1], height = dimensP[2])
+                                      } else {
+                                        png(file, width = dimensP[1], height = dimensP[2])
+                                      }
+                                      print(reactive_RSC()$plt)
+                                      dev.off()
+                                    }
+  )
+  output$ExCalResiPlot <- renderPlot(reactive_RSC()$rsd)
+  output$DwnECRP <- downloadHandler(filename = function(){paste0(species, '_residuals', as.character(formatP))},
+                                    content = function(file){
+                                      if (as.character(formatP) == '.pdf') {
+                                        pdf(file, width = dimensP[1], height = dimensP[2])
+                                      } else {
+                                        png(file, width = dimensP[1], height = dimensP[2])
+                                      }
+                                      print(reactive_RSC()$plt)
+                                      dev.off()
+                                    }
+  )
 
   # External calibration bivariate
   ExCalPlnePrevious <- reactive({data.frame(Conc = rep(0, as.numeric(input$calStdN)),
@@ -139,13 +171,7 @@ calibrationModule <- function(input, output, session, species = 'Main', formatP)
     }
   })
   output$ExCalPlne <- renderHotable({ExCalPlneMyChanges()}, readOnly = F)
-  output$DwnECCP <- downloadHandler(filename = function(){paste0(species, '_cal_curve', as.character(formatP))},
-    content = function(file){
-      if (as.character(formatP) == '.pdf') pdf(file) else png(file)
-      print(reactive_RSC()$plt)
-      dev.off()
-    }
-  )
+
   return(list(natModel = reactive(input$calModel),
               calModel = cCurveESU))
 }
