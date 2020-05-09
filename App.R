@@ -6,6 +6,7 @@ library(rhandsontable)
 library(shinysky)
 library(ggplot2)
 
+source('customFunctions.R')
 source('SmallModules.R')
 source('moduleCalibration.R')
 source('moduleInputData.R')
@@ -33,10 +34,12 @@ ui <- dashboardPage(
 
 server <- function(input, output, session) {
   formatP <- reactive(input$Format)
+  dimensP <- reactive(c(input$plotsW, input$plotsH)/25.4)
+  callModule(instructionOutputs, 'instructions')
 
-  MainSpCal <- callModule(calibrationModule, "MainSpeciesCal", species = 'Main', formatP = formatP())
-  SecSpCal <- callModule(calibrationModule, "SeconSpeciesCal", species = 'Secondary', formatP = formatP())
-  TerSpCal <- callModule(calibrationModule, "TertiSpeciesCal", species = 'Tertiary', formatP = formatP())
+  MainSpCal <- callModule(calibrationModule, "MainSpeciesCal", species = 'Main', formatP = formatP(), dimensP = dimensP())
+  SecSpCal <- callModule(calibrationModule, "SeconSpeciesCal", species = 'Secondary', formatP = formatP(), dimensP = dimensP())
+  TerSpCal <- callModule(calibrationModule, "TertiSpeciesCal", species = 'Tertiary', formatP = formatP(), dimensP = dimensP())
 
   MainSpTrans1 <- callModule(inputDataModule, "MainDset1", Model = MainSpCal)
   SecSpTrans1 <- callModule(inputDataModule, "SecDset1", Model = SecSpCal)

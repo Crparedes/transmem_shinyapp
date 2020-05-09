@@ -1,0 +1,7 @@
+AddParedesTrend <- function() {
+
+}
+
+AddRodriguezTrend <- function() {
+
+}
