@@ -64,12 +64,12 @@ instructionsModuleUI <- function(id) {
 
 }
 
-instructionOutputs <- function(input, output, session, ...) {
-    output$ExProfile <- renderPlot({
-      data(seawaterLiNaK)
-      transPlot(trans = seawaterLiNaK$Lithium.1, trend = transTrend(trans = seawaterLiNaK$Lithium.1, model = 'paredes'),
-                secondary = seawaterLiNaK$Sodium.1,
-                tertiary = seawaterLiNaK$Potassium.1, bw = TRUE, srs = 0.5)
+instructionOutputs <- function(input, output, session) {
+    output$ExProfile <- renderPlot({ExProfile()
+      #data(seawaterLiNaK)
+      #transPlot(trans = seawaterLiNaK$Lithium.1, trend = transTrend(trans = seawaterLiNaK$Lithium.1, model = 'paredes'),
+      #          secondary = seawaterLiNaK$Sodium.1,
+      #          tertiary = seawaterLiNaK$Potassium.1, bw = TRUE, srs = 0.5)
     }, width = 480, height = 320)
 }
 
@@ -101,3 +101,5 @@ bibliographyModuleUI <- function(id) {
     package version 1.4.0.2. ', a("https://CRAN.R-project.org/package=shiny", href = "https://CRAN.R-project.org/package=shiny"))
   )
 }
+
+

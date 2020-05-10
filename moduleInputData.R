@@ -1,8 +1,9 @@
-inputDataModuleUI <- function(id, IntID = 1, Spc = "Main species") {
+inputDataModuleUI <- function(id, IntID = 1, Spc = "Main") {
   ns <- NS(id)
-  box(title = paste0("System ", IntID, " - ", Spc), width = 4, solidHeader = TRUE, status = "primary",
+
+  box(title = paste0("System ", IntID, " - ", Spc, " species"), width = 4, solidHeader = TRUE, status = Hcol(Spc)[1],
       sliderInput(ns("nData"), label = "Number of aliquots (set table values to zero to modify)",
-                  min = 3, max = 30, value = 6),
+                  min = 4, max = 30, value = 6),
       #hotable(ns("TrnsDt")),
       #tableOutput(ns("TrnsfrmdDt")))
       column(12, column(8, uiOutput(ns("chckbx"))),
@@ -14,7 +15,7 @@ inputDataModuleUI <- function(id, IntID = 1, Spc = "Main species") {
              tableOutput(ns("TrnsfrmdDt"))))
 }
 
-inputDataModule <- function(input, output, session, Model, ...) {
+inputDataModule <- function(input, output, session, Model, Spc = 'Main', ...) {
   chcMdl <- reactive((1:4)[c(c('calCnncl', 'calUnES', 'calBiES', 'calSAWoD') == Model$natModel())])
   messag <- c('No transformation (other than normalization if selected) will be applied',
               rep('Be sure the calibration model has been calculated', 2),
@@ -25,7 +26,7 @@ inputDataModule <- function(input, output, session, Model, ...) {
                        choices = list("Feed" = 1, "Strip" = 2))})
 
   output$button <- renderUI(actionButton(session$ns('button'), label = c('Input data', rep('Transform data', 3))[chcMdl()],
-                                         styleclass = 'primary'))
+                                         styleclass = Hcol(Spc)[1]))
   #dilutBool <- reactive({list(input$chckbx[[1]], input$chckbx[[2]])})
 
   TrnsDtPrevious <- reactive({

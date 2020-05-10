@@ -1,7 +1,8 @@
-calibrationModuleUI <- function(id, inputCM, label.1 = "Main species") {
+calibrationModuleUI <- function(id, inputCM, label.1 = "Main") {
   ns <- NS(id)
+
   fluidRow(
-    box(title = label.1, status = "primary", width = 3, br(), solidHeader = TRUE,
+    box(title = paste0(label.1, ' species'), status = Hcol(label.1)[1], width = 3, br(), solidHeader = TRUE,
         selectInput(ns("calModel"), label = 'Model',
                     choices = list("Canonical (use when the transport data is already in the desired units)" = "calCnncl",
                                    "Univariate external standard" = "calUnES",
@@ -18,7 +19,7 @@ calibrationModuleUI <- function(id, inputCM, label.1 = "Main species") {
                                   column(6, selectInput(ns("order"), label = 'Model order',
                                                         choices = list("Linear" = 1, "Quadratic" = 2), selected = 1),
                                          actionButton(ns("calculateRSC"), label = "Calculate model",
-                                                      styleclass = 'primary')))
+                                                      styleclass = Hcol(label.1)[1])))
                          ),
 
         conditionalPanel(condition = "input.calModel == 'calBiES'", ns = ns,
@@ -27,11 +28,10 @@ calibrationModuleUI <- function(id, inputCM, label.1 = "Main species") {
         conditionalPanel(condition = "input.calModel == 'calSAWiD' || input.calModel == 'calSAWoD'", ns = ns,
                          h4('Enter data directly on '))
     ),
+    tags$style(Hcol(label.1)[3]),
     conditionalPanel(condition = "input.calModel == 'calUnES'", ns = ns,
-                     tabBox(
+                     tabBox(#status = Hcol(label.1)[1],
                        title = "Plots", width = 5,
-                       # The id lets us use input$tabset1 on the server to find the current tab
-                       id = "tabset1",
                        tabPanel("Calibration", plotOutput(ns('ExCalCurvPlot')),
                                 downloadButton(ns('DwnECCP'), label = 'Download plot')),
                        tabPanel("Residuals", plotOutput(ns('ExCalResiPlot')),
@@ -39,11 +39,12 @@ calibrationModuleUI <- function(id, inputCM, label.1 = "Main species") {
                      )),
     conditionalPanel(condition = "input.calModel == 'calUnES'", ns = ns,
                      column(4, infoBox(width = 12, "Calibration function", htmlOutput(ns('niceCurvEq')),
-                                                                color = 'light-blue', icon = icon("vials")),
+                                                                color = Hcol(label.1)[2], icon = icon("vials")),
                             infoBox(width = 12, "Statistical significance", htmlOutput(ns('niceStatSg')),
-                                                               color = 'light-blue', icon = icon("chart-line"))))
+                                                               color = Hcol(label.1)[2], icon = icon("chart-line"))))
   )
 }
+
 
 calibrationModule <- function(input, output, session, species = 'Main', formatP, dimensP) {
   # External calibration univariate
