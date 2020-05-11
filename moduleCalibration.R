@@ -18,6 +18,8 @@ calibrationModuleUI <- function(id, inputCM, label.1 = "Main") {
                          fluidRow(column(5, hotable(ns("ExCalCurv"))),
                                   column(6, selectInput(ns("order"), label = 'Model order',
                                                         choices = list("Linear" = 1, "Quadratic" = 2), selected = 1),
+                                         radioButtons(ns("signif"), label = 'Confidence intervals significance',
+                                                      choices = list('0.99' = 0.99, '0.95' = 0.95)),
                                          actionButton(ns("calculateRSC"), label = "Calculate model",
                                                       styleclass = Hcol(label.1)[1])))
                          ),
@@ -69,6 +71,7 @@ calibrationModule <- function(input, output, session, species = 'Main', formatP,
 
   cCurveESU <- reactive({input$calculateRSC
     calibCurve(curve = ExCalCurvMyChanges(), order = as.numeric(input$order), plot = FALSE)})
+  Signif <- reactive(as.numeric(input$signif))
   reactive_RSC <- eventReactive(input$calculateRSC, {
     list(Eq = ifelse(as.numeric(input$order) == 1,
                       paste0("Signal = (",
@@ -123,7 +126,7 @@ calibrationModule <- function(input, output, session, species = 'Main', formatP,
            scale_x_continuous(limits = ExCalCurvXlimYlim()[1:2] + diff(ExCalCurvXlimYlim()[1:2]) * c(-2, 2)) +
            coord_cartesian(xlim = ExCalCurvXlimYlim()[1:2], ylim = ExCalCurvXlimYlim()[3:4]) +
            geom_smooth(method = 'lm', formula = y ~ poly(x, orderRSC()),
-                       fullrange = TRUE, color = 'black', size = 0.4, level = 0.99),
+                       fullrange = TRUE, color = 'black', size = 0.4, level = Signif()),
          rsd = ggplot(data = data.frame(Residuals = cCurveESU()$residuals, Concentration = ExCalCurvMyChanges()$Conc),
                       aes(x = Concentration, y = Residuals)) + theme_bw() + geom_point() +
            theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
