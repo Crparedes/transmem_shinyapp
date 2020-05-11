@@ -41,6 +41,9 @@ addTransTrend <- function(p, trans, model, gamma) {
 
 
 
+invertTrDat <- function(df) return(data.frame(Time = unique(df$Time),
+                                              Feed = df$Fraction[which(df$Phase == 'Feed')],
+                                              Strip = df$Fraction[which(df$Phase == 'Strip')]))
 
 
 

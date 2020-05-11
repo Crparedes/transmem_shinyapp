@@ -136,7 +136,7 @@ tabItemsUI <- tabItems(
   tabItem(tabName = "rCycl", h2("Reuse cycles")),
   tabItem(tabName = "spCnc", h2("Species concentration")),
 
-  #tabItem(tabName = 'exDat', examplesModuleUI('examples')),
+  tabItem(tabName = 'exDat', examplesModuleUI('examples')),
   tabItem(tabName = "citation", h1("Citation"), citationModuleUI()),
   tabItem(tabName = "bibliography", h1("Bibliography"), bibliographyModuleUI())
 )

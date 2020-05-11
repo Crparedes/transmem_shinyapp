@@ -8,8 +8,8 @@ inputDataModuleUI <- function(id, IntID = 1, Spc = "Main") {
       #tableOutput(ns("TrnsfrmdDt")))
       column(12, column(8, uiOutput(ns("chckbx"))),
       column(4, h5(tags$b('Settings')), checkboxInput(ns("nrmliz"), label = "Normalize data", value = TRUE))),
-      column(5, hotable(ns("TrnsDt"))),
-      column(7, textOutput(ns('ModelMsg')),
+      column(8, hotable(ns("TrnsDt"))),
+      column(4, textOutput(ns('ModelMsg')),
              #uiOutput(ns("chckbx")),
              uiOutput(ns("button")), tags$hr(),
              tableOutput(ns("TrnsfrmdDt"))))
@@ -82,7 +82,7 @@ inputDataModule <- function(input, output, session, Model, Spc = 'Main', ...) {
   #output$model(renderText(Model$catModel))
 
   )
-  output$TrnsfrmdDt <- renderTable(datTabReactive())
+  output$TrnsfrmdDt <- renderTable(datTabReactive(), digits = 3)
   return(reactive(conc2frac(feed = datTabReactive()$Feed,
                             strip = datTabReactive()$Strip,
                             time = datTabReactive()$Time, normalize = FALSE)))
