@@ -37,6 +37,7 @@ server <- function(input, output, session) {
   #session$onSessionEnded(stopApp)
   formatP <- reactive(input$Format)
   dimensP <- reactive(c(input$plotsW, input$plotsH)/25.4)
+  nSpecies <- reactive(as.numeric(input$nSpecies))
 
   callModule(instructionOutputs, 'instructions')
 
@@ -81,8 +82,12 @@ server <- function(input, output, session) {
   SecSpTrans12  <- callModule(inputDataModule, "SecDset12",  Spc = 'Secondary', Model = SecSpCal)
   TerSpTrans12  <- callModule(inputDataModule, "TerDset12",  Spc = 'Tertiary', Model = TerSpCal)
 
-  plotTrPr <- reactive(input$plotTrPr)
-  callModule(profileModule, "transProf1", plotTrPr = plotTrPr)
+  plotTrPr <- reactive(input$plotTrPr)  # ReactiveButton 'Draw'
+  callModule(profileModule, "transProf1", plotTrPr = plotTrPr, nSpecies = nSpecies(), 
+             MaiTrDt = MainSpTrans1, SecTrDt = SecSpTrans1, TerTrDt = TerSpTrans1)
+  
+  
+  
   callModule(examplesOutputs, 'examples')
 }
 

@@ -7,6 +7,12 @@ Hcol <- function(id) {
 
 TransProfile <- transPlot <- function(trans, secondary = NULL, tertiary = NULL, trendM = NULL, trendS = NULL, trendT = NULL,
                                       xlab = 'Time (h)', ylab = expression(Phi), gamma = 1) {
+  # example;
+  if (trans == 'example') {
+    data(seawaterLiNaK)
+    return(TransProfile(trans = seawaterLiNaK$Lithium.1, trendM = 'paredes', trendS = 'paredes', trendT = 'paredes', gamma = 1.2,
+                        secondary = seawaterLiNaK$Sodium.1, tertiary = seawaterLiNaK$Potassium.1))
+  }
   p <- ggplot(data = trans, aes(x = Time, y = Fraction)) + theme_bw() + labs(y = ylab, x = xlab) +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
           axis.text.x = element_text(color = "black"), axis.text.y = element_text(color = "black"), legend.position = 'none')
