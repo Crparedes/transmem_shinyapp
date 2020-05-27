@@ -38,7 +38,7 @@ server <- function(input, output, session) {
   formatP  <- reactive(input$Format)
   dimensP  <- reactive(c(input$plotsW, input$plotsH)/25.4)
   nSpecies <- reactive(as.numeric(input$nSpecies))
-  trendM   <- reactive(as.character(input$trendM))
+  trendM   <- reactive(as.numeric(input$trendM))
   
 
   callModule(instructionOutputs, 'instructions')
@@ -46,10 +46,11 @@ server <- function(input, output, session) {
   MainSpCal <- callModule(calibrationModule, "MainSpeciesCal", species = 'Main', formatP = formatP(), dimensP = dimensP())
   SecSpCal <- callModule(calibrationModule, "SeconSpeciesCal", species = 'Secondary', formatP = formatP(), dimensP = dimensP())
   TerSpCal <- callModule(calibrationModule, "TertiSpeciesCal", species = 'Tertiary', formatP = formatP(), dimensP = dimensP())
-
-  MainSpTrans1  <- callModule(inputDataModule, "MainDset1",  Model = MainSpCal)
-  SecSpTrans1   <- callModule(inputDataModule, "SecDset1",   Spc = 'Secondary', Model = SecSpCal)
-  TerSpTrans1   <- callModule(inputDataModule, "TerDset1",   Spc = 'Tertiary', Model = TerSpCal)
+  
+  Trans1 <- list()
+  Trans1[[1]] <- MainSpTrans1  <- callModule(inputDataModule, "MainDset1",  Model = MainSpCal)
+  Trans1[[2]] <- SecSpTrans1   <- callModule(inputDataModule, "SecDset1",   Spc = 'Secondary', Model = SecSpCal)
+  Trans1[[2]] <- TerSpTrans1   <- callModule(inputDataModule, "TerDset1",   Spc = 'Tertiary', Model = TerSpCal)
   MainSpTrans2  <- callModule(inputDataModule, "MainDset2",  Model = MainSpCal)
   SecSpTrans2   <- callModule(inputDataModule, "SecDset2",   Spc = 'Secondary', Model = SecSpCal)
   TerSpTrans2   <- callModule(inputDataModule, "TerDset2",   Spc = 'Tertiary', Model = TerSpCal)
@@ -85,9 +86,10 @@ server <- function(input, output, session) {
   TerSpTrans12  <- callModule(inputDataModule, "TerDset12",  Spc = 'Tertiary', Model = TerSpCal)
 
   plotTrPr <- reactive(input$plotTrPr)  # ReactiveButton 'Draw'
-  callModule(profileModule, "transProf1", plotTrPr = plotTrPr, nSpecies = nSpecies(), 
-             MaiTrDt = MainSpTrans1, SecTrDt = SecSpTrans1, TerTrDt = TerSpTrans1)#,
-             #trendM = trendM())
+  callModule(profileModule, "transProf1", plotTrPr = plotTrPr, nSpecies = nSpecies(),
+             MaiTrDt = MainSpTrans1, SecTrDt = SecSpTrans1, TerTrDt = TerSpTrans1,
+             trendM = trendM())
+  
   
   
   
