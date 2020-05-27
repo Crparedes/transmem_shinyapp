@@ -5,9 +5,8 @@ Hcol <- function(id) {
   if (id == 'Tertiary') return(c('danger', 'red', '.nav-tabs-custom-terti .nav-tabs li.active {border-top-color: #d73925;}"'))
 }
 
-TransProfile <- transPlot <- function(Ex = FALSE, 
-                                      trans = NULL, secondary = NULL, tertiary = NULL, trendM = NULL, trendS = NULL, trendT = NULL,
-                                      xlab = 'Time (h)', ylab = expression(Phi), gamma = 1) {
+TransProfile <- transPlot <- function(trans = NULL, secondary = NULL, tertiary = NULL, trendM = NULL, trendS = NULL, trendT = NULL,
+                                      xlab = 'Time (h)', ylab = expression(Phi), gamma = 1, Ex = FALSE) {
   # example;
   if (Ex) {
     data(seawaterLiNaK)

@@ -35,9 +35,11 @@ ui <- dashboardPage(
 
 server <- function(input, output, session) {
   #session$onSessionEnded(stopApp)
-  formatP <- reactive(input$Format)
-  dimensP <- reactive(c(input$plotsW, input$plotsH)/25.4)
+  formatP  <- reactive(input$Format)
+  dimensP  <- reactive(c(input$plotsW, input$plotsH)/25.4)
   nSpecies <- reactive(as.numeric(input$nSpecies))
+  trendM   <- reactive(as.character(input$trendM))
+  
 
   callModule(instructionOutputs, 'instructions')
 
@@ -84,7 +86,8 @@ server <- function(input, output, session) {
 
   plotTrPr <- reactive(input$plotTrPr)  # ReactiveButton 'Draw'
   callModule(profileModule, "transProf1", plotTrPr = plotTrPr, nSpecies = nSpecies(), 
-             MaiTrDt = MainSpTrans1, SecTrDt = SecSpTrans1, TerTrDt = TerSpTrans1)
+             MaiTrDt = MainSpTrans1, SecTrDt = SecSpTrans1, TerTrDt = TerSpTrans1)#,
+             #trendM = trendM())
   
   
   
