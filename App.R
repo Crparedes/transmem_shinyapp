@@ -38,7 +38,7 @@ server <- function(input, output, session) {
   formatP  <- reactive(input$Format)
   dimensP  <- reactive(c(input$plotsW, input$plotsH)/25.4)
   nSpecies <- reactive(as.numeric(input$nSpecies))
-  trendM   <- reactive(as.numeric(input$trendM))
+  trends   <- reactive(as.numeric(c(input$trendM, input$trendS, input$trendT)))
   
 
   callModule(instructionOutputs, 'instructions')
@@ -47,10 +47,9 @@ server <- function(input, output, session) {
   SecSpCal <- callModule(calibrationModule, "SeconSpeciesCal", species = 'Secondary', formatP = formatP(), dimensP = dimensP())
   TerSpCal <- callModule(calibrationModule, "TertiSpeciesCal", species = 'Tertiary', formatP = formatP(), dimensP = dimensP())
   
-  Trans1 <- list()
-  Trans1[[1]] <- MainSpTrans1  <- callModule(inputDataModule, "MainDset1",  Model = MainSpCal)
-  Trans1[[2]] <- SecSpTrans1   <- callModule(inputDataModule, "SecDset1",   Spc = 'Secondary', Model = SecSpCal)
-  Trans1[[2]] <- TerSpTrans1   <- callModule(inputDataModule, "TerDset1",   Spc = 'Tertiary', Model = TerSpCal)
+  MainSpTrans1  <- callModule(inputDataModule, "MainDset1",  Model = MainSpCal)
+  SecSpTrans1   <- callModule(inputDataModule, "SecDset1",   Spc = 'Secondary', Model = SecSpCal)
+  TerSpTrans1   <- callModule(inputDataModule, "TerDset1",   Spc = 'Tertiary', Model = TerSpCal)
   MainSpTrans2  <- callModule(inputDataModule, "MainDset2",  Model = MainSpCal)
   SecSpTrans2   <- callModule(inputDataModule, "SecDset2",   Spc = 'Secondary', Model = SecSpCal)
   TerSpTrans2   <- callModule(inputDataModule, "TerDset2",   Spc = 'Tertiary', Model = TerSpCal)
@@ -87,8 +86,29 @@ server <- function(input, output, session) {
 
   plotTrPr <- reactive(input$plotTrPr)  # ReactiveButton 'Draw'
   callModule(profileModule, "transProf1", plotTrPr = plotTrPr, nSpecies = nSpecies(),
-             MaiTrDt = MainSpTrans1, SecTrDt = SecSpTrans1, TerTrDt = TerSpTrans1,
-             trendM = trendM())
+             MaiTrDt = MainSpTrans1, SecTrDt = SecSpTrans1, TerTrDt = TerSpTrans1, trends = trends())
+  callModule(profileModule, "transProf2", plotTrPr = plotTrPr, nSpecies = nSpecies(),
+             MaiTrDt = MainSpTrans2, SecTrDt = SecSpTrans2, TerTrDt = TerSpTrans2, trends = trends())
+  callModule(profileModule, "transProf3", plotTrPr = plotTrPr, nSpecies = nSpecies(),
+             MaiTrDt = MainSpTrans3, SecTrDt = SecSpTrans3, TerTrDt = TerSpTrans3, trends = trends())
+  callModule(profileModule, "transProf4", plotTrPr = plotTrPr, nSpecies = nSpecies(),
+             MaiTrDt = MainSpTrans4, SecTrDt = SecSpTrans4, TerTrDt = TerSpTrans4, trends = trends())
+  callModule(profileModule, "transProf5", plotTrPr = plotTrPr, nSpecies = nSpecies(),
+             MaiTrDt = MainSpTrans5, SecTrDt = SecSpTrans5, TerTrDt = TerSpTrans5, trends = trends())
+  callModule(profileModule, "transProf6", plotTrPr = plotTrPr, nSpecies = nSpecies(),
+             MaiTrDt = MainSpTrans6, SecTrDt = SecSpTrans6, TerTrDt = TerSpTrans6, trends = trends())
+  callModule(profileModule, "transProf7", plotTrPr = plotTrPr, nSpecies = nSpecies(),
+             MaiTrDt = MainSpTrans7, SecTrDt = SecSpTrans7, TerTrDt = TerSpTrans7, trends = trends())
+  callModule(profileModule, "transProf8", plotTrPr = plotTrPr, nSpecies = nSpecies(),
+             MaiTrDt = MainSpTrans8, SecTrDt = SecSpTrans8, TerTrDt = TerSpTrans8, trends = trends())
+  callModule(profileModule, "transProf9", plotTrPr = plotTrPr, nSpecies = nSpecies(),
+             MaiTrDt = MainSpTrans9, SecTrDt = SecSpTrans9, TerTrDt = TerSpTrans9, trends = trends())
+  callModule(profileModule, "transProf10", plotTrPr = plotTrPr, nSpecies = nSpecies(),
+             MaiTrDt = MainSpTrans10, SecTrDt = SecSpTrans10, TerTrDt = TerSpTrans10, trends = trends())
+  callModule(profileModule, "transProf11", plotTrPr = plotTrPr, nSpecies = nSpecies(),
+             MaiTrDt = MainSpTrans11, SecTrDt = SecSpTrans11, TerTrDt = TerSpTrans11, trends = trends())
+  callModule(profileModule, "transProf12", plotTrPr = plotTrPr, nSpecies = nSpecies(),
+             MaiTrDt = MainSpTrans12, SecTrDt = SecSpTrans12, TerTrDt = TerSpTrans12, trends = trends())
   
   
   

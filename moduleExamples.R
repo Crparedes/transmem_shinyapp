@@ -73,9 +73,9 @@ examplesOutputs <- function(input, output, session) {
   output$BLiCC_L_3 <- renderTable(planelithium[21:30, c(1, 3, 2)], digits = 3)
   output$BLiCC_L_4 <- renderTable(planelithium[31:40, c(1, 3, 2)], digits = 3)
 
-  output$tabSW_Li  <- renderTable(invertTrDat(seawaterLiNaK$Lithium.1), digits = 3)
-  output$tabSW_Na  <- renderTable(invertTrDat(seawaterLiNaK$Sodium.2), digits = 3)
-  output$tabSW_K   <- renderTable(invertTrDat(seawaterLiNaK$Potassium.2), digits = 3)
+  output$tabSW_Li  <- renderTable(invertTrDat(seawaterLiNaK$Lithium.1), digits = 4)
+  output$tabSW_Na  <- renderTable(invertTrDat(seawaterLiNaK$Sodium.1), digits = 4)
+  output$tabSW_K   <- renderTable(invertTrDat(seawaterLiNaK$Potassium.1), digits = 4)
 
   #for (i in 1:10) assign(paste0('output$tabCycle', i), eval(parse(text = paste0('renderTable(reusecycles[[', i, ']])'))))
   output$tabCycle1  <- renderTable(invertTrDat(reusecycles[[1]]), digits = 3)
