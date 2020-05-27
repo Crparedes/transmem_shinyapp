@@ -5,10 +5,11 @@ Hcol <- function(id) {
   if (id == 'Tertiary') return(c('danger', 'red', '.nav-tabs-custom-terti .nav-tabs li.active {border-top-color: #d73925;}"'))
 }
 
-TransProfile <- transPlot <- function(trans, secondary = NULL, tertiary = NULL, trendM = NULL, trendS = NULL, trendT = NULL,
+TransProfile <- transPlot <- function(Ex = FALSE, 
+                                      trans = NULL, secondary = NULL, tertiary = NULL, trendM = NULL, trendS = NULL, trendT = NULL,
                                       xlab = 'Time (h)', ylab = expression(Phi), gamma = 1) {
   # example;
-  if (trans == 'example') {
+  if (Ex) {
     data(seawaterLiNaK)
     return(TransProfile(trans = seawaterLiNaK$Lithium.1, trendM = 'paredes', trendS = 'paredes', trendT = 'paredes', gamma = 1.2,
                         secondary = seawaterLiNaK$Sodium.1, tertiary = seawaterLiNaK$Potassium.1))
@@ -53,12 +54,6 @@ invertTrDat <- function(df) return(data.frame(Time = unique(df$Time),
 
 
 
-
-ExProfile <- function() {
-  data(seawaterLiNaK)
-  TransProfile(trans = seawaterLiNaK$Lithium.1, trendM = 'paredes', trendS = 'paredes', trendT = 'paredes', gamma = 1.2,
-               secondary = seawaterLiNaK$Sodium.1, tertiary = seawaterLiNaK$Potassium.1)
-}
 
 AddParedesTrend <- function() {
 

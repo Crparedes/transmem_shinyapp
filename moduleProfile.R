@@ -10,8 +10,8 @@ profileModuleUI <- function(id, IntID = 1) {
 }
 
 profileModule <- function(input, output, session, nSpecies, MaiTrDt, SecTrDt = NULL, TerTrDt = NULL, plotTrPr) {
-  profile <- eventReactive(plotTrPr(), {ExProfile()})
-  output$profile1 <- renderPlot(profile())
-  output$profile <- renderPlot(TransProfile(trans = 'example'))
+  profileEx <- eventReactive(plotTrPr(), {TransProfile(Ex = TRUE)})
+  output$profile1 <- renderPlot(profileEx())
+  output$profile <- renderPlot(TransProfile(Ex = TRUE))
 
 }
