@@ -141,8 +141,16 @@ tabItemsUI <- tabItems(
           conditionalPanel(condition = 'input.nDataSts >= 9', {profileModuleUI('transProf9', IntID = 9)}),
           conditionalPanel(condition = 'input.nDataSts >= 10', {profileModuleUI('transProf10', IntID = 10)}),
           conditionalPanel(condition = 'input.nDataSts >= 11', {profileModuleUI('transProf11', IntID = 11)}),
-          conditionalPanel(condition = 'input.nDataSts >= 12', {profileModuleUI('transProf12', IntID = 12)})),
-
+          conditionalPanel(condition = 'input.nDataSts >= 12', {profileModuleUI('transProf12', IntID = 12)})
+          ),
+  #Permeabiliti coefficients
+  tabItem(tabName = "pCoef", h1("Permeability coefficients"),
+          fluidRow(column(2, numericInput("P.area", label = "Membrane area (cm^2)", value = 7.8, min = 0)),
+                   column(2, numericInput("P.vol0", label = "Initial volume (cm^3)", value = 85, min = 0)),
+                   column(2, h5('Be sure all data has been entered and transformated (if required).'),
+                          actionButton("calcPrCf", label = "Calculate permeability coefficients", styleclass = 'primary'))),
+          tags$hr(),
+          permCoefModuleUI('permCoef1')),
   tabItem(tabName = "sepFctr", h2("Separation factors")),
   tabItem(tabName = "rCycl", h2("Reuse cycles")),
   tabItem(tabName = "spCnc", h2("Species concentration")),

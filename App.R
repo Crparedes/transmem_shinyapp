@@ -12,6 +12,7 @@ source('moduleExamples.R')
 source('moduleCalibration.R')
 source('moduleInputData.R')
 source('moduleProfile.R')
+source('modulePermCoef.R')
 
 
 source('configLayouts.R')
@@ -35,14 +36,10 @@ ui <- dashboardPage(
 
 server <- function(input, output, session) {
   #session$onSessionEnded(stopApp)
-  formatP  <- reactive(input$Format)
-  dimensP  <- reactive(c(input$plotsW, input$plotsH)/25.4)
-  nSpecies <- reactive(as.numeric(input$nSpecies))
-  trends   <- reactive(as.numeric(c(input$trendM, input$trendS, input$trendT)))
-  
-
   callModule(instructionOutputs, 'instructions')
 
+  formatP  <- reactive(input$Format)
+  dimensP  <- reactive(c(input$plotsW, input$plotsH)/25.4)
   MainSpCal <- callModule(calibrationModule, "MainSpeciesCal", species = 'Main', formatP = formatP(), dimensP = dimensP())
   SecSpCal <- callModule(calibrationModule, "SeconSpeciesCal", species = 'Secondary', formatP = formatP(), dimensP = dimensP())
   TerSpCal <- callModule(calibrationModule, "TertiSpeciesCal", species = 'Tertiary', formatP = formatP(), dimensP = dimensP())
@@ -85,6 +82,8 @@ server <- function(input, output, session) {
   TerSpTrans12  <- callModule(inputDataModule, "TerDset12",  Spc = 'Tertiary', Model = TerSpCal)
 
   plotTrPr <- reactive(input$plotTrPr)  # ReactiveButton 'Draw'
+  nSpecies <- reactive(as.numeric(input$nSpecies))
+  trends   <- reactive(as.numeric(c(input$trendM, input$trendS, input$trendT)))
   callModule(profileModule, "transProf1", plotTrPr = plotTrPr, nSpecies = nSpecies(),
              MaiTrDt = MainSpTrans1, SecTrDt = SecSpTrans1, TerTrDt = TerSpTrans1, trends = trends())
   callModule(profileModule, "transProf2", plotTrPr = plotTrPr, nSpecies = nSpecies(),
@@ -110,7 +109,10 @@ server <- function(input, output, session) {
   callModule(profileModule, "transProf12", plotTrPr = plotTrPr, nSpecies = nSpecies(),
              MaiTrDt = MainSpTrans12, SecTrDt = SecSpTrans12, TerTrDt = TerSpTrans12, trends = trends())
   
-  
+  calPermCoef <- reactive(input$calcPrCf)  # ReactiveButton 'calc'
+  P.data <- reactive(as.numeric(c(input$P.area, input$P.vol0)))
+  callModule(permCoefModule, "permCoef1", P.data = P.data(), calPermCoef = calPermCoef, nSpecies = nSpecies(),
+             MaiTrDt = MainSpTrans1, SecTrDt = SecSpTrans1, TerTrDt = TerSpTrans1)
   
   
   callModule(examplesOutputs, 'examples')
