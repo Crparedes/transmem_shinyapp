@@ -55,13 +55,13 @@ permcoefCustom <- function(trans, vol, area, units = c('cm^3', 'cm^2', 'h')) {
   #plot(y ~ t)
   x <- (area / vol) * t
   model <- lm(y ~ 0 + x)
-  abline(lm(y ~ 0 + t), col = 4)
+  #abline(lm(y ~ 0 + t), col = 4)
   Xm <- - 1 * summary(model)$coefficients[1]
   sd <- summary(model)$coefficients[2]
   sd <- signif(sd, 2)
   Xm <- signif(Xm, 2 + ceiling(log10(Xm/sd)))
   #cat("Permeability coefficient: ", Xm, "+/-", sd, ' m/s \n')
-  return(list(Xm, sd, y, t))
+  return(list(Xm, sd, y, t/3600))
 }
 
 invertTrDat <- function(df) return(data.frame(Time = unique(df$Time),

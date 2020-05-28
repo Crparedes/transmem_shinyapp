@@ -65,12 +65,7 @@ instructionsModuleUI <- function(id) {
 }
 
 instructionOutputs <- function(input, output, session) {
-    output$ExProfile <- renderPlot({ExProfile()
-      #data(seawaterLiNaK)
-      #transPlot(trans = seawaterLiNaK$Lithium.1, trend = transTrend(trans = seawaterLiNaK$Lithium.1, model = 'paredes'),
-      #          secondary = seawaterLiNaK$Sodium.1,
-      #          tertiary = seawaterLiNaK$Potassium.1, bw = TRUE, srs = 0.5)
-    }, width = 480, height = 320)
+    output$ExProfile <- renderPlot({TransProfile(Ex = TRUE)}, width = 480, height = 320)
 }
 
 

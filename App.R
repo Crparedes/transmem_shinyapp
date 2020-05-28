@@ -111,7 +111,7 @@ server <- function(input, output, session) {
   
   calPermCoef <- reactive(input$calcPrCf)  # ReactiveButton 'calc'
   P.data <- reactive(as.numeric(c(input$P.area, input$P.vol0)))
-  callModule(permCoefModule, "permCoef1", P.data = P.data(), calPermCoef = calPermCoef, nSpecies = nSpecies(),
+  callModule(permCoefModule, "permCoef1", P.data = P.data(), calPermCoef = calPermCoef,
              MaiTrDt = MainSpTrans1, SecTrDt = SecSpTrans1, TerTrDt = TerSpTrans1)
   
   
