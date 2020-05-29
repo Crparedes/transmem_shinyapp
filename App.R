@@ -13,6 +13,7 @@ source('moduleCalibration.R')
 source('moduleInputData.R')
 source('moduleProfile.R')
 source('modulePermCoef.R')
+source('moduleSepFactor.R')
 
 
 source('configLayouts.R')
@@ -109,8 +110,13 @@ server <- function(input, output, session) {
   callModule(profileModule, "transProf12", plotTrPr = plotTrPr, nSpecies = nSpecies(),
              MaiTrDt = MainSpTrans12, SecTrDt = SecSpTrans12, TerTrDt = TerSpTrans12, trends = trends())
   
-  calPermCoef <- reactive(input$calcPrCf)  # ReactiveButton 'calc'
+  calcPrCf <- reactive(input$calcPrCf)  # ReactiveButton 'calc'
   P.data <- reactive(as.numeric(c(input$P.area, input$P.vol0)))
+  callModule(permCoefModule, "permCoef1", P.data = P.data(), calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans1, SecTrDt = SecSpTrans1, TerTrDt = TerSpTrans1)
+  
+  calcSepFc <- reactive(input$calcSepFc)  # ReactiveButton 'calc'
+  SF.model <- reactive(as.numeric(input$SF.model))
   callModule(permCoefModule, "permCoef1", P.data = P.data(), calPermCoef = calPermCoef,
              MaiTrDt = MainSpTrans1, SecTrDt = SecSpTrans1, TerTrDt = TerSpTrans1)
   
