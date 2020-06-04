@@ -60,8 +60,15 @@ permcoefCustom <- function(trans, vol, area, units = c('cm^3', 'cm^2', 'h')) {
   sd <- summary(model)$coefficients[2]
   sd <- signif(sd, 2)
   Xm <- signif(Xm, 2 + ceiling(log10(Xm/sd)))
+  p.val <- pf(summary(model)$fstatistic[1], summary(model)$fstatistic[2], 
+              summary(model)$fstatistic[3], lower.tail = FALSE)
+  msg <- ifelse(p.val >= 0.5, 
+                paste0('Bad linear behaviour of data. No statistical significance. ',
+                       'p-value on F statistic of the regression: ', signif(p.val, 4)), 
+                paste0('Acceptable linear behaviour of data. ',
+                       'p-value on F statistic of the regression: ', signif(p.val, 4)))
   #cat("Permeability coefficient: ", Xm, "+/-", sd, ' m/s \n')
-  return(list(Xm, sd, y, t/3600))
+  return(list(Xm, sd, y, t/3600, msg))
 }
 
 invertTrDat <- function(df) return(data.frame(Time = unique(df$Time),
@@ -78,3 +85,4 @@ AddParedesTrend <- function() {
 AddRodriguezTrend <- function() {
 
 }
+

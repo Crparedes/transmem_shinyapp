@@ -1,9 +1,9 @@
-inputDataModuleUI <- function(id, IntID = 1, Spc = "Main") {
+inputDataModuleUI <- function(id, IntID = 1, Spc = "Main", value0) {
   ns <- NS(id)
 
   box(title = paste0("System ", IntID, " - ", Spc, " species"), width = 4, solidHeader = TRUE, status = Hcol(Spc)[1],
       sliderInput(ns("nData"), label = "Number of aliquots (set table values to zero to modify)",
-                  min = 4, max = 30, value = 6),
+                  min = 4, max = 30, value = value0),
       #hotable(ns("TrnsDt")),
       #tableOutput(ns("TrnsfrmdDt")))
       column(12, column(8, uiOutput(ns("chckbx"))),

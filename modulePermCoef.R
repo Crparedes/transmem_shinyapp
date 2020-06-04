@@ -24,9 +24,12 @@ permCoefModule <- function(input, output, session, P.data, MaiTrDt, SecTrDt = NU
   PermPlotLimsS <- eventReactive(calPermCoef(), {c(min(CoefSc()[[4]]), max(CoefSc()[[4]]), min(CoefSc()[[3]]), max(CoefSc()[[3]]))})
   PermPlotLimsT <- eventReactive(calPermCoef(), {c(min(CoefTr()[[4]]), max(CoefTr()[[4]]), min(CoefTr()[[3]]), max(CoefTr()[[3]]))})
   
-  prmCoefMn <- eventReactive(calPermCoef(), {paste0('P: ', CoefMn()[[1]], " \u00b1 ", CoefMn()[[2]], " m/s")})
-  prmCoefSc <- eventReactive(calPermCoef(), {paste0('P: ', CoefSc()[[1]], " \u00b1 ", CoefSc()[[2]], " m/s")})
-  prmCoefTr <- eventReactive(calPermCoef(), {paste0('P: ', CoefTr()[[1]], " \u00b1 ", CoefTr()[[2]], " m/s")})
+  prmCoefMn <- eventReactive(calPermCoef(), {paste0('P: ', CoefMn()[[1]], " \u00b1 ", CoefMn()[[2]], " m/s", '<br /><small>', 
+                                                    CoefMn()[[5]])})
+  prmCoefSc <- eventReactive(calPermCoef(), {paste0('P: ', CoefSc()[[1]], " \u00b1 ", CoefSc()[[2]], " m/s", '<br /><small>', 
+                                                    CoefSc()[[5]])})
+  prmCoefTr <- eventReactive(calPermCoef(), {paste0('P: ', CoefTr()[[1]], " \u00b1 ", CoefTr()[[2]], " m/s", '<br /><small>', 
+                                                    CoefTr()[[5]])})
   
   output$prmCoefMn <- renderText(prmCoefMn())
   output$prmCoefSc <- renderText(prmCoefSc())
