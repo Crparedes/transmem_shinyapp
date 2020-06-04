@@ -38,13 +38,15 @@ ui <- dashboardPage(
 server <- function(input, output, session) {
   #session$onSessionEnded(stopApp)
   callModule(instructionOutputs, 'instructions')
-
+  
+  ### Calibration
   formatP  <- reactive(input$Format)
   dimensP  <- reactive(c(input$plotsW, input$plotsH)/25.4)
   MainSpCal <- callModule(calibrationModule, "MainSpeciesCal", species = 'Main', formatP = formatP(), dimensP = dimensP())
   SecSpCal <- callModule(calibrationModule, "SeconSpeciesCal", species = 'Secondary', formatP = formatP(), dimensP = dimensP())
   TerSpCal <- callModule(calibrationModule, "TertiSpeciesCal", species = 'Tertiary', formatP = formatP(), dimensP = dimensP())
   
+  ### Data input
   MainSpTrans1  <- callModule(inputDataModule, "MainDset1",  Model = MainSpCal)
   SecSpTrans1   <- callModule(inputDataModule, "SecDset1",   Spc = 'Secondary', Model = SecSpCal)
   TerSpTrans1   <- callModule(inputDataModule, "TerDset1",   Spc = 'Tertiary', Model = TerSpCal)
@@ -82,6 +84,7 @@ server <- function(input, output, session) {
   SecSpTrans12  <- callModule(inputDataModule, "SecDset12",  Spc = 'Secondary', Model = SecSpCal)
   TerSpTrans12  <- callModule(inputDataModule, "TerDset12",  Spc = 'Tertiary', Model = TerSpCal)
 
+  ### Transport profiles
   plotTrPr <- reactive(input$plotTrPr)  # ReactiveButton 'Draw'
   nSpecies <- reactive(as.numeric(input$nSpecies))
   trends   <- reactive(as.numeric(c(input$trendM, input$trendS, input$trendT)))
@@ -110,17 +113,64 @@ server <- function(input, output, session) {
   callModule(profileModule, "transProf12", plotTrPr = plotTrPr, nSpecies = nSpecies(),
              MaiTrDt = MainSpTrans12, SecTrDt = SecSpTrans12, TerTrDt = TerSpTrans12, trends = trends())
   
+  ### Permeation coefficients
   calcPrCf <- reactive(input$calcPrCf)  # ReactiveButton 'calc'
   P.data <- reactive(as.numeric(c(input$P.area, input$P.vol0)))
   callModule(permCoefModule, "permCoef1", P.data = P.data(), calPermCoef = calcPrCf,
              MaiTrDt = MainSpTrans1, SecTrDt = SecSpTrans1, TerTrDt = TerSpTrans1)
+  callModule(permCoefModule, "permCoef2", P.data = P.data(), calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans2, SecTrDt = SecSpTrans2, TerTrDt = TerSpTrans2)
+  callModule(permCoefModule, "permCoef3", P.data = P.data(), calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans3, SecTrDt = SecSpTrans3, TerTrDt = TerSpTrans3)
+  callModule(permCoefModule, "permCoef4", P.data = P.data(), calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans4, SecTrDt = SecSpTrans4, TerTrDt = TerSpTrans4)
+  callModule(permCoefModule, "permCoef5", P.data = P.data(), calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans5, SecTrDt = SecSpTrans5, TerTrDt = TerSpTrans5)
+  callModule(permCoefModule, "permCoef6", P.data = P.data(), calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans6, SecTrDt = SecSpTrans6, TerTrDt = TerSpTrans6)
+  callModule(permCoefModule, "permCoef7", P.data = P.data(), calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans7, SecTrDt = SecSpTrans7, TerTrDt = TerSpTrans7)
+  callModule(permCoefModule, "permCoef8", P.data = P.data(), calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans8, SecTrDt = SecSpTrans8, TerTrDt = TerSpTrans8)
+  callModule(permCoefModule, "permCoef9", P.data = P.data(), calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans9, SecTrDt = SecSpTrans9, TerTrDt = TerSpTrans9)
+  callModule(permCoefModule, "permCoef10", P.data = P.data(), calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans10, SecTrDt = SecSpTrans10, TerTrDt = TerSpTrans10)
+  callModule(permCoefModule, "permCoef11", P.data = P.data(), calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans11, SecTrDt = SecSpTrans11, TerTrDt = TerSpTrans11)
+  callModule(permCoefModule, "permCoef12", P.data = P.data(), calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans12, SecTrDt = SecSpTrans12, TerTrDt = TerSpTrans12)
   
+  ### Separation factors
   calcSepFc <- reactive(input$calcSepFc)  # ReactiveButton 'calc'
   SF.model <- reactive(as.numeric(input$SF.model))
-  callModule(permCoefModule, "permCoef1", P.data = P.data(), calPermCoef = calPermCoef,
+  callModule(sepFactorModule, "sepFactor1", calcSepFc = calcSepFc, SF.model = SF.model,
              MaiTrDt = MainSpTrans1, SecTrDt = SecSpTrans1, TerTrDt = TerSpTrans1)
+  callModule(sepFactorModule, "sepFactor2", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans2, SecTrDt = SecSpTrans2, TerTrDt = TerSpTrans2)
+  callModule(sepFactorModule, "sepFactor3", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans3, SecTrDt = SecSpTrans3, TerTrDt = TerSpTrans3)
+  callModule(sepFactorModule, "sepFactor4", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans4, SecTrDt = SecSpTrans4, TerTrDt = TerSpTrans4)
+  callModule(sepFactorModule, "sepFactor5", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans5, SecTrDt = SecSpTrans5, TerTrDt = TerSpTrans5)
+  callModule(sepFactorModule, "sepFactor6", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans6, SecTrDt = SecSpTrans6, TerTrDt = TerSpTrans6)
+  callModule(sepFactorModule, "sepFactor7", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans7, SecTrDt = SecSpTrans7, TerTrDt = TerSpTrans7)
+  callModule(sepFactorModule, "sepFactor8", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans8, SecTrDt = SecSpTrans8, TerTrDt = TerSpTrans8)
+  callModule(sepFactorModule, "sepFactor9", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans9, SecTrDt = SecSpTrans9, TerTrDt = TerSpTrans9)
+  callModule(sepFactorModule, "sepFactor10", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans10, SecTrDt = SecSpTrans10, TerTrDt = TerSpTrans10)
+  callModule(sepFactorModule, "sepFactor11", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans11, SecTrDt = SecSpTrans11, TerTrDt = TerSpTrans11)
+  callModule(sepFactorModule, "sepFactor12", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans12, SecTrDt = SecSpTrans12, TerTrDt = TerSpTrans12)
   
   
+  ### Example datasets
   callModule(examplesOutputs, 'examples')
 }
 
