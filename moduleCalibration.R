@@ -145,7 +145,7 @@ calibrationModule <- function(input, output, session, species = 'Main', formatP,
                                       if (as.character(formatP) == '.pdf') {
                                         pdf(file, width = dimensP[1], height = dimensP[2])
                                       } else {
-                                        png(file, width = dimensP[1], height = dimensP[2])
+                                        png(file, width = dimensP[1], height = dimensP[2], units = 'in', res = 300)
                                       }
                                       print(reactive_RSC()$plt)
                                       dev.off()
@@ -157,7 +157,7 @@ calibrationModule <- function(input, output, session, species = 'Main', formatP,
                                       if (as.character(formatP) == '.pdf') {
                                         pdf(file, width = dimensP[1], height = dimensP[2])
                                       } else {
-                                        png(file, width = dimensP[1], height = dimensP[2])
+                                        png(file, width = dimensP[1], height = dimensP[2], units = 'in', res = 300)
                                       }
                                       print(reactive_RSC()$plt)
                                       dev.off()
