@@ -1,21 +1,25 @@
 permCoefModuleUI <- function(id, IntID = 1) {
   ns <- NS(id)
-  box(title = paste0("System ", IntID), width = 12, 
+  box(title = paste0("System ", IntID), width = 12, height = 610,
       column(4, infoBox(width = 12, "Main species", htmlOutput(ns('prmCoefMn')),
                         color = Hcol('Main')[2], icon = icon("chart-line")),
+             downloadButton(ns('DwnPeCM'), label = 'Download plot'),
              plotOutput(ns("permPlotM"))),
       column(4, conditionalPanel(condition = 'input.nSpecies >= 2',
                                  infoBox(width = 12, "Secondary species", htmlOutput(ns('prmCoefSc')),
                                          color = Hcol('Secondary')[2], icon = icon("chart-line")),
+                                 downloadButton(ns('DwnPeCS'), label = 'Download plot'),
                                  plotOutput(ns("permPlotS")))),
       column(4, conditionalPanel(condition = 'input.nSpecies == 3',
                                  infoBox(width = 12, "Tertiary species", htmlOutput(ns('prmCoefTr')),
                                          color = Hcol('Tertiary')[2], icon = icon("chart-line")),
+                                 downloadButton(ns('DwnPeCT'), label = 'Download plot'),
                                  plotOutput(ns("permPlotT"))))
   )
 }
 
-permCoefModule <- function(input, output, session, P.data, MaiTrDt, SecTrDt = NULL, TerTrDt = NULL, calPermCoef) {
+permCoefModule <- function(input, output, session, P.data, MaiTrDt, SecTrDt = NULL, TerTrDt = NULL, calPermCoef,
+                           formatP, dimensP) {
   CoefMn <- reactive(permcoefCustom(trans = as.data.frame(MaiTrDt()), vol = P.data[2], area = P.data[1]))
   CoefSc <- reactive(permcoefCustom(trans = as.data.frame(SecTrDt()), vol = P.data[2], area = P.data[1]))
   CoefTr <- reactive(permcoefCustom(trans = as.data.frame(TerTrDt()), vol = P.data[2], area = P.data[1]))
@@ -66,4 +70,38 @@ permCoefModule <- function(input, output, session, P.data, MaiTrDt, SecTrDt = NU
   output$permPlotM <- renderPlot(permPlotM())
   output$permPlotS <- renderPlot(permPlotS())
   output$permPlotT <- renderPlot(permPlotT())
+  
+  output$DwnPeCM <- downloadHandler(filename = function(){paste0('permeabilityCoefficientMain', as.character(formatP))},
+                                    content = function(file){
+                                      if (as.character(formatP) == '.pdf') {
+                                        pdf(file, width = dimensP[1], height = dimensP[2])
+                                      } else {
+                                        png(file, width = dimensP[1], height = dimensP[2], units = 'in', res = 300)
+                                      }
+                                      print(permPlotM())
+                                      dev.off()
+                                    }
+  )
+  output$DwnPeCS <- downloadHandler(filename = function(){paste0('permeabilityCoefficientSecondary', as.character(formatP))},
+                                    content = function(file){
+                                      if (as.character(formatP) == '.pdf') {
+                                        pdf(file, width = dimensP[1], height = dimensP[2])
+                                      } else {
+                                        png(file, width = dimensP[1], height = dimensP[2], units = 'in', res = 300)
+                                      }
+                                      print(permPlotS())
+                                      dev.off()
+                                    }
+  )
+  output$DwnPeCT <- downloadHandler(filename = function(){paste0('permeabilityCoefficientTertiary', as.character(formatP))},
+                                    content = function(file){
+                                      if (as.character(formatP) == '.pdf') {
+                                        pdf(file, width = dimensP[1], height = dimensP[2])
+                                      } else {
+                                        png(file, width = dimensP[1], height = dimensP[2], units = 'in', res = 300)
+                                      }
+                                      print(permPlotT())
+                                      dev.off()
+                                    }
+  )
 }

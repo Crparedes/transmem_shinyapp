@@ -6,24 +6,28 @@ sepFactorModuleUI <- function(id, IntID = 1) {
                                h4('Separation factor calculations require at least two species!'))),
       conditionalPanel(condition = 'input.nSpecies >= 2', 
                        box(title = "Separation factors against secondary species", solidHeader = TRUE, width = 4,
-                           status = Hcol('Secondary')[1], height = 590,
+                           status = Hcol('Secondary')[1], height = 610,
                            infoBox(width = 12, "Results", htmlOutput(ns('SepFac2dat')),
                                    color = Hcol('Secondary')[2], icon = icon("chart-line")),
+                           downloadButton(ns('DwnSel2'), label = 'Download plot'),
                            plotOutput(ns("SepFac2")))),
       conditionalPanel(condition = 'input.nSpecies == 3', 
                        box(title = "Separation factors against Tertiary species", solidHeader = TRUE, width = 4,
-                           status = Hcol('Tertiary')[1], height = 590,
+                           status = Hcol('Tertiary')[1], height = 610,
                            infoBox(width = 12, "Results", htmlOutput(ns('SepFac3dat')),
                                    color = Hcol('Tertiary')[2], icon = icon("chart-line")),
+                           downloadButton(ns('DwnSel3'), label = 'Download plot'),
                            plotOutput(ns("SepFac3")))),
       conditionalPanel(condition = 'input.nSpecies == 3', 
                        box(title = "Combined plot", solidHeader = TRUE, width = 4,
-                           status = Hcol('Main')[1], height = 590,
+                           status = Hcol('Main')[1], height = 610,
+                           downloadButton(ns('DwnSelM'), label = 'Download plot'),
                            plotOutput(ns("SepFacComb"))))
   )
 }
 
-sepFactorModule <- function(input, output, session, MaiTrDt, SecTrDt = NULL, TerTrDt = NULL, calcSepFc, SF.model) {
+sepFactorModule <- function(input, output, session, MaiTrDt, SecTrDt = NULL, TerTrDt = NULL, calcSepFc, SF.model,
+                            formatP, dimensP) {
   
   mode <- reactive(c('batch', 'continuous')[SF.model])
   SF2 <- reactive(sepfactor(main = as.data.frame(MaiTrDt()), secon = as.data.frame(SecTrDt()), order = 2,
@@ -73,5 +77,39 @@ sepFactorModule <- function(input, output, session, MaiTrDt, SecTrDt = NULL, Ter
   output$SepFac2 <- renderPlot(SepFac2())
   output$SepFac3 <- renderPlot(SepFac3())
   output$SepFacComb <- renderPlot(SepFacComb())
+  
+  output$DwnSel2 <- downloadHandler(filename = function(){paste0('separationFactorSecondary', as.character(formatP))},
+                                    content = function(file){
+                                      if (as.character(formatP) == '.pdf') {
+                                        pdf(file, width = dimensP[1], height = dimensP[2])
+                                      } else {
+                                        png(file, width = dimensP[1], height = dimensP[2], units = 'in', res = 300)
+                                      }
+                                      print(SepFac2())
+                                      dev.off()
+                                    }
+  )
+  output$DwnSel3 <- downloadHandler(filename = function(){paste0('separationFactorTertiary', as.character(formatP))},
+                                    content = function(file){
+                                      if (as.character(formatP) == '.pdf') {
+                                        pdf(file, width = dimensP[1], height = dimensP[2])
+                                      } else {
+                                        png(file, width = dimensP[1], height = dimensP[2], units = 'in', res = 300)
+                                      }
+                                      print(SepFac3())
+                                      dev.off()
+                                    }
+  )
+  output$DwnSelM <- downloadHandler(filename = function(){paste0('separationFactorBoth', as.character(formatP))},
+                                    content = function(file){
+                                      if (as.character(formatP) == '.pdf') {
+                                        pdf(file, width = dimensP[1], height = dimensP[2])
+                                      } else {
+                                        png(file, width = dimensP[1], height = dimensP[2], units = 'in', res = 300)
+                                      }
+                                      print(SepFacComb())
+                                      dev.off()
+                                    }
+  )
   
 }

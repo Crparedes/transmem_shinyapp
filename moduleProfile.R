@@ -8,13 +8,14 @@ profileModuleUI <- function(id, IntID = 1) {
              conditionalPanel(condition = 'input.nSpecies == 2',
                               plotOutput(ns("profile2"))),
              conditionalPanel(condition = 'input.nSpecies == 3',
-                              plotOutput(ns("profile3")))
+                              plotOutput(ns("profile3"))),
+             downloadButton(ns('DwnProf'), label = 'Download plot')
              )
   )
 }
 
 profileModule <- function(input, output, session, nSpecies, MaiTrDt, SecTrDt = NULL, TerTrDt = NULL, plotTrPr,
-                          trends) {
+                          trends, formatP, dimensP) {
   trendOptions <- c('paredes', 'rodriguez')
   profile1 <- eventReactive(plotTrPr(), {
     TransProfile(trans = as.data.frame(MaiTrDt()), trendM = trendOptions[trends[1]])
@@ -33,5 +34,16 @@ profileModule <- function(input, output, session, nSpecies, MaiTrDt, SecTrDt = N
   output$profile2 <- renderPlot(profile2())
   output$profile3 <- renderPlot(profile3())
   output$profileEx <- renderPlot(profileEx())
+  output$DwnProf <- downloadHandler(filename = function(){paste0('transportProfile', as.character(formatP))},
+                                    content = function(file){
+                                      if (as.character(formatP) == '.pdf') {
+                                        pdf(file, width = dimensP[1], height = dimensP[2])
+                                      } else {
+                                        png(file, width = dimensP[1], height = dimensP[2], units = 'in', res = 300)
+                                      }
+                                      if(as.numeric(nSpecies) == 1) print(profile1())
+                                      dev.off()
+                                    }
+  )
 }
 
