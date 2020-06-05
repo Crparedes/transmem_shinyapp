@@ -78,38 +78,8 @@ sepFactorModule <- function(input, output, session, MaiTrDt, SecTrDt = NULL, Ter
   output$SepFac3 <- renderPlot(SepFac3())
   output$SepFacComb <- renderPlot(SepFacComb())
   
-  output$DwnSel2 <- downloadHandler(filename = function(){paste0('separationFactorSecondary', as.character(formatP))},
-                                    content = function(file){
-                                      if (as.character(formatP) == '.pdf') {
-                                        pdf(file, width = dimensP[1], height = dimensP[2])
-                                      } else {
-                                        png(file, width = dimensP[1], height = dimensP[2], units = 'in', res = 300)
-                                      }
-                                      print(SepFac2())
-                                      dev.off()
-                                    }
-  )
-  output$DwnSel3 <- downloadHandler(filename = function(){paste0('separationFactorTertiary', as.character(formatP))},
-                                    content = function(file){
-                                      if (as.character(formatP) == '.pdf') {
-                                        pdf(file, width = dimensP[1], height = dimensP[2])
-                                      } else {
-                                        png(file, width = dimensP[1], height = dimensP[2], units = 'in', res = 300)
-                                      }
-                                      print(SepFac3())
-                                      dev.off()
-                                    }
-  )
-  output$DwnSelM <- downloadHandler(filename = function(){paste0('separationFactorBoth', as.character(formatP))},
-                                    content = function(file){
-                                      if (as.character(formatP) == '.pdf') {
-                                        pdf(file, width = dimensP[1], height = dimensP[2])
-                                      } else {
-                                        png(file, width = dimensP[1], height = dimensP[2], units = 'in', res = 300)
-                                      }
-                                      print(SepFacComb())
-                                      dev.off()
-                                    }
-  )
-  
+  output$DwnSel2 <- dwldhndlr(name = 'sepFactVsSec', formatP = formatP, dimensP = dimensP, plt = SepFac2())
+  output$DwnSel3 <- dwldhndlr(name = 'sepFactVsTer', formatP = formatP, dimensP = dimensP, plt = SepFac3())
+  output$DwnSelM <- dwldhndlr(name = 'sepFactVsBoth', formatP = formatP, dimensP = dimensP, plt = SepFacComb())
+
 }

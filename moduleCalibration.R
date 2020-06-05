@@ -140,29 +140,11 @@ calibrationModule <- function(input, output, session, species = 'Main', formatP,
   output$niceStatSg <- renderText(reactive_RSC()$St)
 
   output$ExCalCurvPlot <- renderPlot(reactive_RSC()$plt)
-  output$DwnECCP <- downloadHandler(filename = function(){paste0(species, '_cal_curve', as.character(formatP))},
-                                    content = function(file){
-                                      if (as.character(formatP) == '.pdf') {
-                                        pdf(file, width = dimensP[1], height = dimensP[2])
-                                      } else {
-                                        png(file, width = dimensP[1], height = dimensP[2], units = 'in', res = 300)
-                                      }
-                                      print(reactive_RSC()$plt)
-                                      dev.off()
-                                    }
-  )
+  output$DwnECCP <- dwldhndlr(name = paste0(species, 'CalCurve'), formatP = formatP, dimensP = dimensP, plt = reactive_RSC()$plt)
+  
   output$ExCalResiPlot <- renderPlot(reactive_RSC()$rsd)
-  output$DwnECRP <- downloadHandler(filename = function(){paste0(species, '_residuals', as.character(formatP))},
-                                    content = function(file){
-                                      if (as.character(formatP) == '.pdf') {
-                                        pdf(file, width = dimensP[1], height = dimensP[2])
-                                      } else {
-                                        png(file, width = dimensP[1], height = dimensP[2], units = 'in', res = 300)
-                                      }
-                                      print(reactive_RSC()$plt)
-                                      dev.off()
-                                    }
-  )
+  output$DwnECRP <- dwldhndlr(name = paste0(species, 'Residuals'), formatP = formatP, dimensP = dimensP, plt = reactive_RSC()$rsd)
+
 
   # External calibration bivariate
   ExCalPlnePrevious <- reactive({data.frame(Conc = rep(0, as.numeric(input$calStdN)),

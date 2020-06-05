@@ -86,3 +86,16 @@ AddRodriguezTrend <- function() {
 
 }
 
+dwldhndlr <- function(name, formatP, dimensP, plt) {
+  return(downloadHandler(filename = function(){paste0(name, as.character(formatP))},
+                         content = function(file){
+                           if (as.character(formatP) == '.pdf') {
+                             pdf(file, width = dimensP[1], height = dimensP[2])
+                           } else {
+                             png(file, width = dimensP[1], height = dimensP[2], units = 'in', res = 300)
+                           }
+                           print(plt)
+                           dev.off()
+                         }
+  ))
+}

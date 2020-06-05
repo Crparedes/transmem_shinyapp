@@ -71,37 +71,7 @@ permCoefModule <- function(input, output, session, P.data, MaiTrDt, SecTrDt = NU
   output$permPlotS <- renderPlot(permPlotS())
   output$permPlotT <- renderPlot(permPlotT())
   
-  output$DwnPeCM <- downloadHandler(filename = function(){paste0('permeabilityCoefficientMain', as.character(formatP))},
-                                    content = function(file){
-                                      if (as.character(formatP) == '.pdf') {
-                                        pdf(file, width = dimensP[1], height = dimensP[2])
-                                      } else {
-                                        png(file, width = dimensP[1], height = dimensP[2], units = 'in', res = 300)
-                                      }
-                                      print(permPlotM())
-                                      dev.off()
-                                    }
-  )
-  output$DwnPeCS <- downloadHandler(filename = function(){paste0('permeabilityCoefficientSecondary', as.character(formatP))},
-                                    content = function(file){
-                                      if (as.character(formatP) == '.pdf') {
-                                        pdf(file, width = dimensP[1], height = dimensP[2])
-                                      } else {
-                                        png(file, width = dimensP[1], height = dimensP[2], units = 'in', res = 300)
-                                      }
-                                      print(permPlotS())
-                                      dev.off()
-                                    }
-  )
-  output$DwnPeCT <- downloadHandler(filename = function(){paste0('permeabilityCoefficientTertiary', as.character(formatP))},
-                                    content = function(file){
-                                      if (as.character(formatP) == '.pdf') {
-                                        pdf(file, width = dimensP[1], height = dimensP[2])
-                                      } else {
-                                        png(file, width = dimensP[1], height = dimensP[2], units = 'in', res = 300)
-                                      }
-                                      print(permPlotT())
-                                      dev.off()
-                                    }
-  )
+  output$DwnPeCM <- dwldhndlr(name = 'permCoefMain', formatP = formatP, dimensP = dimensP, plt = permPlotM())
+  output$DwnPeCS <- dwldhndlr(name = 'permCoefSecondary', formatP = formatP, dimensP = dimensP, plt = permPlotS())
+  output$DwnPeCT <- dwldhndlr(name = 'permCoefTertiary', formatP = formatP, dimensP = dimensP, plt = permPlotT())
 }
