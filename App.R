@@ -14,38 +14,30 @@ source('moduleInputData.R')
 source('moduleProfile.R')
 source('modulePermCoef.R')
 source('moduleSepFactor.R')
+source('moduleReuse.R')
 
 
 source('configLayouts.R')
 
 ui <- dashboardPage(
   dashboardHeader(title = "transmem: Treatment of Membrane-Transport Data", titleWidth = 750),
-
   dashboardSidebar(width = 325, sidebarMenuUI), # sidebarMenuUI is in Modules/configLayouts.R
-
   dashboardBody(
-    tags$head(tags$style(HTML('
-      .main-header .logo {
-        font-family: "Georgia", Times, "Times New Roman", serif;
-        font-weight: bold;
-        font-size: 24px;
-      }
-    '))),
-    tabItemsUI
+    tags$head(tags$style(HTML('.main-header .logo {font-family: "Georgia", Times, "Times New Roman", serif; 
+                                                   font-weight: bold; font-size: 24px;}'))),
+    tabItemsUI # tabItemsUI is in Modules/configLayouts.R
   )
 )
 
 server <- function(input, output, session) {
   #session$onSessionEnded(stopApp)
   callModule(instructionOutputs, 'instructions')
-  
   ### Calibration
   formatP  <- reactive(input$Format)
   dimensP  <- reactive(c(input$plotsW, input$plotsH) / 25.4 * 1.6)
   MainSpCal <- callModule(calibrationModule, "MainSpeciesCal", species = 'Main', formatP = formatP(), dimensP = dimensP())
   SecSpCal <- callModule(calibrationModule, "SeconSpeciesCal", species = 'Secondary', formatP = formatP(), dimensP = dimensP())
   TerSpCal <- callModule(calibrationModule, "TertiSpeciesCal", species = 'Tertiary', formatP = formatP(), dimensP = dimensP())
-  
   ### Data input
   MainSpTrans1  <- callModule(inputDataModule, "MainDset1",  Model = MainSpCal)
   SecSpTrans1   <- callModule(inputDataModule, "SecDset1",   Spc = 'Secondary', Model = SecSpCal)
@@ -83,7 +75,6 @@ server <- function(input, output, session) {
   MainSpTrans12 <- callModule(inputDataModule, "MainDset12", Model = MainSpCal)
   SecSpTrans12  <- callModule(inputDataModule, "SecDset12",  Spc = 'Secondary', Model = SecSpCal)
   TerSpTrans12  <- callModule(inputDataModule, "TerDset12",  Spc = 'Tertiary', Model = TerSpCal)
-
   ### Transport profiles
   plotTrPr <- reactive(input$plotTrPr)  # ReactiveButton 'Draw'
   nSpecies <- reactive(as.numeric(input$nSpecies))
@@ -124,7 +115,6 @@ server <- function(input, output, session) {
   callModule(profileModule, "transProf12", plotTrPr = plotTrPr, nSpecies = nSpecies(),
              MaiTrDt = MainSpTrans12, SecTrDt = SecSpTrans12, TerTrDt = TerSpTrans12, trends = trends(), 
              formatP = formatP(), dimensP = dimensP())
-  
   ### Permeation coefficients
   calcPrCf <- reactive(input$calcPrCf)  # ReactiveButton 'calc'
   P.data <- reactive(as.numeric(c(input$P.area, input$P.vol0)))
@@ -152,7 +142,6 @@ server <- function(input, output, session) {
              MaiTrDt = MainSpTrans11, SecTrDt = SecSpTrans11, TerTrDt = TerSpTrans11, formatP = formatP(), dimensP = dimensP())
   callModule(permCoefModule, "permCoef12", P.data = P.data(), calPermCoef = calcPrCf,
              MaiTrDt = MainSpTrans12, SecTrDt = SecSpTrans12, TerTrDt = TerSpTrans12, formatP = formatP(), dimensP = dimensP())
-  
   ### Separation factors
   calcSepFc <- reactive(input$calcSepFc)  # ReactiveButton 'calc'
   SF.model <- reactive(as.numeric(input$SF.model))
@@ -180,7 +169,13 @@ server <- function(input, output, session) {
              MaiTrDt = MainSpTrans11, SecTrDt = SecSpTrans11, TerTrDt = TerSpTrans11, formatP = formatP(), dimensP = dimensP())
   callModule(sepFactorModule, "sepFactor12", calcSepFc = calcSepFc, SF.model = SF.model(),
              MaiTrDt = MainSpTrans12, SecTrDt = SecSpTrans12, TerTrDt = TerSpTrans12, formatP = formatP(), dimensP = dimensP())
-  
+  ### Reuse plots
+  #plotReuseButton <- reactive(input$plotReuseButton)  # ReactiveButton 'calc'
+  nDataSts <- reactive(as.numeric(input$nDataSts))
+  callModule(reuseModule, 'reusecyclesM', nDataSts = nDataSts(),# plotReuseButton = plotReuseButton, 
+             d1 = MainSpTrans1, d2 = MainSpTrans2, d3 = MainSpTrans3, d4 = MainSpTrans4, d5 = MainSpTrans5, d6 = MainSpTrans6, 
+             d7 = MainSpTrans7, d8 = MainSpTrans8, d9 = MainSpTrans9, d10 = MainSpTrans10, d11 = MainSpTrans11, d12 = MainSpTrans12,
+             formatP = formatP(), dimensP = dimensP())
   ### Example datasets
   callModule(examplesOutputs, 'examples')
 }
