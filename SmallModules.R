@@ -3,20 +3,20 @@ instructionsModuleUI <- function(id) {
   fluidRow(infoBox(width = 12, "transmem package", color = 'light-blue', icon = icon("align-justify"),
                    h4("This is the graphical user interface for the R-package transmem.",
                       tags$br(), tags$br(),
-                      "The objective of the tools here available is to provide functionalities that automatizes the treatment of
-                      membrane transport data in which some species concentrations envolve as a function of time
-                      at both sides of the membrane as a consecuence of the transport process.
-                      Membrane performance parameters and publication ready plots for several experimental setups are
-                      easily obtained using this app.",
+                      "The tools here provided aim to ease the treatment of membrane transport processes data.
+                      The processes considered are those in which species concentrations envolve as a function of time
+                      at both sides of the membrane. By using this App, many membrane performance parameters and 
+                      publication-ready plots for several experimental setups are easily obtained",
                       tags$br(), tags$br(),
-                      "The app is divided in a main panel and a side panel to the left. The former is the place to input data
-                      and extract results while the later is used to select the desired options. ",
+                      "This App is divided in a main panel and a side panel to the left. The former is the place to input data
+                      and extract results while the later is used to select desired options. ",
                       tags$br(), tags$br(),
-                      "Below are the procedures required to make use of the app.",
+                      "Below are the instructions to use of this App.",
                       tags$br(), tags$br(),
-                      "The tools here provided may be cited as shown in ", icon("creative-commons"), tags$b("Citation."),
-                      "The useful and powerful object-oriented R programming
-                      capabilities [1] were implemented in this interactive web app using the package Shiny [2].")),
+                      "If you have found this App or the R-package transmem useful in your research, we encourage you
+                      to cite it as shown in ", icon("creative-commons"), tags$b("Citation."),
+                      "This App runs the powerful object-oriented R programming capabilities [1] in this interactive web App 
+                      thanks (mainly) to the R-package Shiny [2].")),
 
            box(solidHeader = TRUE, status = "primary", width = 2, title = "Main settings", height = 500,
                h5("The main chararacteristics that must be defined are the number of species
@@ -24,7 +24,7 @@ instructionsModuleUI <- function(id) {
                   icon("cog"), tags$b("Main Settings."), " The package allows the inclusion of up
                   to three species that must be regularly monitored during the transport experiment.",
                   tags$br(), tags$br(),
-                  "The downloadable files format and sizes are choosen in this section.",
+                  "This is also the place to choose the format and size of the downloadable files.",
                   tags$hr(),
                   "The data to be input to the app may be entered manually or may be copied from any spreadsheet.
                   The amount of rows needed must be indicated before entering any data.", tags$br(),
@@ -33,7 +33,7 @@ instructionsModuleUI <- function(id) {
 
            box(solidHeader = TRUE, status = "primary", width = 4, title = "Data input", height = 500,
                h5("Depending on the data units and nature, it may be required some conversion from signal values to
-                  concentration or fractions using calibration techniques.", tags$hr(),
+                  concentration or fractions using some calibration technique.", tags$hr(),
                   "If your data is already in concentration or transported fraction values, proceed to ",
                   icon("exchange-alt"), tags$b("Data input and transformation"), "and enter the transport data
                   for all species in each transport dataset.", tags$hr(),
@@ -71,18 +71,18 @@ instructionOutputs <- function(input, output, session) {
 
 citationModuleUI <- function(id) {
   box(width = 12,
-      tags$h5('If you have found this app useful for your research please cite it as:', tags$br(), tags$br(),
-              tags$b('Cristhian Paredes and Eduardo Rodriguez-de-San-Miguel (2020).
+      tags$h5('If you have found this App useful for your research, please cite it as:', tags$br(), tags$br(),
+              tags$b('Paredes, Cristhian and Rodriguez de San Miguel, Eduardo (2020).
                       transmem: Treatment of Membrane-Transport Data. R package
-                      version 0.1.0.', tags$a("https://CRAN.R-project.org/package=transmem",
+                      version 0.1.1.', tags$a("https://CRAN.R-project.org/package=transmem",
                                               href = "https://CRAN.R-project.org/package=transmem"))),
       tags$br(),
       tags$h5('A BibTeX entry for LaTeX users is:', tags$br()),
       tags$code('@Manual{,', tags$br(),
                 HTML('&nbsp;'), 'title = {transmem: Treatment of Membrane-Transport Data},', tags$br(),
-                HTML('&nbsp;'), 'author = {Cristhian Paredes and Eduardo Rodriguez-de-San-Miguel},', tags$br(),
+                HTML('&nbsp;'), 'author = {Paredes, Cristhian and {Rodr\'iguez de San Miguel}, Eduardo},', tags$br(),
                 HTML('&nbsp;'), 'year = {2020},', tags$br(),
-                HTML('&nbsp;'), 'note = {R package version 0.1.0},', tags$br(),
+                HTML('&nbsp;'), 'note = {R package version 0.1.1},', tags$br(),
                 HTML('&nbsp;'), 'url = {https://CRAN.R-project.org/package=transmem}', tags$br(),
                 '}')
   )

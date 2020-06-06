@@ -41,7 +41,7 @@ server <- function(input, output, session) {
   
   ### Calibration
   formatP  <- reactive(input$Format)
-  dimensP  <- reactive(c(input$plotsW, input$plotsH)/25.4)
+  dimensP  <- reactive(c(input$plotsW, input$plotsH) / 25.4 * 1.6)
   MainSpCal <- callModule(calibrationModule, "MainSpeciesCal", species = 'Main', formatP = formatP(), dimensP = dimensP())
   SecSpCal <- callModule(calibrationModule, "SeconSpeciesCal", species = 'Secondary', formatP = formatP(), dimensP = dimensP())
   TerSpCal <- callModule(calibrationModule, "TertiSpeciesCal", species = 'Tertiary', formatP = formatP(), dimensP = dimensP())
