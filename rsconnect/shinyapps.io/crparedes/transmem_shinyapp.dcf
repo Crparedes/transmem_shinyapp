@@ -5,8 +5,8 @@ account: crparedes
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2232213
-bundleId: 3234247
+bundleId: 3237683
 url: https://crparedes.shinyapps.io/transmem_shinyapp/
-when: 1591391892.17761
+when: 1591508269.04579
 asMultiple: FALSE
 asStatic: FALSE

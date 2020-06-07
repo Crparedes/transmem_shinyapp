@@ -111,3 +111,4 @@ multiPlotSP <- function(trans, phase = 'strip', trend = NULL, legend = FALSE,
   if (plot) print(p)
   return(p)
 }
+
