@@ -6,8 +6,12 @@ library(rhandsontable)
 library(shinysky)
 library(ggplot2)
 
-source('customFunctions.R')
-source('SmallModules.R')
+source('custom_smallFunctions.R')
+source('custom_transPlot.R')
+source('custom_permcoef.R')
+source('custom_multiPlotSP.R')
+
+source('smallModules.R')
 source('moduleExamples.R')
 source('moduleCalibration.R')
 source('moduleInputData.R')
@@ -32,12 +36,13 @@ ui <- dashboardPage(
 server <- function(input, output, session) {
   #session$onSessionEnded(stopApp)
   callModule(instructionOutputs, 'instructions')
-  ### Calibration
+  
   formatP  <- reactive(input$Format)
   dimensP  <- reactive(c(input$plotsW, input$plotsH) / 25.4 * 1.6)
-  MainSpCal <- callModule(calibrationModule, "MainSpeciesCal", species = 'Main', formatP = formatP(), dimensP = dimensP())
-  SecSpCal <- callModule(calibrationModule, "SeconSpeciesCal", species = 'Secondary', formatP = formatP(), dimensP = dimensP())
-  TerSpCal <- callModule(calibrationModule, "TertiSpeciesCal", species = 'Tertiary', formatP = formatP(), dimensP = dimensP())
+  ### Calibration
+  MainSpCal <- callModule(calibrationModule, "MainSpeciesCal", species = 'Main', formatP = formatP, dimensP = dimensP)
+  SecSpCal <- callModule(calibrationModule, "SeconSpeciesCal", species = 'Secondary', formatP = formatP, dimensP = dimensP)
+  TerSpCal <- callModule(calibrationModule, "TertiSpeciesCal", species = 'Tertiary', formatP = formatP, dimensP = dimensP)
   ### Data input
   MainSpTrans1  <- callModule(inputDataModule, "MainDset1",  Model = MainSpCal)
   SecSpTrans1   <- callModule(inputDataModule, "SecDset1",   Spc = 'Secondary', Model = SecSpCal)
@@ -79,103 +84,103 @@ server <- function(input, output, session) {
   plotTrPr <- reactive(input$plotTrPr)  # ReactiveButton 'Draw'
   nSpecies <- reactive(as.numeric(input$nSpecies))
   trends   <- reactive(as.numeric(c(input$trendM, input$trendS, input$trendT)))
-  callModule(profileModule, "transProf1", plotTrPr = plotTrPr, nSpecies = nSpecies(),
-             MaiTrDt = MainSpTrans1, SecTrDt = SecSpTrans1, TerTrDt = TerSpTrans1, trends = trends(), 
-             formatP = formatP(), dimensP = dimensP())
-  callModule(profileModule, "transProf2", plotTrPr = plotTrPr, nSpecies = nSpecies(),
-             MaiTrDt = MainSpTrans2, SecTrDt = SecSpTrans2, TerTrDt = TerSpTrans2, trends = trends(), 
-             formatP = formatP(), dimensP = dimensP())
-  callModule(profileModule, "transProf3", plotTrPr = plotTrPr, nSpecies = nSpecies(),
-             MaiTrDt = MainSpTrans3, SecTrDt = SecSpTrans3, TerTrDt = TerSpTrans3, trends = trends(), 
-             formatP = formatP(), dimensP = dimensP())
-  callModule(profileModule, "transProf4", plotTrPr = plotTrPr, nSpecies = nSpecies(),
-             MaiTrDt = MainSpTrans4, SecTrDt = SecSpTrans4, TerTrDt = TerSpTrans4, trends = trends(), 
-             formatP = formatP(), dimensP = dimensP())
-  callModule(profileModule, "transProf5", plotTrPr = plotTrPr, nSpecies = nSpecies(),
-             MaiTrDt = MainSpTrans5, SecTrDt = SecSpTrans5, TerTrDt = TerSpTrans5, trends = trends(), 
-             formatP = formatP(), dimensP = dimensP())
-  callModule(profileModule, "transProf6", plotTrPr = plotTrPr, nSpecies = nSpecies(),
-             MaiTrDt = MainSpTrans6, SecTrDt = SecSpTrans6, TerTrDt = TerSpTrans6, trends = trends(), 
-             formatP = formatP(), dimensP = dimensP())
-  callModule(profileModule, "transProf7", plotTrPr = plotTrPr, nSpecies = nSpecies(),
-             MaiTrDt = MainSpTrans7, SecTrDt = SecSpTrans7, TerTrDt = TerSpTrans7, trends = trends(), 
-             formatP = formatP(), dimensP = dimensP())
-  callModule(profileModule, "transProf8", plotTrPr = plotTrPr, nSpecies = nSpecies(),
-             MaiTrDt = MainSpTrans8, SecTrDt = SecSpTrans8, TerTrDt = TerSpTrans8, trends = trends(), 
-             formatP = formatP(), dimensP = dimensP())
-  callModule(profileModule, "transProf9", plotTrPr = plotTrPr, nSpecies = nSpecies(),
-             MaiTrDt = MainSpTrans9, SecTrDt = SecSpTrans9, TerTrDt = TerSpTrans9, trends = trends(), 
-             formatP = formatP(), dimensP = dimensP())
-  callModule(profileModule, "transProf10", plotTrPr = plotTrPr, nSpecies = nSpecies(),
-             MaiTrDt = MainSpTrans10, SecTrDt = SecSpTrans10, TerTrDt = TerSpTrans10, trends = trends(), 
-             formatP = formatP(), dimensP = dimensP())
-  callModule(profileModule, "transProf11", plotTrPr = plotTrPr, nSpecies = nSpecies(),
-             MaiTrDt = MainSpTrans11, SecTrDt = SecSpTrans11, TerTrDt = TerSpTrans11, trends = trends(), 
-             formatP = formatP(), dimensP = dimensP())
-  callModule(profileModule, "transProf12", plotTrPr = plotTrPr, nSpecies = nSpecies(),
-             MaiTrDt = MainSpTrans12, SecTrDt = SecSpTrans12, TerTrDt = TerSpTrans12, trends = trends(), 
-             formatP = formatP(), dimensP = dimensP())
+  callModule(profileModule, "transProf1", plotTrPr = plotTrPr, nSpecies = nSpecies,
+             MaiTrDt = MainSpTrans1, SecTrDt = SecSpTrans1, TerTrDt = TerSpTrans1, trends = trends, 
+             formatP = formatP, dimensP = dimensP)
+  callModule(profileModule, "transProf2", plotTrPr = plotTrPr, nSpecies = nSpecies,
+             MaiTrDt = MainSpTrans2, SecTrDt = SecSpTrans2, TerTrDt = TerSpTrans2, trends = trends, 
+             formatP = formatP, dimensP = dimensP)
+  callModule(profileModule, "transProf3", plotTrPr = plotTrPr, nSpecies = nSpecies,
+             MaiTrDt = MainSpTrans3, SecTrDt = SecSpTrans3, TerTrDt = TerSpTrans3, trends = trends, 
+             formatP = formatP, dimensP = dimensP)
+  callModule(profileModule, "transProf4", plotTrPr = plotTrPr, nSpecies = nSpecies,
+             MaiTrDt = MainSpTrans4, SecTrDt = SecSpTrans4, TerTrDt = TerSpTrans4, trends = trends, 
+             formatP = formatP, dimensP = dimensP)
+  callModule(profileModule, "transProf5", plotTrPr = plotTrPr, nSpecies = nSpecies,
+             MaiTrDt = MainSpTrans5, SecTrDt = SecSpTrans5, TerTrDt = TerSpTrans5, trends = trends, 
+             formatP = formatP, dimensP = dimensP)
+  callModule(profileModule, "transProf6", plotTrPr = plotTrPr, nSpecies = nSpecies,
+             MaiTrDt = MainSpTrans6, SecTrDt = SecSpTrans6, TerTrDt = TerSpTrans6, trends = trends, 
+             formatP = formatP, dimensP = dimensP)
+  callModule(profileModule, "transProf7", plotTrPr = plotTrPr, nSpecies = nSpecies,
+             MaiTrDt = MainSpTrans7, SecTrDt = SecSpTrans7, TerTrDt = TerSpTrans7, trends = trends, 
+             formatP = formatP, dimensP = dimensP)
+  callModule(profileModule, "transProf8", plotTrPr = plotTrPr, nSpecies = nSpecies,
+             MaiTrDt = MainSpTrans8, SecTrDt = SecSpTrans8, TerTrDt = TerSpTrans8, trends = trends, 
+             formatP = formatP, dimensP = dimensP)
+  callModule(profileModule, "transProf9", plotTrPr = plotTrPr, nSpecies = nSpecies,
+             MaiTrDt = MainSpTrans9, SecTrDt = SecSpTrans9, TerTrDt = TerSpTrans9, trends = trends, 
+             formatP = formatP, dimensP = dimensP)
+  callModule(profileModule, "transProf10", plotTrPr = plotTrPr, nSpecies = nSpecies,
+             MaiTrDt = MainSpTrans10, SecTrDt = SecSpTrans10, TerTrDt = TerSpTrans10, trends = trends, 
+             formatP = formatP, dimensP = dimensP)
+  callModule(profileModule, "transProf11", plotTrPr = plotTrPr, nSpecies = nSpecies,
+             MaiTrDt = MainSpTrans11, SecTrDt = SecSpTrans11, TerTrDt = TerSpTrans11, trends = trends, 
+             formatP = formatP, dimensP = dimensP)
+  callModule(profileModule, "transProf12", plotTrPr = plotTrPr, nSpecies = nSpecies,
+             MaiTrDt = MainSpTrans12, SecTrDt = SecSpTrans12, TerTrDt = TerSpTrans12, trends = trends, 
+             formatP = formatP, dimensP = dimensP)
   ### Permeation coefficients
   calcPrCf <- reactive(input$calcPrCf)  # ReactiveButton 'calc'
   P.data <- reactive(as.numeric(c(input$P.area, input$P.vol0)))
-  callModule(permCoefModule, "permCoef1", P.data = P.data(), calPermCoef = calcPrCf,
-             MaiTrDt = MainSpTrans1, SecTrDt = SecSpTrans1, TerTrDt = TerSpTrans1, formatP = formatP(), dimensP = dimensP())
-  callModule(permCoefModule, "permCoef2", P.data = P.data(), calPermCoef = calcPrCf,
-             MaiTrDt = MainSpTrans2, SecTrDt = SecSpTrans2, TerTrDt = TerSpTrans2, formatP = formatP(), dimensP = dimensP())
-  callModule(permCoefModule, "permCoef3", P.data = P.data(), calPermCoef = calcPrCf,
-             MaiTrDt = MainSpTrans3, SecTrDt = SecSpTrans3, TerTrDt = TerSpTrans3, formatP = formatP(), dimensP = dimensP())
-  callModule(permCoefModule, "permCoef4", P.data = P.data(), calPermCoef = calcPrCf,
-             MaiTrDt = MainSpTrans4, SecTrDt = SecSpTrans4, TerTrDt = TerSpTrans4, formatP = formatP(), dimensP = dimensP())
-  callModule(permCoefModule, "permCoef5", P.data = P.data(), calPermCoef = calcPrCf,
-             MaiTrDt = MainSpTrans5, SecTrDt = SecSpTrans5, TerTrDt = TerSpTrans5, formatP = formatP(), dimensP = dimensP())
-  callModule(permCoefModule, "permCoef6", P.data = P.data(), calPermCoef = calcPrCf,
-             MaiTrDt = MainSpTrans6, SecTrDt = SecSpTrans6, TerTrDt = TerSpTrans6, formatP = formatP(), dimensP = dimensP())
-  callModule(permCoefModule, "permCoef7", P.data = P.data(), calPermCoef = calcPrCf,
-             MaiTrDt = MainSpTrans7, SecTrDt = SecSpTrans7, TerTrDt = TerSpTrans7, formatP = formatP(), dimensP = dimensP())
-  callModule(permCoefModule, "permCoef8", P.data = P.data(), calPermCoef = calcPrCf,
-             MaiTrDt = MainSpTrans8, SecTrDt = SecSpTrans8, TerTrDt = TerSpTrans8, formatP = formatP(), dimensP = dimensP())
-  callModule(permCoefModule, "permCoef9", P.data = P.data(), calPermCoef = calcPrCf,
-             MaiTrDt = MainSpTrans9, SecTrDt = SecSpTrans9, TerTrDt = TerSpTrans9, formatP = formatP(), dimensP = dimensP())
-  callModule(permCoefModule, "permCoef10", P.data = P.data(), calPermCoef = calcPrCf,
-             MaiTrDt = MainSpTrans10, SecTrDt = SecSpTrans10, TerTrDt = TerSpTrans10, formatP = formatP(), dimensP = dimensP())
-  callModule(permCoefModule, "permCoef11", P.data = P.data(), calPermCoef = calcPrCf,
-             MaiTrDt = MainSpTrans11, SecTrDt = SecSpTrans11, TerTrDt = TerSpTrans11, formatP = formatP(), dimensP = dimensP())
-  callModule(permCoefModule, "permCoef12", P.data = P.data(), calPermCoef = calcPrCf,
-             MaiTrDt = MainSpTrans12, SecTrDt = SecSpTrans12, TerTrDt = TerSpTrans12, formatP = formatP(), dimensP = dimensP())
+  callModule(permCoefModule, "permCoef1", P.data = P.data, calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans1, SecTrDt = SecSpTrans1, TerTrDt = TerSpTrans1, formatP = formatP, dimensP = dimensP)
+  callModule(permCoefModule, "permCoef2", P.data = P.data, calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans2, SecTrDt = SecSpTrans2, TerTrDt = TerSpTrans2, formatP = formatP, dimensP = dimensP)
+  callModule(permCoefModule, "permCoef3", P.data = P.data, calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans3, SecTrDt = SecSpTrans3, TerTrDt = TerSpTrans3, formatP = formatP, dimensP = dimensP)
+  callModule(permCoefModule, "permCoef4", P.data = P.data, calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans4, SecTrDt = SecSpTrans4, TerTrDt = TerSpTrans4, formatP = formatP, dimensP = dimensP)
+  callModule(permCoefModule, "permCoef5", P.data = P.data, calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans5, SecTrDt = SecSpTrans5, TerTrDt = TerSpTrans5, formatP = formatP, dimensP = dimensP)
+  callModule(permCoefModule, "permCoef6", P.data = P.data, calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans6, SecTrDt = SecSpTrans6, TerTrDt = TerSpTrans6, formatP = formatP, dimensP = dimensP)
+  callModule(permCoefModule, "permCoef7", P.data = P.data, calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans7, SecTrDt = SecSpTrans7, TerTrDt = TerSpTrans7, formatP = formatP, dimensP = dimensP)
+  callModule(permCoefModule, "permCoef8", P.data = P.data, calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans8, SecTrDt = SecSpTrans8, TerTrDt = TerSpTrans8, formatP = formatP, dimensP = dimensP)
+  callModule(permCoefModule, "permCoef9", P.data = P.data, calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans9, SecTrDt = SecSpTrans9, TerTrDt = TerSpTrans9, formatP = formatP, dimensP = dimensP)
+  callModule(permCoefModule, "permCoef10", P.data = P.data, calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans10, SecTrDt = SecSpTrans10, TerTrDt = TerSpTrans10, formatP = formatP, dimensP = dimensP)
+  callModule(permCoefModule, "permCoef11", P.data = P.data, calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans11, SecTrDt = SecSpTrans11, TerTrDt = TerSpTrans11, formatP = formatP, dimensP = dimensP)
+  callModule(permCoefModule, "permCoef12", P.data = P.data, calPermCoef = calcPrCf,
+             MaiTrDt = MainSpTrans12, SecTrDt = SecSpTrans12, TerTrDt = TerSpTrans12, formatP = formatP, dimensP = dimensP)
   ### Separation factors
   calcSepFc <- reactive(input$calcSepFc)  # ReactiveButton 'calc'
   SF.model <- reactive(as.numeric(input$SF.model))
-  callModule(sepFactorModule, "sepFactor1", calcSepFc = calcSepFc, SF.model = SF.model(),
-             MaiTrDt = MainSpTrans1, SecTrDt = SecSpTrans1, TerTrDt = TerSpTrans1, formatP = formatP(), dimensP = dimensP())
-  callModule(sepFactorModule, "sepFactor2", calcSepFc = calcSepFc, SF.model = SF.model(),
-             MaiTrDt = MainSpTrans2, SecTrDt = SecSpTrans2, TerTrDt = TerSpTrans2, formatP = formatP(), dimensP = dimensP())
-  callModule(sepFactorModule, "sepFactor3", calcSepFc = calcSepFc, SF.model = SF.model(),
-             MaiTrDt = MainSpTrans3, SecTrDt = SecSpTrans3, TerTrDt = TerSpTrans3, formatP = formatP(), dimensP = dimensP())
-  callModule(sepFactorModule, "sepFactor4", calcSepFc = calcSepFc, SF.model = SF.model(),
-             MaiTrDt = MainSpTrans4, SecTrDt = SecSpTrans4, TerTrDt = TerSpTrans4, formatP = formatP(), dimensP = dimensP())
-  callModule(sepFactorModule, "sepFactor5", calcSepFc = calcSepFc, SF.model = SF.model(),
-             MaiTrDt = MainSpTrans5, SecTrDt = SecSpTrans5, TerTrDt = TerSpTrans5, formatP = formatP(), dimensP = dimensP())
-  callModule(sepFactorModule, "sepFactor6", calcSepFc = calcSepFc, SF.model = SF.model(),
-             MaiTrDt = MainSpTrans6, SecTrDt = SecSpTrans6, TerTrDt = TerSpTrans6, formatP = formatP(), dimensP = dimensP())
-  callModule(sepFactorModule, "sepFactor7", calcSepFc = calcSepFc, SF.model = SF.model(),
-             MaiTrDt = MainSpTrans7, SecTrDt = SecSpTrans7, TerTrDt = TerSpTrans7, formatP = formatP(), dimensP = dimensP())
-  callModule(sepFactorModule, "sepFactor8", calcSepFc = calcSepFc, SF.model = SF.model(),
-             MaiTrDt = MainSpTrans8, SecTrDt = SecSpTrans8, TerTrDt = TerSpTrans8, formatP = formatP(), dimensP = dimensP())
-  callModule(sepFactorModule, "sepFactor9", calcSepFc = calcSepFc, SF.model = SF.model(),
-             MaiTrDt = MainSpTrans9, SecTrDt = SecSpTrans9, TerTrDt = TerSpTrans9, formatP = formatP(), dimensP = dimensP())
-  callModule(sepFactorModule, "sepFactor10", calcSepFc = calcSepFc, SF.model = SF.model(),
-             MaiTrDt = MainSpTrans10, SecTrDt = SecSpTrans10, TerTrDt = TerSpTrans10, formatP = formatP(), dimensP = dimensP())
-  callModule(sepFactorModule, "sepFactor11", calcSepFc = calcSepFc, SF.model = SF.model(),
-             MaiTrDt = MainSpTrans11, SecTrDt = SecSpTrans11, TerTrDt = TerSpTrans11, formatP = formatP(), dimensP = dimensP())
-  callModule(sepFactorModule, "sepFactor12", calcSepFc = calcSepFc, SF.model = SF.model(),
-             MaiTrDt = MainSpTrans12, SecTrDt = SecSpTrans12, TerTrDt = TerSpTrans12, formatP = formatP(), dimensP = dimensP())
+  callModule(sepFactorModule, "sepFactor1", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans1, SecTrDt = SecSpTrans1, TerTrDt = TerSpTrans1, formatP = formatP, dimensP = dimensP)
+  callModule(sepFactorModule, "sepFactor2", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans2, SecTrDt = SecSpTrans2, TerTrDt = TerSpTrans2, formatP = formatP, dimensP = dimensP)
+  callModule(sepFactorModule, "sepFactor3", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans3, SecTrDt = SecSpTrans3, TerTrDt = TerSpTrans3, formatP = formatP, dimensP = dimensP)
+  callModule(sepFactorModule, "sepFactor4", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans4, SecTrDt = SecSpTrans4, TerTrDt = TerSpTrans4, formatP = formatP, dimensP = dimensP)
+  callModule(sepFactorModule, "sepFactor5", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans5, SecTrDt = SecSpTrans5, TerTrDt = TerSpTrans5, formatP = formatP, dimensP = dimensP)
+  callModule(sepFactorModule, "sepFactor6", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans6, SecTrDt = SecSpTrans6, TerTrDt = TerSpTrans6, formatP = formatP, dimensP = dimensP)
+  callModule(sepFactorModule, "sepFactor7", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans7, SecTrDt = SecSpTrans7, TerTrDt = TerSpTrans7, formatP = formatP, dimensP = dimensP)
+  callModule(sepFactorModule, "sepFactor8", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans8, SecTrDt = SecSpTrans8, TerTrDt = TerSpTrans8, formatP = formatP, dimensP = dimensP)
+  callModule(sepFactorModule, "sepFactor9", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans9, SecTrDt = SecSpTrans9, TerTrDt = TerSpTrans9, formatP = formatP, dimensP = dimensP)
+  callModule(sepFactorModule, "sepFactor10", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans10, SecTrDt = SecSpTrans10, TerTrDt = TerSpTrans10, formatP = formatP, dimensP = dimensP)
+  callModule(sepFactorModule, "sepFactor11", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans11, SecTrDt = SecSpTrans11, TerTrDt = TerSpTrans11, formatP = formatP, dimensP = dimensP)
+  callModule(sepFactorModule, "sepFactor12", calcSepFc = calcSepFc, SF.model = SF.model,
+             MaiTrDt = MainSpTrans12, SecTrDt = SecSpTrans12, TerTrDt = TerSpTrans12, formatP = formatP, dimensP = dimensP)
   ### Reuse plots
   #plotReuseButton <- reactive(input$plotReuseButton)  # ReactiveButton 'calc'
   nDataSts <- reactive(as.numeric(input$nDataSts))
-  callModule(reuseModule, 'reusecyclesM', nDataSts = nDataSts(),# plotReuseButton = plotReuseButton, 
+  callModule(reuseModule, 'reusecyclesM', nDataSts = nDataSts,# plotReuseButton = plotReuseButton, 
              d1 = MainSpTrans1, d2 = MainSpTrans2, d3 = MainSpTrans3, d4 = MainSpTrans4, d5 = MainSpTrans5, d6 = MainSpTrans6, 
              d7 = MainSpTrans7, d8 = MainSpTrans8, d9 = MainSpTrans9, d10 = MainSpTrans10, d11 = MainSpTrans11, d12 = MainSpTrans12,
-             formatP = formatP(), dimensP = dimensP())
+             formatP = formatP, dimensP = dimensP)
   ### Example datasets
   callModule(examplesOutputs, 'examples')
 }

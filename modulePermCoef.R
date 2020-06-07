@@ -20,9 +20,9 @@ permCoefModuleUI <- function(id, IntID = 1) {
 
 permCoefModule <- function(input, output, session, P.data, MaiTrDt, SecTrDt = NULL, TerTrDt = NULL, calPermCoef,
                            formatP, dimensP) {
-  CoefMn <- reactive(permcoefCustom(trans = as.data.frame(MaiTrDt()), vol = P.data[2], area = P.data[1]))
-  CoefSc <- reactive(permcoefCustom(trans = as.data.frame(SecTrDt()), vol = P.data[2], area = P.data[1]))
-  CoefTr <- reactive(permcoefCustom(trans = as.data.frame(TerTrDt()), vol = P.data[2], area = P.data[1]))
+  CoefMn <- reactive(custom_permcoef(trans = as.data.frame(MaiTrDt()), vol = P.data()[2], area = P.data()[1]))
+  CoefSc <- reactive(custom_permcoef(trans = as.data.frame(SecTrDt()), vol = P.data()[2], area = P.data()[1]))
+  CoefTr <- reactive(custom_permcoef(trans = as.data.frame(TerTrDt()), vol = P.data()[2], area = P.data()[1]))
   
   PermPlotLimsM <- eventReactive(calPermCoef(), {c(min(CoefMn()[[4]]), max(CoefMn()[[4]]), min(CoefMn()[[3]]), max(CoefMn()[[3]]))})
   PermPlotLimsS <- eventReactive(calPermCoef(), {c(min(CoefSc()[[4]]), max(CoefSc()[[4]]), min(CoefSc()[[3]]), max(CoefSc()[[3]]))})

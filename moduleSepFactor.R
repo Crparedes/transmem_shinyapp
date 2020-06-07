@@ -24,7 +24,7 @@ sepFactorModuleUI <- function(id, IntID = 1) {
 sepFactorModule <- function(input, output, session, MaiTrDt, SecTrDt = NULL, TerTrDt = NULL, calcSepFc, SF.model,
                             formatP, dimensP) {
   
-  mode <- reactive(c('batch', 'continuous')[SF.model])
+  mode <- reactive(c('batch', 'continuous')[SF.model()])
   SF2 <- reactive(sepfactor(main = as.data.frame(MaiTrDt()), secon = as.data.frame(SecTrDt()), order = 2,
                             mode = mode(), plot = FALSE))
   SF3 <- reactive(sepfactor(main = as.data.frame(MaiTrDt()), secon = as.data.frame(TerTrDt()), order = 2,
