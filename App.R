@@ -43,7 +43,20 @@ server <- function(input, output, session) {
   MainSpCal <- callModule(calibrationModule, "MainSpeciesCal", species = 'Main', formatP = formatP, dimensP = dimensP)
   SecSpCal <- callModule(calibrationModule, "SeconSpeciesCal", species = 'Secondary', formatP = formatP, dimensP = dimensP)
   TerSpCal <- callModule(calibrationModule, "TertiSpeciesCal", species = 'Tertiary', formatP = formatP, dimensP = dimensP)
+  
   ### Data input
+  output$Meccen <- renderUI(if (input$trendM == 1) {sliderInput('Meccen', label = "Indicate model eccentricity", 
+                                                                min = 0.3, max = 2.5, value = 1, step = 0.1)})
+  output$Mspan <- renderUI(if (input$trendM == 3) {sliderInput('Mspan', label = "Indicate curve span (smoothness)", 
+                                                               min = 0.01, max = 0.99, value = 0.75, step = 0.05)})
+  output$Seccen <- renderUI(if (input$trendS == 1) {sliderInput('Seccen', label = "Indicate model eccentricity", 
+                                                                min = 0.3, max = 2.5, value = 1, step = 0.1)})
+  output$Sspan <- renderUI(if (input$trendS == 3) {sliderInput('Sspan', label = "Indicate curve span (smoothness)", 
+                                                               min = 0.01, max = 0.99, value = 0.75, step = 0.05)})
+  output$Teccen <- renderUI(if (input$trendT == 1) {sliderInput('Teccen', label = "Indicate model eccentricity", 
+                                                                min = 0.3, max = 2.5, value = 1, step = 0.1)})
+  output$Tspan <- renderUI(if (input$trendT == 3) {sliderInput('Tspan', label = "Indicate curve span (smoothness)", 
+                                                               min = 0.01, max = 0.99, value = 0.75, step = 0.05)})
   MainSpTrans1  <- callModule(inputDataModule, "MainDset1",  Model = MainSpCal)
   SecSpTrans1   <- callModule(inputDataModule, "SecDset1",   Spc = 'Secondary', Model = SecSpCal)
   TerSpTrans1   <- callModule(inputDataModule, "TerDset1",   Spc = 'Tertiary', Model = TerSpCal)
@@ -80,6 +93,7 @@ server <- function(input, output, session) {
   MainSpTrans12 <- callModule(inputDataModule, "MainDset12", Model = MainSpCal)
   SecSpTrans12  <- callModule(inputDataModule, "SecDset12",  Spc = 'Secondary', Model = SecSpCal)
   TerSpTrans12  <- callModule(inputDataModule, "TerDset12",  Spc = 'Tertiary', Model = TerSpCal)
+  
   ### Transport profiles
   plotTrPr <- reactive(input$plotTrPr)  # ReactiveButton 'Draw'
   nSpecies <- reactive(as.numeric(input$nSpecies))
