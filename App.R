@@ -5,24 +5,13 @@ library(shinydashboard)
 library(rhandsontable)
 library(shinysky)
 library(ggplot2)
+library(shinycssloaders)
 
-source('custom_smallFunctions.R')
-source('custom_transPlot.R')
-source('custom_permcoef.R')
-source('custom_multiPlotSP.R')
+customFunctions <- paste0('CustomFunctions/', list.files(path = "CustomFunctions"))
+modules         <- paste0('Modules/', list.files(path = "Modules"))
 
-source('modDescriptions.R')
-source('smallModules.R')
-source('moduleExamples.R')
-source('moduleCalibration.R')
-source('moduleInputData.R')
-source('moduleProfile.R')
-source('modulePermCoef.R')
-source('moduleSepFactor.R')
-source('moduleReuse.R')
+sapply(c(customFunctions, 'descriptions.R', modules, 'configLayouts.R'), source)
 
-
-source('configLayouts.R')
 
 ui <- dashboardPage(
   dashboardHeader(title = "transmem: Treatment of Membrane-Transport Data", titleWidth = 750),
@@ -46,10 +35,16 @@ server <- function(input, output, session) {
   TerSpCal <- callModule(calibrationModule, "TertiSpeciesCal", species = 'Tertiary', formatP = formatP, dimensP = dimensP)
   
   ### Data input
-  output$Meccen <- renderUI(if (input$trendM == 1) {sliderInput('Meccen', label = "Indicate model eccentricity", 
-                                                                min = 0.3, max = 2.5, value = 1, step = 0.1)})
-  output$Mspan <- renderUI(if (input$trendM == 3) {sliderInput('Mspan', label = "Indicate curve span (smoothness)", 
-                                                               min = 0.01, max = 0.99, value = 0.75, step = 0.05)})
+  output$Meccen <- renderUI({if (input$trendM == 1) {sliderInput('Meccen', label = "Indicate model eccentricity", 
+                                                                 min = 0.3, max = 2.5, value = 1, step = 0.1)} else {
+                              if (input$trendM == 3) {sliderInput('Mspan', label = "Indicate curve span (smoothness)", 
+                                                                   min = 0.01, max = 0.99, value = 0.75, step = 0.05)} else {
+                                if (input$trendM == 2) {sliderInput('Meccen', label = "FuckOff you",
+                                                                    min = 0.3, max = 2.5, value = 1, step = 0.1)}}}}
+                            )
+  
+  #output$Mspan <- renderUI(if (input$trendM == 3) {sliderInput('Mspan', label = "Indicate curve span (smoothness)", 
+  #                                                             min = 0.01, max = 0.99, value = 0.75, step = 0.05)})
   output$Seccen <- renderUI(if (input$trendS == 1) {sliderInput('Seccen', label = "Indicate model eccentricity", 
                                                                 min = 0.3, max = 2.5, value = 1, step = 0.1)})
   output$Sspan <- renderUI(if (input$trendS == 3) {sliderInput('Sspan', label = "Indicate curve span (smoothness)", 
