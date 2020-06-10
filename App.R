@@ -24,7 +24,7 @@ ui <- dashboardPage(
 )
 
 server <- function(input, output, session) {
-  #session$onSessionEnded(stopApp)
+  session$onSessionEnded(stopApp)
   callModule(introductionOutputs, 'introduction')
   
   formatP  <- reactive(input$Format)
@@ -35,101 +35,90 @@ server <- function(input, output, session) {
   TerSpCal <- callModule(calibrationModule, "TertiSpeciesCal", species = 'Tertiary', formatP = formatP, dimensP = dimensP)
   
   ### Data input
-  output$M.mdlStt <- renderUI({
-    if (input$trendM == 1) {sliderInput('Meccen', label = "Indicate model eccentricity", 
-                                        min = 0.3, max = 2.5, value = 1, step = 0.1)
-    } else {
-      if (input$trendM == 3) {sliderInput('Mspan', label = "Indicate curve span (smoothness)", 
-                                          min = 0.01, max = 0.99, value = 0.75, step = 0.05)}}})
-  output$S.mdlStt <- renderUI({
-    if (input$trendS == 1) {sliderInput('Meccen', label = "Indicate model eccentricity", 
-                                        min = 0.3, max = 2.5, value = 1, step = 0.1)
-    } else {
-      if (input$trendS == 3) {sliderInput('Mspan', label = "Indicate curve span (smoothness)", 
-                                          min = 0.01, max = 0.99, value = 0.75, step = 0.05)}}})
-  output$T.mdlStt <- renderUI({
-    if (input$trendT == 1) {sliderInput('Meccen', label = "Indicate model eccentricity", 
-                                        min = 0.3, max = 2.5, value = 1, step = 0.1)
-    } else {
-      if (input$trendT == 3) {sliderInput('Mspan', label = "Indicate curve span (smoothness)", 
-                                          min = 0.01, max = 0.99, value = 0.75, step = 0.05)}}})
-  MainSpTrans1  <- callModule(inputDataModule, "MainDset1",  Model = MainSpCal, mdlStt = M.mdlStt)
-  SecSpTrans1   <- callModule(inputDataModule, "SecDset1",   Spc = 'Secondary', Model = SecSpCal, mdlStt = S.mdlStt)
-  TerSpTrans1   <- callModule(inputDataModule, "TerDset1",   Spc = 'Tertiary', Model = TerSpCal, mdlStt = T.mdlStt)
-  MainSpTrans2  <- callModule(inputDataModule, "MainDset2",  Model = MainSpCal, mdlStt = M.mdlStt)
-  SecSpTrans2   <- callModule(inputDataModule, "SecDset2",   Spc = 'Secondary', Model = SecSpCal, mdlStt = S.mdlStt)
-  TerSpTrans2   <- callModule(inputDataModule, "TerDset2",   Spc = 'Tertiary', Model = TerSpCal, mdlStt = T.mdlStt)
-  MainSpTrans3  <- callModule(inputDataModule, "MainDset3",  Model = MainSpCal, mdlStt = M.mdlStt)
-  SecSpTrans3   <- callModule(inputDataModule, "SecDset3",   Spc = 'Secondary', Model = SecSpCal, mdlStt = S.mdlStt)
-  TerSpTrans3   <- callModule(inputDataModule, "TerDset3",   Spc = 'Tertiary', Model = TerSpCal, mdlStt = T.mdlStt)
-  MainSpTrans4  <- callModule(inputDataModule, "MainDset4",  Model = MainSpCal, mdlStt = M.mdlStt)
-  SecSpTrans4   <- callModule(inputDataModule, "SecDset4",   Spc = 'Secondary', Model = SecSpCal, mdlStt = S.mdlStt)
-  TerSpTrans4   <- callModule(inputDataModule, "TerDset4",   Spc = 'Tertiary', Model = TerSpCal, mdlStt = T.mdlStt)
-  MainSpTrans5  <- callModule(inputDataModule, "MainDset5",  Model = MainSpCal, mdlStt = M.mdlStt)
-  SecSpTrans5   <- callModule(inputDataModule, "SecDset5",   Spc = 'Secondary', Model = SecSpCal, mdlStt = S.mdlStt)
-  TerSpTrans5   <- callModule(inputDataModule, "TerDset5",   Spc = 'Tertiary', Model = TerSpCal, mdlStt = T.mdlStt)
-  MainSpTrans6  <- callModule(inputDataModule, "MainDset6",  Model = MainSpCal, mdlStt = M.mdlStt)
-  SecSpTrans6   <- callModule(inputDataModule, "SecDset6",   Spc = 'Secondary', Model = SecSpCal, mdlStt = S.mdlStt)
-  TerSpTrans6   <- callModule(inputDataModule, "TerDset6",   Spc = 'Tertiary', Model = TerSpCal, mdlStt = T.mdlStt)
-  MainSpTrans7  <- callModule(inputDataModule, "MainDset7",  Model = MainSpCal, mdlStt = M.mdlStt)
-  SecSpTrans7   <- callModule(inputDataModule, "SecDset7",   Spc = 'Secondary', Model = SecSpCal, mdlStt = S.mdlStt)
-  TerSpTrans7   <- callModule(inputDataModule, "TerDset7",   Spc = 'Tertiary', Model = TerSpCal, mdlStt = T.mdlStt)
-  MainSpTrans8  <- callModule(inputDataModule, "MainDset8",  Model = MainSpCal, mdlStt = M.mdlStt)
-  SecSpTrans8   <- callModule(inputDataModule, "SecDset8",   Spc = 'Secondary', Model = SecSpCal, mdlStt = S.mdlStt)
-  TerSpTrans8   <- callModule(inputDataModule, "TerDset8",   Spc = 'Tertiary', Model = TerSpCal, mdlStt = T.mdlStt)
-  MainSpTrans9  <- callModule(inputDataModule, "MainDset9",  Model = MainSpCal, mdlStt = M.mdlStt)
-  SecSpTrans9   <- callModule(inputDataModule, "SecDset9",   Spc = 'Secondary', Model = SecSpCal, mdlStt = S.mdlStt)
-  TerSpTrans9   <- callModule(inputDataModule, "TerDset9",   Spc = 'Tertiary', Model = TerSpCal, mdlStt = T.mdlStt)
-  MainSpTrans10 <- callModule(inputDataModule, "MainDset10", Model = MainSpCal, mdlStt = M.mdlStt)
-  SecSpTrans10  <- callModule(inputDataModule, "SecDset10",  Spc = 'Secondary', Model = SecSpCal, mdlStt = S.mdlStt)
-  TerSpTrans10  <- callModule(inputDataModule, "TerDset10",  Spc = 'Tertiary', Model = TerSpCal, mdlStt = T.mdlStt)
-  MainSpTrans11 <- callModule(inputDataModule, "MainDset11", Model = MainSpCal, mdlStt = M.mdlStt)
-  SecSpTrans11  <- callModule(inputDataModule, "SecDset11",  Spc = 'Secondary', Model = SecSpCal, mdlStt = S.mdlStt)
-  TerSpTrans11  <- callModule(inputDataModule, "TerDset11",  Spc = 'Tertiary', Model = TerSpCal, mdlStt = T.mdlStt)
-  MainSpTrans12 <- callModule(inputDataModule, "MainDset12", Model = MainSpCal, mdlStt = M.mdlStt)
-  SecSpTrans12  <- callModule(inputDataModule, "SecDset12",  Spc = 'Secondary', Model = SecSpCal, mdlStt = S.mdlStt)
-  TerSpTrans12  <- callModule(inputDataModule, "TerDset12",  Spc = 'Tertiary', Model = TerSpCal, mdlStt = T.mdlStt)
+  MainSpTrans1  <- callModule(inputDataModule, "MainDset1",  Model = MainSpCal)
+  SecSpTrans1   <- callModule(inputDataModule, "SecDset1",   Spc = 'Secondary', Model = SecSpCal)
+  TerSpTrans1   <- callModule(inputDataModule, "TerDset1",   Spc = 'Tertiary', Model = TerSpCal)
+  MainSpTrans2  <- callModule(inputDataModule, "MainDset2",  Model = MainSpCal)
+  SecSpTrans2   <- callModule(inputDataModule, "SecDset2",   Spc = 'Secondary', Model = SecSpCal)
+  TerSpTrans2   <- callModule(inputDataModule, "TerDset2",   Spc = 'Tertiary', Model = TerSpCal)
+  MainSpTrans3  <- callModule(inputDataModule, "MainDset3",  Model = MainSpCal)
+  SecSpTrans3   <- callModule(inputDataModule, "SecDset3",   Spc = 'Secondary', Model = SecSpCal)
+  TerSpTrans3   <- callModule(inputDataModule, "TerDset3",   Spc = 'Tertiary', Model = TerSpCal)
+  MainSpTrans4  <- callModule(inputDataModule, "MainDset4",  Model = MainSpCal)
+  SecSpTrans4   <- callModule(inputDataModule, "SecDset4",   Spc = 'Secondary', Model = SecSpCal)
+  TerSpTrans4   <- callModule(inputDataModule, "TerDset4",   Spc = 'Tertiary', Model = TerSpCal)
+  MainSpTrans5  <- callModule(inputDataModule, "MainDset5",  Model = MainSpCal)
+  SecSpTrans5   <- callModule(inputDataModule, "SecDset5",   Spc = 'Secondary', Model = SecSpCal)
+  TerSpTrans5   <- callModule(inputDataModule, "TerDset5",   Spc = 'Tertiary', Model = TerSpCal)
+  MainSpTrans6  <- callModule(inputDataModule, "MainDset6",  Model = MainSpCal)
+  SecSpTrans6   <- callModule(inputDataModule, "SecDset6",   Spc = 'Secondary', Model = SecSpCal)
+  TerSpTrans6   <- callModule(inputDataModule, "TerDset6",   Spc = 'Tertiary', Model = TerSpCal)
+  MainSpTrans7  <- callModule(inputDataModule, "MainDset7",  Model = MainSpCal)
+  SecSpTrans7   <- callModule(inputDataModule, "SecDset7",   Spc = 'Secondary', Model = SecSpCal)
+  TerSpTrans7   <- callModule(inputDataModule, "TerDset7",   Spc = 'Tertiary', Model = TerSpCal)
+  MainSpTrans8  <- callModule(inputDataModule, "MainDset8",  Model = MainSpCal)
+  SecSpTrans8   <- callModule(inputDataModule, "SecDset8",   Spc = 'Secondary', Model = SecSpCal)
+  TerSpTrans8   <- callModule(inputDataModule, "TerDset8",   Spc = 'Tertiary', Model = TerSpCal)
+  MainSpTrans9  <- callModule(inputDataModule, "MainDset9",  Model = MainSpCal)
+  SecSpTrans9   <- callModule(inputDataModule, "SecDset9",   Spc = 'Secondary', Model = SecSpCal)
+  TerSpTrans9   <- callModule(inputDataModule, "TerDset9",   Spc = 'Tertiary', Model = TerSpCal)
+  MainSpTrans10 <- callModule(inputDataModule, "MainDset10", Model = MainSpCal)
+  SecSpTrans10  <- callModule(inputDataModule, "SecDset10",  Spc = 'Secondary', Model = SecSpCal)
+  TerSpTrans10  <- callModule(inputDataModule, "TerDset10",  Spc = 'Tertiary', Model = TerSpCal)
+  MainSpTrans11 <- callModule(inputDataModule, "MainDset11", Model = MainSpCal)
+  SecSpTrans11  <- callModule(inputDataModule, "SecDset11",  Spc = 'Secondary', Model = SecSpCal)
+  TerSpTrans11  <- callModule(inputDataModule, "TerDset11",  Spc = 'Tertiary', Model = TerSpCal)
+  MainSpTrans12 <- callModule(inputDataModule, "MainDset12", Model = MainSpCal)
+  SecSpTrans12  <- callModule(inputDataModule, "SecDset12",  Spc = 'Secondary', Model = SecSpCal)
+  TerSpTrans12  <- callModule(inputDataModule, "TerDset12",  Spc = 'Tertiary', Model = TerSpCal)
   
   ### Transport profiles
   plotTrPr <- reactive(input$plotTrPr)  # ReactiveButton 'Draw'
   nSpecies <- reactive(as.numeric(input$nSpecies))
   trends   <- reactive(as.numeric(c(input$trendM, input$trendS, input$trendT)))
-  callModule(profileModule, "transProf1", plotTrPr = plotTrPr, nSpecies = nSpecies,
-             MaiTrDt = MainSpTrans1, SecTrDt = SecSpTrans1, TerTrDt = TerSpTrans1, trends = trends, 
-             formatP = formatP, dimensP = dimensP)
-  callModule(profileModule, "transProf2", plotTrPr = plotTrPr, nSpecies = nSpecies,
-             MaiTrDt = MainSpTrans2, SecTrDt = SecSpTrans2, TerTrDt = TerSpTrans2, trends = trends, 
-             formatP = formatP, dimensP = dimensP)
-  callModule(profileModule, "transProf3", plotTrPr = plotTrPr, nSpecies = nSpecies,
-             MaiTrDt = MainSpTrans3, SecTrDt = SecSpTrans3, TerTrDt = TerSpTrans3, trends = trends, 
-             formatP = formatP, dimensP = dimensP)
-  callModule(profileModule, "transProf4", plotTrPr = plotTrPr, nSpecies = nSpecies,
-             MaiTrDt = MainSpTrans4, SecTrDt = SecSpTrans4, TerTrDt = TerSpTrans4, trends = trends, 
-             formatP = formatP, dimensP = dimensP)
-  callModule(profileModule, "transProf5", plotTrPr = plotTrPr, nSpecies = nSpecies,
-             MaiTrDt = MainSpTrans5, SecTrDt = SecSpTrans5, TerTrDt = TerSpTrans5, trends = trends, 
-             formatP = formatP, dimensP = dimensP)
-  callModule(profileModule, "transProf6", plotTrPr = plotTrPr, nSpecies = nSpecies,
-             MaiTrDt = MainSpTrans6, SecTrDt = SecSpTrans6, TerTrDt = TerSpTrans6, trends = trends, 
-             formatP = formatP, dimensP = dimensP)
-  callModule(profileModule, "transProf7", plotTrPr = plotTrPr, nSpecies = nSpecies,
-             MaiTrDt = MainSpTrans7, SecTrDt = SecSpTrans7, TerTrDt = TerSpTrans7, trends = trends, 
-             formatP = formatP, dimensP = dimensP)
-  callModule(profileModule, "transProf8", plotTrPr = plotTrPr, nSpecies = nSpecies,
-             MaiTrDt = MainSpTrans8, SecTrDt = SecSpTrans8, TerTrDt = TerSpTrans8, trends = trends, 
-             formatP = formatP, dimensP = dimensP)
-  callModule(profileModule, "transProf9", plotTrPr = plotTrPr, nSpecies = nSpecies,
-             MaiTrDt = MainSpTrans9, SecTrDt = SecSpTrans9, TerTrDt = TerSpTrans9, trends = trends, 
-             formatP = formatP, dimensP = dimensP)
-  callModule(profileModule, "transProf10", plotTrPr = plotTrPr, nSpecies = nSpecies,
-             MaiTrDt = MainSpTrans10, SecTrDt = SecSpTrans10, TerTrDt = TerSpTrans10, trends = trends, 
-             formatP = formatP, dimensP = dimensP)
-  callModule(profileModule, "transProf11", plotTrPr = plotTrPr, nSpecies = nSpecies,
-             MaiTrDt = MainSpTrans11, SecTrDt = SecSpTrans11, TerTrDt = TerSpTrans11, trends = trends, 
-             formatP = formatP, dimensP = dimensP)
-  callModule(profileModule, "transProf12", plotTrPr = plotTrPr, nSpecies = nSpecies,
-             MaiTrDt = MainSpTrans12, SecTrDt = SecSpTrans12, TerTrDt = TerSpTrans12, trends = trends, 
-             formatP = formatP, dimensP = dimensP)
+  output$M.mdlStt <- renderUI({
+    if (input$trendM == 1) {sliderInput('M.mdlStt', label = "Select model eccentricity", 
+                                        min = 0.3, max = 2.5, value = 1, step = 0.1)
+    } else {
+      if (input$trendM == 3) {sliderInput('M.mdlStt', label = "Select curve span (smoothness)", 
+                                          min = 0.01, max = 0.99, value = 0.75, step = 0.05)}}})
+  output$S.mdlStt <- renderUI({
+    if (input$trendS == 1) {sliderInput('S.mdlStt', label = "Select model eccentricity", 
+                                        min = 0.3, max = 2.5, value = 1, step = 0.1)
+    } else {
+      if (input$trendS == 3) {sliderInput('S.mdlStt', label = "Select curve span (smoothness)", 
+                                          min = 0.01, max = 0.99, value = 0.75, step = 0.05)}}})
+  output$T.mdlStt <- renderUI({
+    if (input$trendT == 1) {sliderInput('T.mdlStt', label = "Select model eccentricity", 
+                                        min = 0.3, max = 2.5, value = 1, step = 0.1)
+    } else {
+      if (input$trendT == 3) {sliderInput('T.mdlStt', label = "Select curve span (smoothness)", 
+                                          min = 0.01, max = 0.99, value = 0.75, step = 0.05)}}})
+  mdlStt <- reactive(c(input$M.mdlStt, input$S.mdlStt, input$T.mdlStt))
+  callModule(profileModule, "transProf1", plotTrPr = plotTrPr, nSpecies = nSpecies, formatP = formatP, dimensP = dimensP,
+             MaiTrDt = MainSpTrans1, SecTrDt = SecSpTrans1, TerTrDt = TerSpTrans1, trends = trends, mdlStt = mdlStt)
+  callModule(profileModule, "transProf2", plotTrPr = plotTrPr, nSpecies = nSpecies, formatP = formatP, dimensP = dimensP,
+             MaiTrDt = MainSpTrans2, SecTrDt = SecSpTrans2, TerTrDt = TerSpTrans2, trends = trends, mdlStt = mdlStt)
+  callModule(profileModule, "transProf3", plotTrPr = plotTrPr, nSpecies = nSpecies, formatP = formatP, dimensP = dimensP,
+             MaiTrDt = MainSpTrans3, SecTrDt = SecSpTrans3, TerTrDt = TerSpTrans3, trends = trends, mdlStt = mdlStt)
+  callModule(profileModule, "transProf4", plotTrPr = plotTrPr, nSpecies = nSpecies, formatP = formatP, dimensP = dimensP,
+             MaiTrDt = MainSpTrans4, SecTrDt = SecSpTrans4, TerTrDt = TerSpTrans4, trends = trends, mdlStt = mdlStt)
+  callModule(profileModule, "transProf5", plotTrPr = plotTrPr, nSpecies = nSpecies, formatP = formatP, dimensP = dimensP,
+             MaiTrDt = MainSpTrans5, SecTrDt = SecSpTrans5, TerTrDt = TerSpTrans5, trends = trends, mdlStt = mdlStt)
+  callModule(profileModule, "transProf6", plotTrPr = plotTrPr, nSpecies = nSpecies, formatP = formatP, dimensP = dimensP,
+             MaiTrDt = MainSpTrans6, SecTrDt = SecSpTrans6, TerTrDt = TerSpTrans6, trends = trends, mdlStt = mdlStt)
+  callModule(profileModule, "transProf7", plotTrPr = plotTrPr, nSpecies = nSpecies, formatP = formatP, dimensP = dimensP,
+             MaiTrDt = MainSpTrans7, SecTrDt = SecSpTrans7, TerTrDt = TerSpTrans7, trends = trends, mdlStt = mdlStt)
+  callModule(profileModule, "transProf8", plotTrPr = plotTrPr, nSpecies = nSpecies, formatP = formatP, dimensP = dimensP,
+             MaiTrDt = MainSpTrans8, SecTrDt = SecSpTrans8, TerTrDt = TerSpTrans8, trends = trends, mdlStt = mdlStt)
+  callModule(profileModule, "transProf9", plotTrPr = plotTrPr, nSpecies = nSpecies, formatP = formatP, dimensP = dimensP,
+             MaiTrDt = MainSpTrans9, SecTrDt = SecSpTrans9, TerTrDt = TerSpTrans9, trends = trends, mdlStt = mdlStt)
+  callModule(profileModule, "transProf10", plotTrPr = plotTrPr, nSpecies = nSpecies, formatP = formatP, dimensP = dimensP,
+             MaiTrDt = MainSpTrans10, SecTrDt = SecSpTrans10, TerTrDt = TerSpTrans10, trends = trends, mdlStt = mdlStt)
+  callModule(profileModule, "transProf11", plotTrPr = plotTrPr, nSpecies = nSpecies, formatP = formatP, dimensP = dimensP,
+             MaiTrDt = MainSpTrans11, SecTrDt = SecSpTrans11, TerTrDt = TerSpTrans11, trends = trends, mdlStt = mdlStt)
+  callModule(profileModule, "transProf12", plotTrPr = plotTrPr, nSpecies = nSpecies, formatP = formatP, dimensP = dimensP,
+             MaiTrDt = MainSpTrans12, SecTrDt = SecSpTrans12, TerTrDt = TerSpTrans12, trends = trends, mdlStt = mdlStt)
   ### Permeation coefficients
   calcPrCf <- reactive(input$calcPrCf)  # ReactiveButton 'calc'
   P.data <- reactive(as.numeric(c(input$P.area, input$P.vol0)))

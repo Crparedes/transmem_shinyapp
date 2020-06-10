@@ -16,8 +16,8 @@ addTransTrend <- function(p, trans, model, gamma) {
   }
   if (model == 'rodriguez') {
     trend <- list(transTrend(trans = trans, eccen = gamma, model = 'rodriguez'))
-    p <- p + stat_function(fun = transmem:::AddParTrend(trend, 1, 'strip', gamma), args = list(i = 1)) +
-      stat_function(fun = transmem:::AddParTrend(trend, 1, 'feed', gamma), args = list(i = 1))
+    #p <- p + stat_function(fun = transmem:::AddParTrend(trend, 1, 'strip', gamma), args = list(i = 1)) +
+    #  stat_function(fun = transmem:::AddParTrend(trend, 1, 'feed', gamma), args = list(i = 1))
   }
   return(p)
 }
