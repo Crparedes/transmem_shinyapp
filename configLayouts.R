@@ -5,7 +5,7 @@ convertMenuItem <- function(mi, tabName) {
 }
 
 sidebarMenuUI <- sidebarMenu(id = "tabs",
-  menuItem("Instructions", tabName = "instructions", icon = icon("question-circle")),
+  menuItem("Introduction", tabName = "introduction", icon = icon("question-circle")),
   convertMenuItem(menuItem("Main settings", tabName = "config", icon = icon("cog"),
                            sliderInput("nSpecies", label = "Species considered", min = 1, max = 3, value = 1),
                            sliderInput("nDataSts", label = "Transport datasets", min = 1, max = 12, value = 1),
@@ -32,7 +32,7 @@ sidebarMenuUI <- sidebarMenu(id = "tabs",
 )
 
 tabItemsUI <- tabItems(
-  tabItem(tabName = "instructions", h1('Instructions'), instructionsModuleUI('instructions')),
+  tabItem(tabName = "introduction", h1('Introduction'), introductionModuleUI('introduction')),
   # Calibration methods
   tabItem(tabName = "calib", h1("Calibration models"),
           calibrationModuleUI('MainSpeciesCal'),

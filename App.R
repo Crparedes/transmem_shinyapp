@@ -11,6 +11,7 @@ source('custom_transPlot.R')
 source('custom_permcoef.R')
 source('custom_multiPlotSP.R')
 
+source('modDescriptions.R')
 source('smallModules.R')
 source('moduleExamples.R')
 source('moduleCalibration.R')
@@ -35,7 +36,7 @@ ui <- dashboardPage(
 
 server <- function(input, output, session) {
   #session$onSessionEnded(stopApp)
-  callModule(instructionOutputs, 'instructions')
+  callModule(introductionOutputs, 'introduction')
   
   formatP  <- reactive(input$Format)
   dimensP  <- reactive(c(input$plotsW, input$plotsH) / 25.4 * 1.6)
