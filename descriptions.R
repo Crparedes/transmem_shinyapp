@@ -83,3 +83,7 @@ permCoefDs <- infoBox(width = 11, "Plotting transport", color = 'light-blue', ic
 
 sepFactorDs <- infoBox(width = 11, "Plotting separation factors", color = 'light-blue', icon = icon("info-circle"), h4(''))
 
+sepReuCycDs <- infoBox(width = 11, "Plotting reuse cycles", color = 'light-blue', icon = icon("info-circle"), h4(''))
+
+sepSpConcDs <- infoBox(width = 11, "Plotting species concentration", color = 'light-blue', icon = icon("info-circle"), h4(''))
+

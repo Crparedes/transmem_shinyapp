@@ -37,22 +37,9 @@ tabItemsUI <- tabItems(
   tabItem(tabName = "datInput", h1("Data input and transformation"), LytDatInput),
   tabItem(tabName = "sTrns", h1("Single transport profiles"), LytProfiles),
   tabItem(tabName = "pCoef", h1("Permeability coefficients"), LytPermCoef),
-  tabItem(tabName = "sepFctr", h1("Separation factors"), tags$hr(), LytSepFactor),
-  # Reuse Cycles
-  tabItem(tabName = "rCycl", h1("Reuse cycles"), tags$hr(),
-          conditionalPanel(condition = 'input.nDataSts == 1',
-                           infoBox(width = 12, "More datasets required", color = Hcol('Tertiary')[2], icon = icon("eye-slash"),
-                                   h4('Reuse cycles plots require at least two datasets!'))), 
-          conditionalPanel(condition = 'input.nDataSts >= 2', 
-                           #fluidRow(column(2, selectInput("MP.model", label = "Definition to use:", 
-                          #                                choices = list("Batch systems" = 1, "Continous systems" = 2))),
-                          #          column(2, h5('Be sure all data has been entered and transformated (if required).'),
-                          #                 actionButton("plotReuseButton", label = "Plot reuse cycles", styleclass = 'primary'))),
-                           tags$hr(),
-                           reuseModuleUI('reusecyclesM'))),
-  #Species concentration
-  tabItem(tabName = "spCnc", h2("Species concentration")),
-
+  tabItem(tabName = "sepFctr", h1("Separation factors"), LytSepFactor),
+  tabItem(tabName = "rCycl", h1("Reuse cycles"), LytReuCycl),
+  tabItem(tabName = "spCnc", h1("Species concentration"), LytSpConc),
   tabItem(tabName = 'exDat', examplesModuleUI('examples')),
   tabItem(tabName = "citation", h1("Citation"), citationModuleUI()),
   tabItem(tabName = "bibliography", h1("Bibliography"), bibliographyModuleUI())
