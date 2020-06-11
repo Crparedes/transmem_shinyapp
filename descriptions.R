@@ -39,16 +39,33 @@ intrTransProfDs2 <- h4('The fractions (or concentrations) of the feed and strip 
                        'The points in the plot may be conected (as usual) with trend lines. Several options are available 
                        ... details... details...')
 
-intrPermCoefDs1 <- h4('Permeability coefficients are')
+intrPermCoefDs1 <- h4('Permeability coefficients are', tags$br(), tags$br())
 intrPermCoefDs2 <- h4('')
 
+intrSepFactorDs1 <- h4('', tags$br(), tags$br())
+intrSepFactorDs2 <- h4('')
 
-inputDataDs <- box(solidHeader = TRUE, status = "primary", width = 4, title = "Data input", height = 500,
-               h5("Depending on the data units and nature, it may be required some conversion from signal values to
-                  concentration or fractions using some calibration technique.", tags$hr(),
-                  "If your data is already in concentration or transported fraction values, proceed to ",
-                  icon("exchange-alt"), tags$b("Data input and transformation"), "and enter the transport data
-                  for all species in each transport dataset.", tags$hr(),
+intrReuseDs1 <- h4('', tags$br(), tags$br())
+intrReuseDs2 <- h4('')
+
+intrSpConcDs1 <- h4('', tags$br(), tags$br())
+intrSpConcDs2 <- h4('')
+
+intrEmprcMdlsDs1 <- h4('')
+
+
+calibrationDs <- infoBox(width = 11, "Generating calibration models", color = 'light-blue', icon = icon("info-circle"), h4(''))
+
+inputDataDs <- infoBox(width = 11, "Entering transport data", color = 'light-blue', icon = icon("info-circle"),
+                       h4("This is the place to provide the data of the membrane transport experiments performed.
+                          Depending on the data units, it might be required some signal to concentration conversion.
+                          Note that species concentration data is usually divided by the initial concentration in the
+                          feed solution to use the normalized (adimentional) values of transported fractions. 
+                          If the relationship between signal and concentration follows a linear relationship, the conversion from
+                          signal to concentration may not be necessary. In addition, most modern analitycal instruments already
+                          give the results in concentration units so the conversión must not be made in the App. However, if it is
+                          not your case, you must calculate the corresponding calibration models in the ", 
+                          icon("signal"), tags$b("Calibration Models"), " option of the side panel.", tags$hr(),tags$hr(),tags$hr(),
                   "If your data are signal values to be converted to concentration by using calibration curves, the
                   information regarding the standards concentration and their signals must be provided in ",
                   icon("signal"), tags$b("Calibration models"), ". Available models are univariated external standard calibration
@@ -60,4 +77,9 @@ inputDataDs <- box(solidHeader = TRUE, status = "primary", width = 4, title = "D
                   "By default the data is nomalized to the initial concentration in the feed solution. To change this unselect
                   the", tags$b(" Normalize data"), " option."))
 
-profileDs <- h4('')
+profileDs <- infoBox(width = 11, "Plotting transport profiles", color = 'light-blue', icon = icon("info-circle"), h4(''))
+
+permCoefDs <- infoBox(width = 11, "Plotting transport", color = 'light-blue', icon = icon("info-circle"), h4(''))
+
+sepFactorDs <- infoBox(width = 11, "Plotting separation factors", color = 'light-blue', icon = icon("info-circle"), h4(''))
+
