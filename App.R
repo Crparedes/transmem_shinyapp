@@ -15,7 +15,6 @@ sapply(c(customFunctions, 'descriptions.R', modules, layouts,'layouts.R'), sourc
 
 
 ui <- dashboardPage(
-  #
   dashboardHeader(title = "transmem: Treatment of Membrane-Transport Data", titleWidth = 750),
   dashboardSidebar(width = 325, sidebarMenuUI), # sidebarMenuUI is in Modules/configLayouts.R
   dashboardBody(
@@ -187,6 +186,5 @@ server <- function(input, output, session) {
   ### Example datasets
   callModule(examplesOutputs, 'examples')
 }
-
 
 shinyApp(ui, server)

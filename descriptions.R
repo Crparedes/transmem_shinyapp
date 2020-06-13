@@ -14,16 +14,11 @@ introductionDs <- infoBox(width = 12, "transmem package", color = 'light-blue', 
                          h5("If you have found this App or the R-package transmem itself, useful in your research, we encourage you
                             to cite it as shown in ", icon("creative-commons"), tags$b("Citation."),
                             "This App runs the powerful object-oriented R programming capabilities [R Core Team, 2020] in this 
-                            interactive dashboart thanks mainl) to the R-package Shiny [Chang et al., 2020]."))
+                            interactive dashboart thanks mainly to the R-package Shiny [Chang et al., 2020]."))
  
-mainSettDs <- box(solidHeader = TRUE, status = "primary", width = 3, title = "Main settings", height = 700,
-                  h4("The main chararacteristics that must be defined are the number of species
-                     considered and the number of datasets (experiments) to analize. Those options are selected at the side panel
-                     in the ", icon("cog"), tags$b("Main Settings"), " section. The package allows the inclusion of up
-                     to three species and 12 transport data sets.", tags$br(), tags$br(), 
-                     "Other important characteristics that are selected here deal with the size and format of the
-                     dowloadable plot files. The formats available are PDF and PNG. Both are ussually accepted by most journals
-                     but PDF files host better quality (vectorized) plots that  that never get pixelated when enlarged.", tags$hr(),
+genCharDs <- box(solidHeader = TRUE, status = "primary", width = 3, title = "General characteristics", height = 700,
+                  h4("Those options are selected at the side panel
+                     in the ", icon("cog"), tags$b("Main Settings"), " section.", tags$hr(),
                      "When entering data to the App, it may be provided manually or may be copied from any spreadsheet.
                      It is important to note that the number of rows to use must be indicated before entering any data. If 
                      the user has noticed that more o less rows than available are neccesary, table values must be set to zero
@@ -45,25 +40,31 @@ intrPermCoefDs1 <- h4('Permeability coefficients are', tags$br(), tags$br())
 intrPermCoefDs2 <- h4("If one assumes that interfatial reactions are faster than the difussion process trhough the membrane,
                       the permeability coefficient may be calculated using the Fick's law", 
                       HTML('<center><img src="Eq1.gif" style = "size:150%;">&emsp;&emsp;&emsp;(1)</center>'))
-#eq_perm1 <- div(img(src = 'Eq1.gif'), style="text-align: center;")#, style = "display: block; margin-left: auto; margin-right: auto;")#tags$div(HTML("An irrational number \\(\\sqrt{2}\\) and a fraction $$1-\\frac{1}{2}$$"))
-#p style="text-align:right;
+
 intrSepFactorDs1 <- h4('Many membranes used for transport processes show better performance for some species over others. 
-                       Most of the times this is a desirable characteristic refered to as the system selectivity. The degree of
-                       separation in the process is evaluated by the separation factor. Separation factors are function of time and a
-                       typical behaviour is shown below. ', tags$br(), tags$br())
-intrSepFactorDs2 <- h4('The separation factor between two species is defined as the ratio of the concentration (or fractions) in 
-                       the strip solution over the same ratio in the feed solution at a given time', tags$em('t '), 
+                       Most of the times this is a desirable characteristic related to the ', tags$em('selectivity of the system. '), 
+                       'The degree of separation in the process is evaluated by the separation factor (', 
+                       tags$em('S', HTML('<sub>F</sub>')), '). Separation factors are 
+                       function of time and may have a maximum at a determined time or trend asiptotically to a value.
+                       The separation factor between lithium/sodium and lithium/potassium from seawater using a polymer inclusion
+                       membrane is shown below [Paredes and Rodriguez de San Miguel, 2020].', tags$br(), tags$br())
+intrSepFactorDs2 <- h4('The separation factor between two species A and B is defined as their ratio of concentrations (or fractions) in 
+                       the strip solution divided by the same ratio in the feed solution at a given time ', tags$em('t '), 
                        '[Koros et al, 1996]. ', tags$br(), tags$br(),
                        HTML('<center><img src="EqSF.png" style = "size:150%;">&emsp;&emsp;&emsp;(1)</center>'), tags$br(),
                        'Separation factors bigger than 1 indicates better selectivity for species A while separation factors smaller 
                        than this value indicate that the B species is transported preferally across the membrane. 
                        At the beggining of the process, separation factors should equal 1 indicating that no separation has been 
                        made yet.', tags$br(), tags$br(),
-                       'For systems involving a continous flow of (constant composition) feed solution there is also the 
-                       separation coefficient that refers the...', tags$br(), tags$br(),
-                       HTML('<center><img src="EqSC.png" style = "size:150%;">&emsp;&emsp;&emsp;(2)</center>'), tags$br())
+                       'For systems involving a continous flow of feed solution with constant composition, there is also the 
+                       separation coefficient (', tags$em('S', HTML('<sub>C</sub>')), ') that is similar to the separation factor 
+                       but uses in the denominator the concentrations of the fresh feed solution that is provided to the cell.', 
+                       tags$br(), tags$br(),
+                       HTML('<center><img src="EqSC.png" style = "size:150%;">&emsp;&emsp;&emsp;(2)</center>'), tags$br(), tags$br(),
+                       'The selectivity as a system performance parameter by itself is defined as the ratio between the 
+                       permeabilities of two given species [Luis, 2018]')
 
-intrReuseDs1 <- h4('', tags$br(), tags$br())
+intrReuseDs1 <- h4('Reusability is a good attibute ', tags$br(), tags$br())
 intrReuseDs2 <- h4('')
 
 intrSpConcDs1 <- h4('', tags$br(), tags$br())
@@ -71,6 +72,14 @@ intrSpConcDs2 <- h4('')
 
 intrEmprcMdlsDs1 <- h4('')
 
+settingsDs <- infoBox(width = 11, "Main options of the app", color = 'light-blue', icon = icon("info-circle"), 
+                      h4('The main chararacteristics to define are the number of species considered and datasets 
+                         (experiments) to analize. The package allows the inclusion of up to three species and 12 
+                         transport data sets.', tags$br(), tags$br(), 
+                         'Other important characteristics that are selected here deal with the size and format of the
+                         dowloadable plot files. The formats available are PDF and PNG. Both image formats are ussually accepted 
+                         by most journals but PDF files host better quality (vectorized) plots that that never get pixelated 
+                         when enlarged.'))
 
 calibrationDs <- infoBox(width = 11, "Generating calibration models", color = 'light-blue', icon = icon("info-circle"), h4(''))
 

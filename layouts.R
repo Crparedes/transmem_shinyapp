@@ -33,6 +33,7 @@ sidebarMenuUI <- sidebarMenu(id = "tabs",
 
 tabItemsUI <- tabItems(
   tabItem(tabName = "introduction", h1('Introduction'), introductionModuleUI('introduction')),
+  tabItem(tabName = "config", h1("Main settings"), settingsDs),
   tabItem(tabName = "calib", h1("Calibration models"), LytCalibration),
   tabItem(tabName = "datInput", h1("Data input and transformation"), LytDatInput),
   tabItem(tabName = "sTrns", h1("Single transport profiles"), LytProfiles),
