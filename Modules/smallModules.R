@@ -11,14 +11,14 @@ introductionModuleUI <- function(id) {
                                     column(6, intrPermCoefDs2))),
                   tabPanel("Separation factors", intrSepFactorDs1, 
                            fluidRow(column(6, withSpinner(plotOutput(ns('ExPermCoef2')), type = 6)),
-                                    column(6, intrSepFactorDs2))),
+                                    column(6, intrSepFactorDs2, eq_perm1))),
                   tabPanel("Reuse cycles", intrReuseDs1, 
                            fluidRow(column(6, withSpinner(plotOutput(ns('ExPermCoef4')), type = 6)),
                                     column(6, intrReuseDs2))),
                   tabPanel("Species concentration", intrSpConcDs1, 
                            fluidRow(column(6, withSpinner(plotOutput(ns('ExPermCoef7')), type = 6)),
                                     column(6, intrSpConcDs2))),
-                  tabPanel(''),
+                  tabPanel(''),tabPanel(''),
                   tabPanel("-Details of empiric models", intrEmprcMdlsDs1)))
 }
 

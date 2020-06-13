@@ -15,16 +15,19 @@ sapply(c(customFunctions, 'descriptions.R', modules, layouts,'layouts.R'), sourc
 
 
 ui <- dashboardPage(
+  #
   dashboardHeader(title = "transmem: Treatment of Membrane-Transport Data", titleWidth = 750),
   dashboardSidebar(width = 325, sidebarMenuUI), # sidebarMenuUI is in Modules/configLayouts.R
   dashboardBody(
+    withMathJax(),
     tags$head(tags$style(HTML('.main-header .logo {font-family: "Georgia", Times, "Times New Roman", serif; 
                                                    font-weight: bold; font-size: 24px;}'))),
-    tabItemsUI # tabItemsUI is in Modules/configLayouts.R
+    tabItemsUI
   )
 )
 
 server <- function(input, output, session) {
+  
   session$onSessionEnded(stopApp)
   callModule(introductionOutputs, 'introduction')
   

@@ -1,3 +1,5 @@
+#Renbder latex eq as images in https://latex.codecogs.com/eqneditor/editor.php
+# Use png format, Latin Modern font at 12pt and 120%
 introductionDs <- infoBox(width = 12, "transmem package", color = 'light-blue', icon = icon("align-justify"),
                          h4("This is the graphical user interface for the R-package transmem.", tags$br(), tags$br(),
                             "The tools here provided aim to ease the treatment of membrane transport processes data for
@@ -11,8 +13,8 @@ introductionDs <- infoBox(width = 12, "transmem package", color = 'light-blue', 
                             "Below are ilustrated the features of this App.", tags$hr()),
                          h5("If you have found this App or the R-package transmem itself, useful in your research, we encourage you
                             to cite it as shown in ", icon("creative-commons"), tags$b("Citation."),
-                            "This App runs the powerful object-oriented R programming capabilities [1] in this interactive web App 
-                            thanks (mainly) to the R-package Shiny [2]."))
+                            "This App runs the powerful object-oriented R programming capabilities [R Core Team, 2020] in this 
+                            interactive dashboart thanks mainl) to the R-package Shiny [Chang et al., 2020]."))
  
 mainSettDs <- box(solidHeader = TRUE, status = "primary", width = 3, title = "Main settings", height = 700,
                   h4("The main chararacteristics that must be defined are the number of species
@@ -40,10 +42,26 @@ intrTransProfDs2 <- h4('The fractions (or concentrations) of the feed and strip 
                        ... details... details...')
 
 intrPermCoefDs1 <- h4('Permeability coefficients are', tags$br(), tags$br())
-intrPermCoefDs2 <- h4('')
-
-intrSepFactorDs1 <- h4('', tags$br(), tags$br())
-intrSepFactorDs2 <- h4('')
+intrPermCoefDs2 <- h4("If one assumes that interfatial reactions are faster than the difussion process trhough the membrane,
+                      the permeability coefficient may be calculated using the Fick's law", 
+                      HTML('<center><img src="Eq1.gif" style = "size:150%;">&emsp;&emsp;&emsp;(1)</center>'))
+#eq_perm1 <- div(img(src = 'Eq1.gif'), style="text-align: center;")#, style = "display: block; margin-left: auto; margin-right: auto;")#tags$div(HTML("An irrational number \\(\\sqrt{2}\\) and a fraction $$1-\\frac{1}{2}$$"))
+#p style="text-align:right;
+intrSepFactorDs1 <- h4('Many membranes used for transport processes show better performance for some species over others. 
+                       Most of the times this is a desirable characteristic refered to as the system selectivity. The degree of
+                       separation in the process is evaluated by the separation factor. Separation factors are function of time and a
+                       typical behaviour is shown below. ', tags$br(), tags$br())
+intrSepFactorDs2 <- h4('The separation factor between two species is defined as the ratio of the concentration (or fractions) in 
+                       the strip solution over the same ratio in the feed solution at a given time', tags$em('t '), 
+                       '[Koros et al, 1996]. ', tags$br(), tags$br(),
+                       HTML('<center><img src="EqSF.png" style = "size:150%;">&emsp;&emsp;&emsp;(1)</center>'), tags$br(),
+                       'Separation factors bigger than 1 indicates better selectivity for species A while separation factors smaller 
+                       than this value indicate that the B species is transported preferally across the membrane. 
+                       At the beggining of the process, separation factors should equal 1 indicating that no separation has been 
+                       made yet.', tags$br(), tags$br(),
+                       'For systems involving a continous flow of (constant composition) feed solution there is also the 
+                       separation coefficient that refers the...', tags$br(), tags$br(),
+                       HTML('<center><img src="EqSC.png" style = "size:150%;">&emsp;&emsp;&emsp;(2)</center>'), tags$br())
 
 intrReuseDs1 <- h4('', tags$br(), tags$br())
 intrReuseDs2 <- h4('')
