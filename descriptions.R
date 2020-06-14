@@ -8,7 +8,7 @@ introductionDs <- infoBox(width = 12, "transmem package", color = 'light-blue', 
                             envolve as a function of time at both sides of the membrane.", tags$br(), tags$br(),
                             "This App is divided in a big main panel (where you are reading this right now) and an abatible side 
                             panel to the left. The main panel is the place to input data and extract results, while the 
-                            side panel is used to configure the ", icon("cog"), tags$b("Main Settings. "), " and 
+                            side panel is used to configure the ", icon("cog"), tags$b("Main Settings "), " and 
                             navigate through the App or redirect to other related web sites.", tags$br(), tags$br(),
                             "Below are ilustrated the features of this App.", tags$hr()),
                          h5("If you have found this App or the R-package transmem itself, useful in your research, we encourage you
@@ -16,30 +16,31 @@ introductionDs <- infoBox(width = 12, "transmem package", color = 'light-blue', 
                             "This App runs the powerful object-oriented R programming capabilities [R Core Team, 2020] in this 
                             interactive dashboart thanks mainly to the R-package Shiny [Chang et al., 2020]."))
  
-genCharDs <- box(solidHeader = TRUE, status = "primary", width = 3, title = "General characteristics", height = 700,
-                  h4("Those options are selected at the side panel
-                     in the ", icon("cog"), tags$b("Main Settings"), " section.", tags$hr(),
-                     "When entering data to the App, it may be provided manually or may be copied from any spreadsheet.
+genCharDs <- box(solidHeader = TRUE, status = "primary", width = 3, title = "General characteristics", #height = 700,
+                  h4("When entering data to the App, it may be provided manually or may be copied from any spreadsheet.
                      It is important to note that the number of rows to use must be indicated before entering any data. If 
-                     the user has noticed that more o less rows than available are neccesary, table values must be set to zero
-                     to change the table.", tags$br(), tags$br(),
+                     the user notices that more (or less) rows are neccesary, all table values must be set to zero
+                     to change the table length.", tags$br(), tags$br(),
                      "Some example datasets have been included and can be visualized by clicking the", tags$br(),
                      icon("folder-open"), tags$b('Example datasets'), "option in the side panel."))
 
 intrTransProfDs1 <- h4('The widely used transport profiles are plots that show the changes of species fractions (or concentrations)
                        at both sides of a membrane as a function of time. Such plots are useful to assess the membrane performance
-                       for the selective transport of determined species. A typical transport profile involving three species is
-                       shown below.', tags$br(), tags$br())
+                       for the selective transport of species. To elaborate a transport profile, the changes in
+                       species concentration must be measured in time at regular intervals. A transport profile involving three species
+                       (lithium, sodium and potassium) is shown below.', tags$br(), tags$br())
 intrTransProfDs2 <- h4('The fractions (or concentrations) of the feed and strip solutions are represented with filled and void
                        polygons, respectively. Squares are used for the main species while secondary and tertiary species
                        (when included) are represented using triangles and circles, respectively.', tags$br(), tags$br(),
                        'The points in the plot may be conected (as usual) with trend lines. Several options are available 
                        ... details... details...')
 
-intrPermCoefDs1 <- h4('Permeability coefficients are', tags$br(), tags$br())
+intrPermCoefDs1 <- h4("Permeability coefficients are defined as the transport flux per unit transmembrane driving force per 
+                      unit membrane thickness [Koros et al., 1996]. As derived by the Fick's law at steady state, it may be 
+                      calculated according to the following equation [Ma et al., 2000; Luis, 2018]:", tags$br(), tags$br())
 intrPermCoefDs2 <- h4("If one assumes that interfatial reactions are faster than the difussion process trhough the membrane,
                       the permeability coefficient may be calculated using the Fick's law", 
-                      HTML('<center><img src="Eq1.gif" style = "size:150%;">&emsp;&emsp;&emsp;(1)</center>'))
+                      HTML('<center><img src="EqPC.png">&emsp;&emsp;&emsp;(1)</center>'))
 
 intrSepFactorDs1 <- h4('Many membranes used for transport processes show better performance for some species over others. 
                        Most of the times this is a desirable characteristic related to the ', tags$em('selectivity of the system. '), 
@@ -51,7 +52,7 @@ intrSepFactorDs1 <- h4('Many membranes used for transport processes show better 
 intrSepFactorDs2 <- h4('The separation factor between two species A and B is defined as their ratio of concentrations (or fractions) in 
                        the strip solution divided by the same ratio in the feed solution at a given time ', tags$em('t '), 
                        '[Koros et al, 1996]. ', tags$br(), tags$br(),
-                       HTML('<center><img src="EqSF.png" style = "size:150%;">&emsp;&emsp;&emsp;(1)</center>'), tags$br(),
+                       HTML('<center><img src="EqSF.png">&emsp;&emsp;&emsp;(1)</center>'), tags$br(),
                        'Separation factors bigger than 1 indicates better selectivity for species A while separation factors smaller 
                        than this value indicate that the B species is transported preferally across the membrane. 
                        At the beggining of the process, separation factors should equal 1 indicating that no separation has been 
@@ -62,9 +63,16 @@ intrSepFactorDs2 <- h4('The separation factor between two species A and B is def
                        tags$br(), tags$br(),
                        HTML('<center><img src="EqSC.png" style = "size:150%;">&emsp;&emsp;&emsp;(2)</center>'), tags$br(), tags$br(),
                        'The selectivity as a system performance parameter by itself is defined as the ratio between the 
-                       permeabilities of two given species [Luis, 2018]')
+                       permeabilities of two given species [Luis, 2018]', 
+                       tags$br(), tags$br(),
+                       HTML('<center><img src="EqSL.png">&emsp;&emsp;&emsp;(3)</center>'), tags$br())
 
-intrReuseDs1 <- h4('Reusability is a good attibute ', tags$br(), tags$br())
+intrReuseDs1 <- h4('Reusability is a good attibute that improves the viability of membrane systems. In batch systems, this may be 
+                   evaluated by using the same membrane several times while renewing the feed and strip solutions, monitoring each
+                   transport experiment at regular time intervals. The profiles for all the
+                   cycles may be ploted in the same plot and the final fraction for each cycle may be plotted as shown below for the strip
+                   phase in a lithium transport across a polymer inclusión membrane. The profiles for all the transports is shown to the 
+                   left', tags$br(), tags$br())
 intrReuseDs2 <- h4('')
 
 intrSpConcDs1 <- h4('', tags$br(), tags$br())
@@ -76,7 +84,7 @@ settingsDs <- infoBox(width = 11, "Main options of the app", color = 'light-blue
                       h4('The main chararacteristics to define are the number of species considered and datasets 
                          (experiments) to analize. The package allows the inclusion of up to three species and 12 
                          transport data sets.', tags$br(), tags$br(), 
-                         'Other important characteristics that are selected here deal with the size and format of the
+                         'Other things that are defined here deal with the size and format of the
                          dowloadable plot files. The formats available are PDF and PNG. Both image formats are ussually accepted 
                          by most journals but PDF files host better quality (vectorized) plots that that never get pixelated 
                          when enlarged.'))

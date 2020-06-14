@@ -1,7 +1,7 @@
 introductionModuleUI <- function(id) {
   ns <- NS(id)
   fluidRow(introductionDs, genCharDs,
-           tabBox(width = 9, height = 700, title = "Results", side = 'left',
+           tabBox(width = 9, height = 900, title = "Results", side = 'left',
                   tabPanel("Transport profiles", intrTransProfDs1, 
                            fluidRow(column(6, withSpinner(plotOutput(ns('ExProfile')), type = 6)),
                                     column(6, intrTransProfDs2))),
