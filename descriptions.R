@@ -1,23 +1,30 @@
 #Renbder latex eq as images in https://latex.codecogs.com/eqneditor/editor.php
 # Use png format, Latin Modern font at 12pt and 120%
 introductionDs <- infoBox(width = 12, "transmem package", color = 'light-blue', icon = icon("align-justify"),
-                         h4("This is the graphical user interface for the R-package transmem.", tags$br(), tags$br(),
-                            "The tools here provided aim to ease the treatment of membrane transport processes data for
-                            the obtention of many membrane performance parameters and beautiful publication-ready plots 
-                            suitable for several experimental setups. The App focuses on processes in which species concentrations 
-                            envolve as a function of time at both sides of the membrane.", tags$br(), tags$br(),
-                            "This App is divided in a big main panel (where you are reading this right now) and an abatible side 
+                         h4("This is the graphical user interface for the R-package transmem.", #tags$br(), tags$br(),
+                            "The tools here provided aim to ease the data treatment from membrane transport processes, to 
+                            obtain many membrane performance parameters and beautiful publication-ready plots 
+                            suitable for several experimental setups.", tags$br(), tags$br(), 
+                            tags$b('The focus here is on processes in which species 
+                            concentrations envolve as a function of time at both sides of the membrane. '), "The most common
+                            consecuences of the transport is the, the depletion of the species from a feed solution and 
+                            the enrichment of the same species in a strip solution 
+                            at the other side of the membrane. To monitorate those changes, it is neccessary to determine species
+                            concentration in both solutions at the beggining of the experiment and at some time
+                            intervals.", tags$br(), tags$br(),
+                            "This App is divided in a big main panel (where you are reading at this right now) and an abatible side 
                             panel to the left. The main panel is the place to input data and extract results, while the 
-                            side panel is used to configure the ", icon("cog"), tags$b("Main Settings "), " and 
-                            navigate through the App or redirect to other related web sites.", tags$br(), tags$br(),
-                            "Below are ilustrated the features of this App.", tags$hr()),
+                            side panel is used to configure the ", icon("cog"), tags$b("Main Settings "), ", 
+                            navigate through the options in the App or redirect to other related web sites.", tags$br(), tags$br(),
+                            "Each reelevant section of the App has an Intructions tab that explains the specific operation of the
+                            option clicked. Below are ilustrated the main features of this App.", tags$hr()),
                          h5("If you have found this App or the R-package transmem itself, useful in your research, we encourage you
                             to cite it as shown in ", icon("creative-commons"), tags$b("Citation."),
                             "This App runs the powerful object-oriented R programming capabilities [R Core Team, 2020] in this 
-                            interactive dashboart thanks mainly to the R-package Shiny [Chang et al., 2020]."))
+                            interactive dashboard thanks mainly to the R-package Shiny [Chang et al., 2020]."))
  
-genCharDs <- box(solidHeader = TRUE, status = "primary", width = 3, title = "General characteristics", #height = 700,
-                  h4("When entering data to the App, it may be provided manually or may be copied from any spreadsheet.
+genCharDs <- box(solidHeader = TRUE, status = "primary", width = 12, title = "General instructions", #height = 700,
+                  h5("When entering data to the App, it may be provided manually or may be copied from any spreadsheet.
                      It is important to note that the number of rows to use must be indicated before entering any data. If 
                      the user notices that more (or less) rows are neccesary, all table values must be set to zero
                      to change the table length.", tags$br(), tags$br(),
@@ -27,20 +34,47 @@ genCharDs <- box(solidHeader = TRUE, status = "primary", width = 3, title = "Gen
 intrTransProfDs1 <- h4('The widely used transport profiles are plots that show the changes of species fractions (or concentrations)
                        at both sides of a membrane as a function of time. Such plots are useful to assess the membrane performance
                        for the selective transport of species. To elaborate a transport profile, the changes in
-                       species concentration must be measured in time at regular intervals. A transport profile involving three species
-                       (lithium, sodium and potassium) is shown below.', tags$br(), tags$br())
-intrTransProfDs2 <- h4('The fractions (or concentrations) of the feed and strip solutions are represented with filled and void
-                       polygons, respectively. Squares are used for the main species while secondary and tertiary species
-                       (when included) are represented using triangles and circles, respectively.', tags$br(), tags$br(),
-                       'The points in the plot may be conected (as usual) with trend lines. Several options are available 
-                       ... details... details...')
+                       species concentration must be measured in time at convenient intervals. A transport profile involving three 
+                       species is shown in Figure 1.', tags$br(), tags$br())
+intrTransProfDs2 <- h4('The Y-axis may have concentration units but a common practice is to normalize concentration data to the initial
+                       concentration in the feed solution to get fractions represented by the greek letter', HTML('&#934;'), '. ', 
+                       HTML('&#934;<sub>feed</sub>'), ' represents the remaining fraction in the feed solution and ', 
+                       HTML('&#934;<sub>strip</sub>'), ' represents the transported fraction to the strip solution.', tags$br(), tags$br(), 
+                       'The points in the plot are conected with trend lines and several options are available. 
+                       Two empirical models ', tags$em('Paredes et al.'), ' and ', tags$em('Rodriguez de San Miguel et al.'), 
+                       ' a non parametric ', tags$em('LOESS'), ' curve that uses the ',
+                       HTML('<a href="https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter">Savinsky-Golay filter</a></td>'), 
+                       ' to produce nice smooth curves, and linear trend lines. The option of no trend line is also available. 
+                       The linear trend lines are often adequate for the secondary and tertiary species. 
+                       The empirical models are described the last tab of 
+                       this box.')
+intrTransProfCpt <- h5(HTML('<center><b>Figure 1. </b>Transport profile for lithium, sodium and potassium using a 
+                       polymer inclusion membrane. In the convention used in this App, the fractions (or concentrations) 
+                       of the species in the feed and strip 
+                       solutions are represented with filled and void
+                       polygons, respectively. Squares are used for the main species (ussually that of particular interest for the 
+                       study) while secondary and tertiary species
+                       (when included) are represented using triangles and circles, respectively. </center>'))
 
 intrPermCoefDs1 <- h4("Permeability coefficients are defined as the transport flux per unit transmembrane driving force per 
                       unit membrane thickness [Koros et al., 1996]. As derived by the Fick's law at steady state, it may be 
-                      calculated according to the following equation [Ma et al., 2000; Luis, 2018]:", tags$br(), tags$br())
-intrPermCoefDs2 <- h4("If one assumes that interfatial reactions are faster than the difussion process trhough the membrane,
-                      the permeability coefficient may be calculated using the Fick's law", 
-                      HTML('<center><img src="EqPC.png">&emsp;&emsp;&emsp;(1)</center>'))
+                      calculated according to the following equation [Ma et al., 2000]:", tags$br(), tags$br(),
+                      HTML('<center><img src="EqPC.png">&emsp;&emsp;&emsp;(1)</center>'), tags$br(),
+                      'Where ', tags$em('C', HTML('<sup>0</sup><sub>A, feed</sub>')), ' and ', 
+                      tags$em('C', HTML('<sub>A, feed</sub>')), ' are the concentration of species A in feed solution at
+                      the begining of the experiment and a given time ', tags$em('t'), ', respectively, ', tags$em('P'), 
+                      ' is the permeability, ', tags$em('a'), ' is the membrane exposed area, and ', tags$em('V'), ' is the volume
+                      of the feed solution.')
+intrPermCoefDs2 <- h4("The permeability coefficient may be obtained from the slope of the relation between the natural logarithm of
+                      of the  
+                      [Ma et al., 2000; ]", tags$br(), tags$br())
+intrPermCoefCpt <- h5(HTML('<center><b>Figure 2. </b>Natural logarithm ofTransport profile for lithium, sodium and potassium using a 
+                       polymer inclusion membrane. In the convention used in this App, the fractions (or concentrations) 
+                       of the species in the feed and strip 
+                       solutions are represented with filled and void
+                       polygons, respectively. Squares are used for the main species (ussually that of particular interest for the 
+                       study) while secondary and tertiary species
+                       (when included) are represented using triangles and circles, respectively. </center>'))
 
 intrSepFactorDs1 <- h4('Many membranes used for transport processes show better performance for some species over others. 
                        Most of the times this is a desirable characteristic related to the ', tags$em('selectivity of the system. '), 

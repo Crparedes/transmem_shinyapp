@@ -1,14 +1,14 @@
 introductionModuleUI <- function(id) {
   ns <- NS(id)
-  fluidRow(introductionDs, genCharDs,
-           tabBox(width = 9, height = 900, title = "Results", side = 'left',
+  fluidRow(column(10, introductionDs), column(2, genCharDs), 
+           column(12, tabBox(width = 12, height = 900, title = "FEATURES", side = 'left',
                   tabPanel("Transport profiles", intrTransProfDs1, 
-                           fluidRow(column(6, withSpinner(plotOutput(ns('ExProfile')), type = 6)),
+                           fluidRow(column(6, withSpinner(plotOutput(ns('ExProfile')), type = 6), intrTransProfCpt),
                                     column(6, intrTransProfDs2))),
                   tabPanel("Permeability coefficients", intrPermCoefDs1, 
                            fluidRow(column(6, withSpinner(plotOutput(ns('ExPermCoef')), type = 6)),
                                     column(6, intrPermCoefDs2))),
-                  tabPanel("Separation factors", intrSepFactorDs1, 
+                  tabPanel("Separation factors/coefficients", intrSepFactorDs1, 
                            fluidRow(column(6, withSpinner(plotOutput(ns('ExSepFactor')), type = 6)),
                                     column(6, intrSepFactorDs2))),
                   tabPanel("Reuse cycles", intrReuseDs1, 
@@ -18,7 +18,7 @@ introductionModuleUI <- function(id) {
                            fluidRow(column(6, withSpinner(plotOutput(ns('ExSpcsConc')), type = 6)),
                                     column(6, intrSpConcDs2))),
                   tabPanel(''),tabPanel(''),
-                  tabPanel("-Details of empiric models", intrEmprcMdlsDs1)))
+                  tabPanel("-Details of empiric models", intrEmprcMdlsDs1))))
 }
 
 introductionOutputs <- function(input, output, session) {
